@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Pembelajaran Informatika SMA - Kurikulum Deep Learning</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            dark: '#0f172a',
+                            card: '#1e293b'
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'float-medium': 'float 4s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'bounce-subtle': 'bounceSubtle 2s infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-12px) rotate(3deg)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(20, 184, 166, 0.4)' },
+                            '50%': { boxShadow: '0 0 30px rgba(20, 184, 166, 0.8)' }
+                        },
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1120;
+            color: #f1f5f9;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0d9488;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(20, 184, 166, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.25);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden antialiased">
+
+    <!-- Welcome Toast Banner -->
+    <div id="welcomeToast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-500 ease-out">
+        <div class="glass-panel border-l-4 border-cyan-400 text-white p-4 rounded-xl shadow-2xl flex items-center gap-3 max-w-md">
+            <div class="bg-cyan-500/20 p-3 rounded-lg text-cyan-400">
+                <i class="fa-solid fa-sparkles text-2xl animate-spin" style="animation-duration: 4s;"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm text-cyan-300">Selamat Datang di Portal Informatika! 👋</h4>
+                <p class="text-xs text-slate-300">Siap mengeksplorasi Kurikulum Deep Learning hari ini? Pilih kelasmu dan mulai belajar!</p>
+            </div>
+            <button onclick="hideWelcomeToast()" class="text-slate-400 hover:text-white ml-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Header / Navbar -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Title -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchClass('X')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-base sm:text-lg bg-gradient-to-r from-cyan-400 to-indigo-300 bg-clip-text text-transparent leading-tight">
+                            Informatika SMA
+                        </h1>
+                        <p class="text-[10px] text-cyan-400 tracking-wider font-semibold uppercase">Kurikulum Deep Learning</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs (Desktop) -->
+                <nav class="hidden md:flex items-center space-x-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
+                    <button onclick="switchTab('materi')" id="nav-materi" class="nav-btn px-4 py-2 text-xs font-semibold rounded-lg transition-all text-cyan-400 bg-cyan-950/80 border border-cyan-500/30">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> Materi & File
+                    </button>
+                    <button onclick="switchTab('kuis')" id="nav-kuis" class="nav-btn px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white rounded-lg transition-all">
+                        <i class="fa-solid fa-brain mr-1.5"></i> Contoh Soal & Kuis
+                    </button>
+                    <button onclick="switchTab('tugas')" id="nav-tugas" class="nav-btn px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white rounded-lg transition-all">
+                        <i class="fa-solid fa-list-check mr-1.5"></i> Tugas Siswa
+                    </button>
+                    <button onclick="openTeacherPinModal()" id="nav-guru" class="nav-btn px-4 py-2 text-xs font-semibold text-amber-400 hover:text-amber-300 bg-amber-950/30 border border-amber-500/20 rounded-lg transition-all">
+                        <i class="fa-solid fa-user-shield mr-1.5"></i> Panel Guru 🔒
+                    </button>
+                </nav>
+
+                <!-- Exit & Mobile Menu Controls -->
+                <div class="flex items-center gap-2">
+                    <button onclick="openFarewellModal()" class="px-3 py-1.5 text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-500/30 hover:bg-rose-900/40 rounded-lg transition flex items-center gap-1.5" title="Keluar dari Aplikasi">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Keluar</span>
+                    </button>
+                    <!-- Mobile Hamburger -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-slate-300 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 py-3 space-y-2">
+            <button onclick="switchTab('materi'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-sm text-cyan-400 font-semibold rounded-lg bg-slate-800/50">
+                <i class="fa-solid fa-book-open mr-2"></i> Materi & File
+            </button>
+            <button onclick="switchTab('kuis'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-sm text-slate-300 font-semibold rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-brain mr-2"></i> Contoh Soal & Kuis
+            </button>
+            <button onclick="switchTab('tugas'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-sm text-slate-300 font-semibold rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-list-check mr-2"></i> Tugas Siswa
+            </button>
+            <button onclick="openTeacherPinModal(); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-sm text-amber-400 font-semibold rounded-lg bg-amber-950/40">
+                <i class="fa-solid fa-user-shield mr-2"></i> Panel Guru 🔒
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        <!-- Hero & Class Selector Section -->
+        <section class="relative overflow-hidden rounded-3xl glass-panel p-6 sm:p-8 border border-slate-700/50 shadow-2xl bg-gradient-to-br from-slate-900 via-slate-900/90 to-cyan-950/40">
+            <!-- Animated Background Floating Icons -->
+            <div class="absolute -top-6 -right-6 text-slate-800/30 text-8xl pointer-events-none animate-float-slow">
+                <i class="fa-solid fa-microchip"></i>
+            </div>
+            <div class="absolute bottom-2 right-1/4 text-cyan-900/20 text-9xl pointer-events-none animate-float-medium">
+                <i class="fa-solid fa-network-wired"></i>
+            </div>
+            <div class="absolute top-1/2 right-12 text-indigo-900/30 text-7xl pointer-events-none animate-bounce-subtle">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <!-- Left Header Info -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                        <i class="fa-solid fa-atom animate-spin" style="animation-duration: 8s;"></i>
+                        <span>Pendekatan Pembelajaran Mendalam (Deep Learning)</span>
+                    </div>
+
+                    <h2 id="classHeroTitle" class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight">
+                        <!-- Dynamic Title -->
+                    </h2>
+
+                    <p id="classHeroDesc" class="text-sm sm:text-base text-slate-300 leading-relaxed">
+                        <!-- Dynamic Subtitle -->
+                    </p>
+
+                    <!-- Feature Badges -->
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                            <i class="fa-solid fa-file-word text-blue-400"></i> Word
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                            <i class="fa-solid fa-file-powerpoint text-orange-400"></i> PowerPoint
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                            <i class="fa-solid fa-file-excel text-emerald-400"></i> Excel
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                            <i class="fa-solid fa-file-image text-purple-400"></i> JPG/PNG
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right Class Selector Buttons -->
+                <div class="lg:col-span-5 flex flex-col gap-3">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Pilih Jenjang Kelas:</p>
+                    
+                    <button onclick="switchClass('X')" id="btn-class-X" class="class-btn p-3.5 rounded-2xl glass-card text-left transition flex items-center justify-between border border-cyan-500/50 bg-cyan-950/40">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg">
+                                X
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-white">Kelas X SMA</h3>
+                                <p class="text-xs text-slate-400">Algoritma, Python Dasar & Decomposisi</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>
+                    </button>
+
+                    <button onclick="switchClass('XI')" id="btn-class-XI" class="class-btn p-3.5 rounded-2xl glass-card text-left transition flex items-center justify-between border border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-lg">
+                                XI
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-white">Kelas XI SMA</h3>
+                                <p class="text-xs text-slate-400">Jaringan, Web & Basis Data SQL</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>
+                    </button>
+
+                    <button onclick="switchClass('XII')" id="btn-class-XII" class="class-btn p-3.5 rounded-2xl glass-card text-left transition flex items-center justify-between border border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg">
+                                XII
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-white">Kelas XII SMA</h3>
+                                <p class="text-xs text-slate-400">AI Deep Learning, Kriptografi & IoT</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 1: MATERI & FILE DOKUMEN -->
+        <section id="tab-materi" class="tab-content space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-folder-open text-cyan-400"></i>
+                        <span>Modul & File Pembelajaran - <span id="materiGradeLabel" class="text-cyan-400">Kelas X</span></span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Unduh materi pembelajaran resmi yang telah diunggah oleh guru.</p>
+                </div>
+
+                <!-- Format Filter Buttons -->
+                <div class="flex flex-wrap items-center gap-1.5 bg-slate-900/80 p-1 rounded-xl border border-slate-800 text-xs">
+                    <button onclick="filterMaterials('all')" class="filter-btn active px-3 py-1.5 rounded-lg font-semibold bg-cyan-500 text-slate-950 transition">Semua</button>
+                    <button onclick="filterMaterials('DOCX')" class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Word</button>
+                    <button onclick="filterMaterials('PPTX')" class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">PPTX</button>
+                    <button onclick="filterMaterials('XLSX')" class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Excel</button>
+                    <button onclick="filterMaterials('IMG')" class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Gambar</button>
+                </div>
+            </div>
+
+            <!-- Material Grid Container -->
+            <div id="materiGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Dynamically Populated -->
+            </div>
+        </section>
+
+        <!-- TAB 2: CONTOH SOAL & KUIS INTERAKSI DEEP LEARNING -->
+        <section id="tab-kuis" class="tab-content hidden space-y-8">
+            <!-- Section Title -->
+            <div class="border-b border-slate-800 pb-4">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-indigo-400"></i>
+                    <span>Analisis Problem & Kuis Deep Learning - <span id="kuisGradeLabel" class="text-indigo-400">Kelas X</span></span>
+                </h3>
+                <p class="text-xs text-slate-400">Pendekatan Deep Learning: Pahami konsep dasar melalui penjelasan singkat, lalu bedah secara terstruktur dalam penjelasan rinci.</p>
+            </div>
+
+            <!-- Contoh Soal & Penjelasan Rinci -->
+            <div class="space-y-4">
+                <h4 class="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-file-code text-cyan-400"></i> Contoh Soal & Pembahasan Deep Learning
+                </h4>
+                <div id="contohSoalContainer" class="space-y-4">
+                    <!-- Dynamic Contoh Soal Cards -->
+                </div>
+            </div>
+
+            <!-- Interactive Quiz Section -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h4 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-square-check text-emerald-400"></i> Kuis Evaluasi Pemahaman Mandiri
+                    </h4>
+                    <span id="quizScoreBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        Skor: 0
+                    </span>
+                </div>
+
+                <div id="quizContainer" class="space-y-6">
+                    <!-- Dynamic Quiz Questions -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: PORTAL TUGAS SISWA -->
+        <section id="tab-tugas" class="tab-content hidden space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-amber-400"></i>
+                        <span>Daftar Tugas Praktikum & Proyek - <span id="tugasGradeLabel" class="text-amber-400">Kelas X</span></span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Unduh lembar kerja tugas, pelajari petunjuknya, dan kirimkan hasil pekerjaanmu secara tepat waktu.</p>
+                </div>
+            </div>
+
+            <!-- Tugas Container Grid -->
+            <div id="tugasGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Dynamic Tasks -->
+            </div>
+        </section>
+
+        <!-- TAB 4: PANEL GURU (PROTECTED) -->
+        <section id="tab-guru" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-slate-900 to-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Panel Pengelolaan Guru</h3>
+                        <p class="text-xs text-slate-400">Akses Khusus Guru: Upload Materi Baru, Buat Tugas, & Pantau Rekap Unduhan Siswa</p>
+                    </div>
+                </div>
+                <button onclick="lockTeacherPanel()" class="px-4 py-2 text-xs font-bold text-amber-400 bg-amber-950/50 hover:bg-amber-900/60 border border-amber-500/30 rounded-xl transition">
+                    <i class="fa-solid fa-lock mr-1.5"></i> Kunci Panel Guru
+                </button>
+            </div>
+
+            <!-- Teacher Forms Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Form Upload Materi Baru -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                    <h4 class="font-bold text-sm text-cyan-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Materi / Dokumen Baru
+                    </h4>
+                    <form id="formUploadMateri" onsubmit="handleUploadMateri(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Judul Materi</label>
+                            <input type="text" id="materiJudul" required placeholder="Contoh: Modul Pemrograman Python" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Pilih Kelas</label>
+                                <select id="materiKelas" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                                    <option value="X">Kelas X</option>
+                                    <option value="XI">Kelas XI</option>
+                                    <option value="XII">Kelas XII</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Format Dokumen</label>
+                                <select id="materiFormat" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                                    <option value="DOCX">Word (.docx)</option>
+                                    <option value="PPTX">PowerPoint (.pptx)</option>
+                                    <option value="XLSX">Excel (.xlsx)</option>
+                                    <option value="IMG">Gambar (.jpg/.png)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Deskripsi Ringkas</label>
+                            <textarea id="materiDeskripsi" rows="2" required placeholder="Jelaskan ringkasan isi file..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Simulasi File Dokumen</label>
+                            <input type="file" id="materiFile" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-400 file:mr-3 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-cyan-500/20 file:text-cyan-400 hover:file:bg-cyan-500/30 cursor-pointer">
+                        </div>
+                        <button type="submit" class="w-full py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs transition shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Terbitkan Materi
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Form Tambah Tugas Baru -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                    <h4 class="font-bold text-sm text-indigo-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-file-circle-plus"></i> Tambah Tugas Baru
+                    </h4>
+                    <form id="formTambahTugas" onsubmit="handleTambahTugas(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Judul Tugas</label>
+                            <input type="text" id="tugasJudul" required placeholder="Contoh: Tugas Praktikum Algoritma" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Untuk Kelas</label>
+                                <select id="tugasKelas" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                                    <option value="X">Kelas X</option>
+                                    <option value="XI">Kelas XI</option>
+                                    <option value="XII">Kelas XII</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Tenggat Waktu (Deadline)</label>
+                                <input type="date" id="tugasDeadline" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Petunjuk Insttruksi Tugas</label>
+                            <textarea id="tugasDeskripsi" rows="2" required placeholder="Instruksi pengerjaan tugas..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Lampiran File Instruksi (Opsional)</label>
+                            <input type="file" id="tugasFile" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-400 file:mr-3 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-500/20 file:text-indigo-400 hover:file:bg-indigo-500/30 cursor-pointer">
+                        </div>
+                        <button type="submit" class="w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Publikasikan Tugas
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Rekap Log Akses / Unduh Materi Siswa -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div>
+                        <h4 class="font-bold text-sm text-cyan-400 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-user"></i> Rekap Presensi & Log Pengambilan Materi Siswa
+                        </h4>
+                        <p class="text-xs text-slate-400">Data terdeteksi otomatis setiap kali siswa mengunduh file materi.</p>
+                    </div>
+                    <button onclick="clearLogs()" class="text-xs text-rose-400 hover:text-rose-300 bg-rose-950/30 px-3 py-1.5 rounded-lg border border-rose-500/20">
+                        <i class="fa-solid fa-trash mr-1"></i> Bersihkan Log
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Waktu Akses</th>
+                                <th class="p-3">Nama Siswa</th>
+                                <th class="p-3">Kelas & Jurusan</th>
+                                <th class="p-3">Materi Diunduh</th>
+                                <th class="p-3">Format</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rekapAksesTable" class="divide-y divide-slate-800/50">
+                            <!-- Dynamic Content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Rekap Pengumpulan Tugas Siswa -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+                <div class="border-b border-slate-800 pb-3">
+                    <h4 class="font-bold text-sm text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-box-archive"></i> Rekap Tugas Terkumpul Dari Siswa
+                    </h4>
+                    <p class="text-xs text-slate-400">Pemberian nilai dihilangkan. Guru dapat memeriksa & mendownload file kiriman siswa.</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Waktu Kirim</th>
+                                <th class="p-3">Nama Siswa</th>
+                                <th class="p-3">Kelas</th>
+                                <th class="p-3">Judul Tugas</th>
+                                <th class="p-3">Catatan Siswa</th>
+                                <th class="p-3 text-center">File Kiriman</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rekapTugasTable" class="divide-y divide-slate-800/50">
+                            <!-- Dynamic Content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-slate-800 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="text-xs text-slate-400">
+                &copy; 2026 Portal Pembelajaran Informatika SMA - Kurikulum Deep Learning. All Rights Reserved.
+            </p>
+            <p class="text-[11px] text-slate-500">
+                Pengembangan Aplikasi Edukasi Interaktif Berbasis Web Responsif.
+            </p>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: STUDENT ACCESS LOG MODAL (Download Tracking) -->
+    <div id="modalStudentLog" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+        <div class="glass-panel border border-cyan-500/40 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-5">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg font-bold">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white">Konfirmasi Presensi Siswa</h3>
+                    <p class="text-xs text-slate-400">Isi identitas sebelum mengunduh file materi</p>
+                </div>
+            </div>
+
+            <form id="formStudentLog" onsubmit="confirmStudentDownload(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Lengkap Siswa <span class="text-rose-400">*</span></label>
+                    <input type="text" id="logNama" required placeholder="Contoh: Ahmad Rizky" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Kelas & Jurusan <span class="text-rose-400">*</span></label>
+                    <input type="text" id="logKelasJurusan" required placeholder="Contoh: X IPA 1 / XI MIPA 2" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                
+                <div class="p-3 bg-cyan-950/30 rounded-xl border border-cyan-500/20 text-[11px] text-cyan-300 flex items-start gap-2">
+                    <i class="fa-solid fa-circle-info text-cyan-400 mt-0.5"></i>
+                    <span>Nama dan waktu unduh kamu akan secara otomatis tersimpan di rekap kehadiran guru.</span>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('modalStudentLog')" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-cyan-500/20">
+                        Unduh File Materi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: SUBMIT TASK MODAL -->
+    <div id="modalSubmitTask" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+        <div class="glass-panel border border-amber-500/40 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-5">
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold">
+                    <i class="fa-solid fa-upload"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-white">Form Pengumpulan Tugas</h3>
+                    <p id="submitTaskTitle" class="text-xs text-amber-400 font-semibold"></p>
+                </div>
+            </div>
+
+            <form id="formKumpulTugas" onsubmit="handleKumpulTugasSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Lengkap Siswa</label>
+                    <input type="text" id="kumpulNama" required placeholder="Contoh: Budi Santoso" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Kelas & Jurusan</label>
+                    <input type="text" id="kumpulKelas" required placeholder="Contoh: X IPA 2" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Catatan Tambahan untuk Guru</label>
+                    <textarea id="kumpulCatatan" rows="2" placeholder="Tuliskan catatan singkat pengerjaan..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Upload Dokumen Tugas</label>
+                    <input type="file" id="kumpulFile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-400 file:mr-3 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-amber-500/20 file:text-amber-400 hover:file:bg-amber-500/30 cursor-pointer">
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('modalSubmitTask')" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20">
+                        Kirimkan Tugas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: TEACHER PIN PROTECTED MODAL -->
+    <div id="modalTeacherPin" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+        <div class="glass-panel border border-amber-500/50 w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 mx-auto flex items-center justify-center text-2xl animate-pulse">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-base text-white">Verifikasi Keamanan Guru</h3>
+                <p class="text-xs text-slate-400 mt-1">Masukkan PIN Guru untuk mengakses Panel Pengelolaan</p>
+            </div>
+
+            <div class="space-y-3">
+                <input type="password" id="pinInput" placeholder="● ● ● ● ● ● ● ●" maxlength="20" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-center text-lg font-mono tracking-widest text-amber-400 focus:outline-none focus:border-amber-500">
+                <p id="pinErrorMsg" class="text-xs text-rose-400 hidden font-semibold">PIN salah! Silakan coba lagi.</p>
+            </div>
+
+            <div class="flex items-center justify-center gap-2 pt-2">
+                <button onclick="closeModal('modalTeacherPin')" class="w-1/2 py-2.5 rounded-xl border border-slate-700 text-xs font-semibold text-slate-400 hover:text-white transition">
+                    Batal
+                </button>
+                <button onclick="verifyTeacherPin()" class="w-1/2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20">
+                    Masuk Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: FAREWELL NOTIFICATION MODAL -->
+    <div id="modalFarewell" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md hidden p-4">
+        <div class="glass-panel border border-rose-500/30 w-full max-w-md rounded-2xl p-6 shadow-2xl text-center space-y-5 animate-bounce-subtle">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-rose-500 to-amber-500 text-white mx-auto flex items-center justify-center text-3xl shadow-lg shadow-rose-500/30">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div>
+                <h3 class="font-extrabold text-xl text-white">Terima Kasih & Selamat Jalan! 👋</h3>
+                <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                    "Teknologi bukan sekadar alat, melainkan jembatan menuju inovasi masa depan. Tetap tingkatkan semangat belajar Informatika!"
+                </p>
+            </div>
+
+            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-cyan-300 font-medium">
+                Semua presensi unduhan dan kiriman tugasmu telah berhasil tersimpan dengan aman di sistem.
+            </div>
+
+            <div class="flex items-center justify-center gap-3">
+                <button onclick="closeModal('modalFarewell')" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">
+                    Kembali Belajar
+                </button>
+                <button onclick="confirmExitWebsite()" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition shadow-lg shadow-rose-600/30">
+                    Tutup Website
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONSTANTS & INITIAL DATA ---
+        const TEACHER_PIN = "Glen2108";
+        let activeGrade = "X"; // Default Grade: X
+        let activeTab = "materi";
+        let activeFilter = "all";
+        let currentDownloadingItem = null; // Stores target material for student download log
+        let isTeacherAuthenticated = false;
+
+        // Class Motos & Taglines
+        const CLASS_DATA = {
+            X: {
+                title: "Kelas X: Fondasi Digital & Logika Pemrograman - Kuasai Algoritma Dasar!",
+                desc: "Pelajari cara berpikir komputasional, struktur dekomposisi masalah, abstraksi data, dan penulisan algoritma awal dalam bahasa Python.",
+                badgeColor: "cyan"
+            },
+            XI: {
+                title: "Kelas XI: Arsitektur Sistem & Basis Data - Membangun Solusi Masa Depan!",
+                desc: "Dalami konsep jaringan komputer, keamanan transmisi protokol IP, perancangan basis data relational SQL, serta pengembangan web modern.",
+                badgeColor: "indigo"
+            },
+            XII: {
+                title: "Kelas XII: Kecerdasan Buatan & Keamanan Siber - Menjadi Innovator Teknologi!",
+                desc: "Jelajahi algoritma Deep Learning, jaringan saraf tiruan (Neural Networks), simulasi enkripsi kriptografi, serta integrasi ekosistem IoT.",
+                badgeColor: "purple"
+            }
+        };
+
+        // Initial Sample Materials Store
+        const INITIAL_MATERIALS = [
+            // KELAS X
+            { id: 101, grade: "X", title: "Berpikir Komputasional - Decomposisi & Abstraksi", format: "DOCX", desc: "Modul lengkap mengenai 4 pilar berpikir komputasional disertai contoh studi kasus kehidupan sehari-hari.", date: "2026-02-10", filename: "Modul_Berpikir_Komputasional_KelasX.docx" },
+            { id: 102, grade: "X", title: "Algoritma Pemrograman Python Dasar", format: "PPTX", desc: "Slide presentasi pengenalan sintaks Python, variabel, tipe data, dan percabangan (if-else).", date: "2026-02-12", filename: "Slide_Python_Dasar_KelasX.pptx" },
+            { id: 103, grade: "X", title: "Analisis Data & Spreadsheet Sederhana", format: "XLSX", desc: "File latihan fungsi statistik dasar (SUM, AVERAGE, VLOOKUP) pada Microsoft Excel.", date: "2026-02-15", filename: "Latihan_Spreadsheet_KelasX.xlsx" },
+            { id: 104, grade: "X", title: "Infografis Dampak Sosial Informatika", format: "IMG", desc: "Gambar diagram peta konsep hak cipta, etika digital, dan perlindungan privasi data.", date: "2026-02-18", filename: "Infografis_Etika_Digital.png" },
+
+            // KELAS XI
+            { id: 201, grade: "XI", title: "Topologi Jaringan Komputer & Protocol IP", format: "PPTX", desc: "Materi visual mengenai struktur jaringan LAN, WAN, router, serta subnetting IP Address.", date: "2026-02-11", filename: "Topologi_Jaringan_KelasXI.pptx" },
+            { id: 202, grade: "XI", title: "Desain Relasi & Query SQL Dasar", format: "XLSX", desc: "File skema tabel database dan latihan query SELECT, INSERT, UPDATE, DELETE.", date: "2026-02-14", filename: "Query_Database_KelasXI.xlsx" },
+            { id: 203, grade: "XI", title: "Panduan Pemrograman Web Responsive HTML CSS", format: "DOCX", desc: "Panduan praktikum langkah demi langkah membuat tampilan halaman web responsif.", date: "2026-02-17", filename: "Modul_Web_Dev_KelasXI.docx" },
+            { id: 204, grade: "XI", title: "Arsitektur Server & Client Side Diagram", format: "IMG", desc: "Infografis penjelasan alur komunikasi HTTP Request dan Response client-server.", date: "2026-02-20", filename: "Skema_Client_Server.jpg" },
+
+            // KELAS XII
+            { id: 301, grade: "XII", title: "Pengenalan Deep Learning & Neural Networks", format: "PPTX", desc: "Materi konsep dasar Artificial Intelligence, Machine Learning vs Deep Learning, dan Perceptron.", date: "2026-02-08", filename: "Deep_Learning_Intro_KelasXII.pptx" },
+            { id: 302, grade: "XII", title: "Keamanan Siber & Algoritma Kriptografi Enkripsi", format: "DOCX", desc: "Modul pembahasan kunci enkripsi simetris, asimetris, Hashing, dan ancaman malware.", date: "2026-02-13", filename: "Cyber_Security_Modul_KelasXII.docx" },
+            { id: 303, grade: "XII", title: "Dataset Pembelajaran AI & Model Evaluasi", format: "XLSX", desc: "Spreadsheet sampel dataset training, testing, serta perhitungan confusion matrix.", date: "2026-02-16", filename: "Dataset_AI_Training_KelasXII.xlsx" },
+            { id: 304, grade: "XII", title: "Skema Sistem IoT & Smart Home Architecture", format: "IMG", desc: "Diagram arsitektur sensor, mikrokontroler ESP32, MQTT Broker, dan Cloud.", date: "2026-02-19", filename: "Arsitektur_IoT_SmartHome.png" }
+        ];
+
+        // Initial Sample Assignments
+        const INITIAL_TASKS = [
+            { id: 1, grade: "X", title: "Praktikum 1: Membuat Program Python Logika Kasir", deadline: "2026-03-05", desc: "Buatlah program Python sederhana menggunakan percabangan dan perulangan untuk menghitung total belanjaan dan diskon.", attachment: "Petunjuk_Praktikum1_KelasX.docx" },
+            { id: 2, grade: "XI", title: "Tugas Proyek: Perancangan Schema Database Toko Online", deadline: "2026-03-10", desc: "Rancang ERD (Entity Relationship Diagram) dan minimal 3 tabel terelasi menggunakan format SQL/Excel.", attachment: "Modul_Tugas_Database_KelasXI.pdf" },
+            { id: 3, grade: "XII", title: "Studi Kasus: Analisis Klasifikasi Model Deep Learning", deadline: "2026-03-12", desc: "Lakukan analisis terhadap akurasi model Convolutional Neural Network (CNN) berdasarkan dataset gambar yang disediakan.", attachment: "Lembar_Studi_Kasus_DeepLearning.docx" }
+        ];
+
+        // Contoh Soal Deep Learning
+        const CONTOH_SOAL = {
+            X: [
+                {
+                    soal: "Bagaimana penerapan prinsip Dekomposisi dan Abstraksi dalam merancang algoritma pencarian nilai maksimum pada sekumpulan data siswa?",
+                    singkat: "Dekomposisi memecah masalah menjadi langkah-langkah kecil (input data, iterasi, pembandingan), sedangkan Abstraksi mengabaikan atribut siswa yang tidak relevan (seperti alamat) dan hanya fokus pada variabel angka skor.",
+                    rinci: "1. **Dekomposisi (Penjabaran Masalah)**:\n   - Langkah A: Membaca seluruh daftar nilai.\n   - Langkah B: Menyiapkan variabel penampung `max_val` yang diisi nilai pertama.\n   - Langkah C: Mengiterasi setiap nilai dan membandingkannya dengan `max_val`.\n   - Langkah D: Mengembalikan nilai terbesar.\n\n2. **Abstraksi (Penyaringan Informasi)**:\n   - Dalam masalah ini, data nama, NISN, atau alamat siswa disisihkan terlebih dahulu. Program hanya memproses array numerik [80, 95, 78, 90] untuk menghemat penggunaan memori dan kompleksitas komputasi."
+                }
+            ],
+            XI: [
+                {
+                    soal: "Mengapa indeks (Index) pada kolom tabel Basis Data SQL dapat mempercepat query SELECT namun berpotensi memperlambat operasi INSERT?",
+                    singkat: "Indeks membuat struktur pohon pencarian (B-Tree) yang mempercepat pencarian data, namun saat menambahkan data baru (INSERT), sistem harus memperbarui struktur pohon indeks tersebut.",
+                    rinci: "1. **Mekanisme Pencarian (SELECT)**:\n   - Tanpa indeks, database melakukan *Full Table Scan* (memeriksa baris satu per satu dari awal hingga akhir).\n   - Dengan indeks B-Tree, pencarian beroperasi dalam kompleksitas O(log N).\n\n2. **Dampak Pembaruan (INSERT/UPDATE)**:\n   - Setiap ada data baru yang masuk, database tidak hanya menulis baris baru ke tabel, tetapi juga harus menyeimbangkan ulang (rebalancing) pohon B-Tree indeks terkait, sehingga membutuhkan IO/Resource tambahan."
+                }
+            ],
+            XII: [
+                {
+                    soal: "Bagaimana fungsi aktivasi ReLU (Rectified Linear Unit) mengatasi masalah Vanishing Gradient pada Arsitektur Deep Neural Network?",
+                    singkat: "ReLU mengembalikan nilai max(0, x), sehingga turunannya untuk input positif bernilai konstan 1, mencegah gradien menjadi sangat kecil saat propagasi balik (backpropagation).",
+                    rinci: "1. **Masalah Vanishing Gradient**:\n   - Pada fungsi aktivasi konvensional seperti Sigmoid atau TanH, turunan maksimumnya adalah 0.25. Ketika dikalikan berulang kali di banyak layer (Deep Network), gradien mendekati angka 0, menyebabkan bobot di layer awal tidak terupdate.\n\n2. **Solusi ReLU**:\n   - Formula ReLU: f(x) = max(0, x).\n   - Turunan f'(x) = 1 untuk x > 0.\n   - Karena turunannya adalah 1, sinyal gradien dapat merambat secara utuh melewati puluhan hingga ratusan layer tanpa mengalami penyusutan ekstrim."
+                }
+            ]
+        };
+
+        // Interactive Quizzes
+        const QUIZ_DATA = {
+            X: [
+                {
+                    q: "Manakah sintaks yang benar dalam Python untuk memeriksa apakah variabel `skor` lebih besar dari 75?",
+                    opts: ["if skor > 75:", "if (skor > 75) then", "check skor > 75 then:", "if skor > 75 do"],
+                    ans: 0,
+                    exp: "Di bahasa Python, struktur percabangan menggunakan kata kunci `if` diakhiri dengan tanda titik dua `:` tanpa kata `then`."
+                },
+                {
+                    q: "Proses mengabaikan detail-detail yang tidak penting dari suatu objek dan hanya fokus pada karakteristik utama disebut...",
+                    opts: ["Decomposisi", "Abstraksi", "Algoritma", "Pattern Recognition"],
+                    ans: 1,
+                    exp: "Abstraksi adalah pilar berpikir komputasional yang berfokus pada informasi penting dan menyampingkan detail yang tidak relevan."
+                }
+            ],
+            XI: [
+                {
+                    q: "Perintah SQL yang digunakan untuk mengambil data dari tabel dinamakan...",
+                    opts: ["GET DATA", "FETCH", "SELECT", "PULL"],
+                    ans: 2,
+                    exp: "Perintah standar SQL untuk membaca atau menampilkan baris data dari tabel adalah `SELECT`."
+                },
+                {
+                    q: "Protokol jaringan yang bertugas mentransfer dokumen web dengan enkripsi keamanan SSL/TLS adalah...",
+                    opts: ["HTTP", "FTP", "HTTPS", "SMTP"],
+                    ans: 2,
+                    exp: "HTTPS (Hypertext Transfer Protocol Secure) menggunakan enkripsi SSL/TLS untuk menjaga kerahasiaan data web."
+                }
+            ],
+            XII: [
+                {
+                    q: "Komponen utama dalam Deep Learning yang meniru cara kerja neuron otak manusia adalah...",
+                    opts: ["Decision Tree", "Artificial Neural Network (ANN)", "Linear Regression", "K-Means Clustering"],
+                    ans: 1,
+                    exp: "Artificial Neural Network (Jaringan Saraf Tiruan) adalah fondasi utama arsitektur Deep Learning."
+                },
+                {
+                    q: "Algoritma enkripsi di mana kunci untuk mengunci (encrypt) dan membuka (decrypt) data menggunakan dua kunci berbeda dinamakan...",
+                    opts: ["Enkripsi Simetris", "Enkripsi Asimetris (Public-Private Key)", "Hashing MD5", "Caesar Cipher"],
+                    ans: 1,
+                    exp: "Enkripsi Asimetris menggunakan sepasang kunci: Public Key untuk enkripsi dan Private Key untuk dekripsi."
+                }
+            ]
+        };
+
+        // LocalStorage initialization helper
+        function getStoredData(key, fallback) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : fallback;
+        }
+
+        function setStoredData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // Global State Objects
+        let materialsState = getStoredData('infa_materi', INITIAL_MATERIALS);
+        let tasksState = getStoredData('infa_tugas', INITIAL_TASKS);
+        let studentLogsState = getStoredData('infa_logs', [
+            { time: "2026-02-23 09:15", name: "Budi Pratama", classInfo: "X IPA 1", materialTitle: "Berpikir Komputasional - Decomposisi & Abstraksi", format: "DOCX" },
+            { time: "2026-02-23 10:40", name: "Siti Rahma", classInfo: "XI MIPA 2", materialTitle: "Topologi Jaringan Komputer & Protocol IP", format: "PPTX" }
+        ]);
+        let studentSubmissionsState = getStoredData('infa_submissions', [
+            { time: "2026-02-22 14:20", name: "Rian Hidayat", classInfo: "X IPA 3", taskTitle: "Praktikum 1: Membuat Program Python Logika Kasir", file: "Rian_TugasKasir_X.py", notes: "Sudah ditambahkan penanganan input error." }
+        ]);
+
+        // Window Onload Initialization
+        window.onload = function() {
+            // Show Welcome Toast Banner
+            setTimeout(() => {
+                document.getElementById('welcomeToast').classList.remove('translate-x-full');
+            }, 600);
+
+            // Hide Toast automatically after 7 seconds
+            setTimeout(() => {
+                hideWelcomeToast();
+            }, 7600);
+
+            // Render current UI view
+            renderHeroHeader();
+            renderMaterials();
+            renderQuizzesAndExamples();
+            renderTasks();
+            renderTeacherTables();
+        };
+
+        // Toast Handler
+        function hideWelcomeToast() {
+            document.getElementById('welcomeToast').classList.add('translate-x-full');
+        }
+
+        // Navigation & Tab Switching Logic
+        function switchClass(grade) {
+            activeGrade = grade;
+
+            // Update Class Button Styles
+            ['X', 'XI', 'XII'].forEach(g => {
+                const btn = document.getElementById(`btn-class-${g}`);
+                if (g === grade) {
+                    btn.className = "class-btn p-3.5 rounded-2xl glass-card text-left transition flex items-center justify-between border border-cyan-500/50 bg-cyan-950/40 shadow-lg";
+                } else {
+                    btn.className = "class-btn p-3.5 rounded-2xl glass-card text-left transition flex items-center justify-between border border-slate-800 hover:border-slate-700";
+                }
+            });
+
+            // Update Labels
+            document.getElementById('materiGradeLabel').innerText = `Kelas ${grade}`;
+            document.getElementById('kuisGradeLabel').innerText = `Kelas ${grade}`;
+            document.getElementById('tugasGradeLabel').innerText = `Kelas ${grade}`;
+
+            renderHeroHeader();
+            renderMaterials();
+            renderQuizzesAndExamples();
+            renderTasks();
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+
+            // Update Nav Button Highlight
+            const navTabs = ['materi', 'kuis', 'tugas', 'guru'];
+            navTabs.forEach(t => {
+                const navBtn = document.getElementById(`nav-${t}`);
+                const tabContent = document.getElementById(`tab-${t}`);
+
+                if (t === tab) {
+                    if (tabContent) tabContent.classList.remove('hidden');
+                    if (navBtn) {
+                        navBtn.className = "nav-btn px-4 py-2 text-xs font-semibold rounded-lg transition-all text-cyan-400 bg-cyan-950/80 border border-cyan-500/30 shadow-md";
+                    }
+                } else {
+                    if (tabContent) tabContent.classList.add('hidden');
+                    if (navBtn && t !== 'guru') {
+                        navBtn.className = "nav-btn px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white rounded-lg transition-all";
+                    }
+                }
+            });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Hero Header Info
+        function renderHeroHeader() {
+            const data = CLASS_DATA[activeGrade];
+            document.getElementById('classHeroTitle').innerText = data.title;
+            document.getElementById('classHeroDesc').innerText = data.desc;
+        }
+
+        // Filter Materials by Format
+        function filterMaterials(format) {
+            activeFilter = format;
+            
+            // Update Filter Buttons UI
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(btn => {
+                if (btn.innerText.toLowerCase().includes(format.toLowerCase()) || (format === 'all' && btn.innerText === 'Semua')) {
+                    btn.className = "filter-btn active px-3 py-1.5 rounded-lg font-semibold bg-cyan-500 text-slate-950 transition shadow";
+                } else {
+                    btn.className = "filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition";
+                }
+            });
+
+            renderMaterials();
+        }
+
+        // Helper for File Format Badge Visuals
+        function getFormatBadge(format) {
+            switch(format) {
+                case 'DOCX':
+                    return { icon: 'fa-file-word', color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/30' };
+                case 'PPTX':
+                    return { icon: 'fa-file-powerpoint', color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/30' };
+                case 'XLSX':
+                    return { icon: 'fa-file-excel', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/30' };
+                case 'IMG':
+                    return { icon: 'fa-file-image', color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/30' };
+                default:
+                    return { icon: 'fa-file', color: 'text-slate-400', bg: 'bg-slate-500/10 border-slate-500/30' };
+            }
+        }
+
+        // Render Materials Grid
+        function renderMaterials() {
+            const grid = document.getElementById('materiGrid');
+            grid.innerHTML = '';
+
+            const filtered = materialsState.filter(m => {
+                const matchGrade = m.grade === activeGrade;
+                const matchFormat = activeFilter === 'all' || m.format === activeFilter;
+                return matchGrade && matchFormat;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500 space-y-2">
+                        <i class="fa-solid fa-folder-open text-4xl"></i>
+                        <p class="text-xs">Belum ada materi terunggah untuk kategori ini.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(m => {
+                const badge = getFormatBadge(m.format);
+                const card = document.createElement('div');
+                card.className = "glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-slate-800";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold ${badge.bg} ${badge.color} border">
+                                <i class="fa-solid ${badge.icon}"></i> ${m.format}
+                            </span>
+                            <span class="text-[11px] text-slate-500 font-mono">
+                                <i class="fa-regular fa-calendar mr-1"></i>${m.date}
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-sm text-white leading-snug hover:text-cyan-400 transition">${m.title}</h4>
+                        <p class="text-xs text-slate-400 line-clamp-3">${m.desc}</p>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800/80">
+                        <button onclick="triggerStudentLogModal(${m.id})" class="w-full py-2 px-3 rounded-xl bg-cyan-950/60 hover:bg-cyan-900/80 text-cyan-400 border border-cyan-500/30 font-bold text-xs transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-download"></i> Unduh & Pelajari Materi
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Toggle Breakdown for Contoh Soal
+        function toggleDetailBreakdown(index) {
+            const elem = document.getElementById(`detail-soal-${index}`);
+            const icon = document.getElementById(`icon-soal-${index}`);
+            if (elem.classList.contains('hidden')) {
+                elem.classList.remove('hidden');
+                icon.className = "fa-solid fa-chevron-up text-xs";
+            } else {
+                elem.classList.add('hidden');
+                icon.className = "fa-solid fa-chevron-down text-xs";
+            }
+        }
+
+        // Render Quizzes and Contoh Soal
+        function renderQuizzesAndExamples() {
+            // Contoh Soal
+            const contohContainer = document.getElementById('contohSoalContainer');
+            contohContainer.innerHTML = '';
+
+            const listSoal = CONTOH_SOAL[activeGrade] || [];
+            listSoal.forEach((s, idx) => {
+                const card = document.createElement('div');
+                card.className = "glass-card p-5 rounded-2xl space-y-3 border border-slate-800";
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                            ${idx + 1}
+                        </span>
+                        <div class="space-y-2 w-full">
+                            <h5 class="font-bold text-sm text-white">${s.soal}</h5>
+                            
+                            <!-- Penjelasan Singkat -->
+                            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-300">
+                                <span class="font-bold text-cyan-400 block mb-1">💡 Penjelasan Singkat:</span>
+                                ${s.singkat}
+                            </div>
+
+                            <!-- Toggle Penjelasan Rinci -->
+                            <button onclick="toggleDetailBreakdown(${idx})" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1.5 pt-1">
+                                <span>Penjelasan Rinci / Deep Breakdown</span>
+                                <i id="icon-soal-${idx}" class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+
+                            <div id="detail-soal-${idx}" class="hidden p-4 bg-indigo-950/20 rounded-xl border border-indigo-500/20 text-xs text-indigo-200 leading-relaxed space-y-2 whitespace-pre-line">
+                                <span class="font-bold text-indigo-300 block border-b border-indigo-500/20 pb-1">🔍 Bedah Terstruktur (Deep Learning):</span>
+                                ${s.rinci}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contohContainer.appendChild(card);
+            });
+
+            // Interactive Quiz
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = '';
+
+            const quizList = QUIZ_DATA[activeGrade] || [];
+            quizList.forEach((q, qIdx) => {
+                const qBox = document.createElement('div');
+                qBox.className = "space-y-3 p-4 bg-slate-900/50 rounded-xl border border-slate-800/80";
+                
+                let optionsHTML = '';
+                q.opts.forEach((opt, oIdx) => {
+                    optionsHTML += `
+                        <button onclick="checkQuizAnswer(${qIdx}, ${oIdx})" id="q-opt-${qIdx}-${oIdx}" class="quiz-opt-btn w-full text-left p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs text-slate-200 transition flex items-center justify-between">
+                            <span>${String.fromCharCode(65 + oIdx)}. ${opt}</span>
+                            <i id="q-icon-${qIdx}-${oIdx}" class="fa-regular fa-circle text-slate-600"></i>
+                        </button>
+                    `;
+                });
+
+                qBox.innerHTML = `
+                    <h5 class="font-bold text-sm text-slate-100">${qIdx + 1}. ${q.q}</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                        ${optionsHTML}
+                    </div>
+                    <div id="q-exp-${qIdx}" class="hidden p-3 bg-slate-900 rounded-xl border text-xs leading-relaxed"></div>
+                `;
+                quizContainer.appendChild(qBox);
+            });
+        }
+
+        // Quiz Logic & Score Tracking
+        let quizScores = { X: 0, XI: 0, XII: 0 };
+        let answeredQuestions = {};
+
+        function checkQuizAnswer(qIdx, selectedOpt) {
+            const key = `${activeGrade}-${qIdx}`;
+            if (answeredQuestions[key]) return; // Prevent double answering
+
+            answeredQuestions[key] = true;
+            const q = QUIZ_DATA[activeGrade][qIdx];
+            const isCorrect = selectedOpt === q.ans;
+
+            const selectedBtn = document.getElementById(`q-opt-${qIdx}-${selectedOpt}`);
+            const expBox = document.getElementById(`q-exp-${qIdx}`);
+
+            if (isCorrect) {
+                selectedBtn.className = "quiz-opt-btn w-full text-left p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-xs text-emerald-300 font-semibold transition flex items-center justify-between";
+                document.getElementById(`q-icon-${qIdx}-${selectedOpt}`).className = "fa-solid fa-circle-check text-emerald-400";
+                
+                quizScores[activeGrade] += 50; // Add points
+                document.getElementById('quizScoreBadge').innerText = `Skor: ${quizScores[activeGrade]}`;
+
+                expBox.className = "p-3 bg-emerald-950/30 rounded-xl border border-emerald-500/30 text-xs text-emerald-300 block";
+                expBox.innerHTML = `<strong>✓ Benar!</strong> ${q.exp}`;
+            } else {
+                selectedBtn.className = "quiz-opt-btn w-full text-left p-3 rounded-xl bg-rose-950/80 border border-rose-500/50 text-xs text-rose-300 font-semibold transition flex items-center justify-between";
+                document.getElementById(`q-icon-${qIdx}-${selectedOpt}`).className = "fa-solid fa-circle-xmark text-rose-400";
+
+                // Highlight correct answer
+                const correctBtn = document.getElementById(`q-opt-${qIdx}-${q.ans}`);
+                correctBtn.className = "quiz-opt-btn w-full text-left p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-300 transition flex items-center justify-between";
+
+                expBox.className = "p-3 bg-rose-950/30 rounded-xl border border-rose-500/30 text-xs text-rose-300 block";
+                expBox.innerHTML = `<strong>✗ Kurang Tepat.</strong> Jawaban yang benar adalah pilihan ${String.fromCharCode(65 + q.ans)}. ${q.exp}`;
+            }
+        }
+
+        // Render Tasks
+        function renderTasks() {
+            const grid = document.getElementById('tugasGrid');
+            grid.innerHTML = '';
+
+            const filtered = tasksState.filter(t => t.grade === activeGrade);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500 space-y-2">
+                        <i class="fa-solid fa-tasks text-4xl"></i>
+                        <p class="text-xs">Belum ada tugas aktif untuk kelas ini.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(t => {
+                const card = document.createElement('div');
+                card.className = "glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 border border-slate-800";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                                <i class="fa-solid fa-clock"></i> Deadline: ${t.deadline}
+                            </span>
+                            <span class="text-[11px] text-slate-400 font-semibold">Kelas ${t.grade}</span>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">${t.title}</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">${t.desc}</p>
+
+                        ${t.attachment ? `
+                            <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+                                <span class="text-slate-300 truncate max-w-[200px]"><i class="fa-solid fa-paperclip text-cyan-400 mr-1.5"></i>${t.attachment}</span>
+                                <button onclick="downloadTaskAttachment('${t.attachment}', '${t.title}')" class="text-cyan-400 hover:text-cyan-300 font-bold text-[11px]">
+                                    Unduh
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800">
+                        <button onclick="openSubmitTaskModal(${t.id}, '${t.title}')" class="w-full py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-upload"></i> Kumpul Tugas Ini
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Download Task Attachment trigger
+        function downloadTaskAttachment(filename, taskTitle) {
+            // Reuses student log system
+            currentDownloadingItem = {
+                id: 999,
+                title: `[Lampiran Tugas] ${taskTitle}`,
+                format: "DOCX",
+                filename: filename
+            };
+            openModal('modalStudentLog');
+        }
+
+        // Open Submit Task Modal
+        let activeTaskId = null;
+        function openSubmitTaskModal(taskId, taskTitle) {
+            activeTaskId = taskId;
+            document.getElementById('submitTaskTitle').innerText = taskTitle;
+            openModal('modalSubmitTask');
+        }
+
+        function handleKumpulTugasSubmit(e) {
+            e.preventDefault();
+            const nama = document.getElementById('kumpulNama').value;
+            const kelas = document.getElementById('kumpulKelas').value;
+            const catatan = document.getElementById('kumpulCatatan').value;
+            const fileInput = document.getElementById('kumpulFile');
+
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "Dokumen_Tugas.pdf";
+            const taskObj = tasksState.find(t => t.id === activeTaskId);
+
+            const now = new Date();
+            const timestamp = now.toISOString().slice(0,10) + " " + now.toTimeString().slice(0,5);
+
+            studentSubmissionsState.unshift({
+                time: timestamp,
+                name: nama,
+                classInfo: kelas,
+                taskTitle: taskObj ? taskObj.title : "Tugas Informatika",
+                file: fileName,
+                notes: catatan || "-"
+            });
+
+            setStoredData('infa_submissions', studentSubmissionsState);
+            renderTeacherTables();
+
+            closeModal('modalSubmitTask');
+            document.getElementById('formKumpulTugas').reset();
+
+            showToastNotification("Tugas Berhasil Terkirim! Terima kasih telah mengumpulkan tugasmu tepat waktu.");
+        }
+
+        // Student Access Log Modal Trigger
+        function triggerStudentLogModal(materialId) {
+            currentDownloadingItem = materialsState.find(m => m.id === materialId);
+            openModal('modalStudentLog');
+        }
+
+        // Confirm Student Download
+        function confirmStudentDownload(e) {
+            e.preventDefault();
+            const nama = document.getElementById('logNama').value;
+            const kelas = document.getElementById('logKelasJurusan').value;
+
+            if (!nama || !kelas || !currentDownloadingItem) return;
+
+            const now = new Date();
+            const timestamp = now.toISOString().slice(0,10) + " " + now.toTimeString().slice(0,5);
+
+            // Save access entry to state
+            studentLogsState.unshift({
+                time: timestamp,
+                name: nama,
+                classInfo: kelas,
+                materialTitle: currentDownloadingItem.title,
+                format: currentDownloadingItem.format
+            });
+
+            setStoredData('infa_logs', studentLogsState);
+            renderTeacherTables();
+
+            // Simulate File Download
+            simulateFileDownload(currentDownloadingItem.filename || `${currentDownloadingItem.title}.${currentDownloadingItem.format.toLowerCase()}`);
+
+            closeModal('modalStudentLog');
+            document.getElementById('formStudentLog').reset();
+
+            showToastNotification(`Presensi Terdaftar! Mengunduh file ${currentDownloadingItem.format}...`);
+        }
+
+        // Simulated File Download Trigger
+        function simulateFileDownload(filename) {
+            const element = document.createElement('a');
+            const fileContent = `=== PORTAL INFORMATIKA SMA - KURIKULUM DEEP LEARNING ===\nDokumen: ${filename}\nWaktu Akses: ${new Date().toLocaleString()}\n\nFile ini merupakan simulasi modul pembelajaran resmi.`;
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileContent));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Teacher Panel PIN Logic
+        function openTeacherPinModal() {
+            if (isTeacherAuthenticated) {
+                switchTab('guru');
+            } else {
+                openModal('modalTeacherPin');
+            }
+        }
+
+        function verifyTeacherPin() {
+            const inputPin = document.getElementById('pinInput').value;
+            const errorMsg = document.getElementById('pinErrorMsg');
+
+            if (inputPin === TEACHER_PIN) {
+                isTeacherAuthenticated = true;
+                errorMsg.classList.add('hidden');
+                document.getElementById('pinInput').value = '';
+                closeModal('modalTeacherPin');
+                switchTab('guru');
+                showToastNotification("Akses Guru Diverifikasi! Selamat datang di Panel Pengelolaan.");
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
+        function lockTeacherPanel() {
+            isTeacherAuthenticated = false;
+            switchTab('materi');
+            showToastNotification("Panel Guru Terkunci.");
+        }
+
+        // Form Upload Materi Baru (Teacher)
+        function handleUploadMateri(e) {
+            e.preventDefault();
+            const judul = document.getElementById('materiJudul').value;
+            const kelas = document.getElementById('materiKelas').value;
+            const format = document.getElementById('materiFormat').value;
+            const desc = document.getElementById('materiDeskripsi').value;
+            const fileInput = document.getElementById('materiFile');
+
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : `${judul.replace(/\s+/g, '_')}.${format.toLowerCase()}`;
+            const now = new Date().toISOString().slice(0,10);
+
+            const newMateri = {
+                id: Date.now(),
+                grade: kelas,
+                title: judul,
+                format: format,
+                desc: desc,
+                date: now,
+                filename: fileName
+            };
+
+            materialsState.unshift(newMateri);
+            setStoredData('infa_materi', materialsState);
+            renderMaterials();
+
+            document.getElementById('formUploadMateri').reset();
+            showToastNotification("Materi Baru Berhasil Diterbitkan!");
+        }
+
+        // Form Tambah Tugas Baru (Teacher)
+        function handleTambahTugas(e) {
+            e.preventDefault();
+            const judul = document.getElementById('tugasJudul').value;
+            const kelas = document.getElementById('tugasKelas').value;
+            const deadline = document.getElementById('tugasDeadline').value;
+            const desc = document.getElementById('tugasDeskripsi').value;
+            const fileInput = document.getElementById('tugasFile');
+
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+
+            const newTask = {
+                id: Date.now(),
+                grade: kelas,
+                title: judul,
+                deadline: deadline,
+                desc: desc,
+                attachment: fileName
+            };
+
+            tasksState.unshift(newTask);
+            setStoredData('infa_tugas', tasksState);
+            renderTasks();
+
+            document.getElementById('formTambahTugas').reset();
+            showToastNotification("Tugas Baru Berhasil Dipublikasikan!");
+        }
+
+        // Render Rekap Tables in Panel Guru
+        function renderTeacherTables() {
+            // 1. Rekap Akses
+            const rekapAksesBody = document.getElementById('rekapAksesTable');
+            rekapAksesBody.innerHTML = '';
+
+            if (studentLogsState.length === 0) {
+                rekapAksesBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Belum ada riwayat unduhan siswa.</td></tr>`;
+            } else {
+                studentLogsState.forEach(log => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-900/50 transition";
+                    tr.innerHTML = `
+                        <td class="p-3 font-mono text-slate-400 text-[11px]">${log.time}</td>
+                        <td class="p-3 font-semibold text-white">${log.name}</td>
+                        <td class="p-3 text-cyan-400">${log.classInfo}</td>
+                        <td class="p-3 text-slate-300">${log.materialTitle}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-bold text-slate-300">${log.format}</span></td>
+                    `;
+                    rekapAksesBody.appendChild(tr);
+                });
+            }
+
+            // 2. Rekap Tugas Terkumpul
+            const rekapTugasBody = document.getElementById('rekapTugasTable');
+            rekapTugasBody.innerHTML = '';
+
+            if (studentSubmissionsState.length === 0) {
+                rekapTugasBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">Belum ada tugas terkumpul dari siswa.</td></tr>`;
+            } else {
+                studentSubmissionsState.forEach(sub => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-900/50 transition";
+                    tr.innerHTML = `
+                        <td class="p-3 font-mono text-slate-400 text-[11px]">${sub.time}</td>
+                        <td class="p-3 font-semibold text-white">${sub.name}</td>
+                        <td class="p-3 text-amber-400">${sub.classInfo}</td>
+                        <td class="p-3 text-slate-300 font-medium">${sub.taskTitle}</td>
+                        <td class="p-3 text-slate-400 italic">${sub.notes}</td>
+                        <td class="p-3 text-center">
+                            <button onclick="simulateFileDownload('${sub.file}')" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 text-[11px] font-bold transition">
+                                <i class="fa-solid fa-download mr-1"></i> ${sub.file}
+                            </button>
+                        </td>
+                    `;
+                    rekapTugasBody.appendChild(tr);
+                });
+            }
+        }
+
+        function clearLogs() {
+            studentLogsState = [];
+            setStoredData('infa_logs', []);
+            renderTeacherTables();
+            showToastNotification("Log presensi siswa berhasil dibersihkan.");
+        }
+
+        // Modals General Control
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Farewell Exit Controls
+        function openFarewellModal() {
+            openModal('modalFarewell');
+        }
+
+        function confirmExitWebsite() {
+            closeModal('modalFarewell');
+            showToastNotification("Sampai Jumpa Kembali di Kelas Informatika! 👋");
+        }
+
+        // Generic Toast Notification
+        function showToastNotification(msg) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 z-50 glass-panel border border-cyan-500/40 text-cyan-200 px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 transform translate-y-full opacity-0 transition-all duration-300";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-cyan-400 text-base"></i> <span>${msg}</span>`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-full', 'opacity-0');
+            }, 100);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
