@@ -1,4 +1,4 @@
-<!DOCTYPE1 html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -24,6 +24,10 @@
     .active-nav {
       background-color: #0284c7;
       color: white !important;
+    }
+    .star-rating i {
+      cursor: pointer;
+      transition: color 0.2s;
     }
   </style>
 </head>
@@ -53,8 +57,15 @@
           <button onclick="switchPage('profil')" id="nav-profil" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">Profil Guru</button>
         </nav>
 
-        <!-- Right Action (Guru Auth) -->
+        <!-- Right Action (Guru Auth & Siswa Badge) -->
         <div class="hidden md:flex items-center space-x-2">
+          <!-- Active Siswa Badge -->
+          <div id="siswa-badge" class="hidden flex items-center gap-2 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-xl text-xs font-medium text-sky-700">
+            <i class="fa-solid fa-circle-user text-sky-500"></i>
+            <span id="badge-siswa-nama">Siswa</span>
+            <button onclick="resetIdentitasSiswa()" class="text-slate-400 hover:text-rose-500 ml-1" title="Ganti Identitas"><i class="fa-solid fa-arrows-rotate"></i></button>
+          </div>
+
           <div id="logged-out-view">
             <button onclick="openLoginModal()" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-sky-600 bg-sky-50 hover:bg-sky-100 transition-all flex items-center gap-2">
               <i class="fa-solid fa-right-to-bracket"></i> Login Guru
@@ -238,7 +249,7 @@
             <div class="space-y-1 text-slate-600 text-sm font-medium">
               <p><i class="fa-solid fa-id-card text-sky-500 w-5"></i> NIP. 19930821 202221 1 005</p>
               <p><i class="fa-solid fa-school text-sky-500 w-5"></i> SMA NEGERI 4 MANADO</p>
-              <p><i class="fa-solid fa-envelope text-sky-500 w-5"></i> glendy181@guru.sma.belajar.id</p>
+              <p><i class="fa-solid fa-envelope text-sky-500 w-5"></i> glendy.taawoeda@sman4manado.sch.id</p>
             </div>
             <p class="text-xs text-slate-500 pt-2 border-t border-slate-200">
               "Mengembangkan literasi digital dan keterampilan berpikir komputasional generasi muda Kota Manado menuju era Indonesia Emas."
@@ -312,10 +323,11 @@
             <thead>
               <tr class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider border-b">
                 <th class="py-3 px-4 font-bold">No</th>
-                <th class="py-3 px-4 font-bold cursor-pointer hover:text-sky-600" onclick="sortTableByKelas()">
+                <th class="py-3 px-4 font-bold cursor-pointer hover:text-sky-600" onclick="renderRekapTable()">
                   Kelas <i class="fa-solid fa-sort text-xs"></i>
                 </th>
                 <th class="py-3 px-4 font-bold">Nama Siswa</th>
+                <th class="py-3 px-4 font-bold">Perangkat User</th>
                 <th class="py-3 px-4 font-bold">Aktivitas</th>
                 <th class="py-3 px-4 font-bold">Judul Dokumen / Tugas</th>
                 <th class="py-3 px-4 font-bold">Waktu Akses</th>
@@ -338,6 +350,86 @@
       </div>
     </section>
   </main>
+
+  <!-- MODAL: POPUP SELAMAT DATANG SISWA & DETEKSI DEVICE -->
+  <div id="modal-welcome-siswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
+      <div class="text-center space-y-3">
+        <div class="w-14 h-14 rounded-2xl sky-gradient text-white flex items-center justify-center mx-auto text-2xl shadow-lg shadow-sky-200">
+          <i class="fa-solid fa-hand-wave"></i>
+        </div>
+        <h3 class="text-2xl font-extrabold text-slate-900">Selamat Datang!</h3>
+        <div class="bg-sky-50 border border-sky-100 p-3 rounded-2xl text-xs text-sky-800 space-y-1">
+          <p><i class="fa-solid fa-mobile-screen text-sky-600 mr-1"></i> Perangkat Terdeteksi: <strong id="detected-device-text" class="text-sky-900">Mengidentifikasi...</strong></p>
+          <p class="text-[11px] text-slate-500">Website ini dioptimalkan penuh untuk kenyamanan layar perangkat Anda.</p>
+        </div>
+      </div>
+      <form onsubmit="simpanIdentitasAwal(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
+          <input type="text" id="welcome-nama" required placeholder="Contoh: Gabriel Tumewu" class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kelas</label>
+          <select id="welcome-kelas" required class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
+            <option value="">-- Pilih Kelas --</option>
+            <option value="X-1">X-1</option>
+            <option value="X-2">X-2</option>
+            <option value="X-3">X-3</option>
+            <option value="X-4">X-4</option>
+            <option value="XI-1">XI-1</option>
+            <option value="XI-2">XI-2</option>
+            <option value="XI-3">XI-3</option>
+            <option value="XI-4">XI-4</option>
+            <option value="XI-5">XI-5</option>
+            <option value="XII-1">XII-1</option>
+            <option value="XII-2">XII-2</option>
+            <option value="XII-3">XII-3</option>
+            <option value="XII-4">XII-4</option>
+            <option value="XII-5">XII-5</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
+          Masuk Pembelajaran
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: RATING & ULASAN SEBELUM KELUAR (EXIT INTENT) -->
+  <div id="modal-rating-exit" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
+      <button onclick="closeRatingModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-xl">
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900">Beri Rating Website</h3>
+        <p class="text-xs text-slate-500">Halo <strong id="exit-siswa-nama" class="text-sky-600">Siswa</strong>, bagaimana pengalaman Anda mengakses pembelajaran Informatika hari ini?</p>
+      </div>
+
+      <!-- Star Input -->
+      <div class="flex justify-center gap-2 text-2xl text-slate-300 star-rating" id="star-container">
+        <i class="fa-solid fa-star" onclick="setRating(1)"></i>
+        <i class="fa-solid fa-star" onclick="setRating(2)"></i>
+        <i class="fa-solid fa-star" onclick="setRating(3)"></i>
+        <i class="fa-solid fa-star" onclick="setRating(4)"></i>
+        <i class="fa-solid fa-star" onclick="setRating(5)"></i>
+      </div>
+
+      <form onsubmit="kirimRatingUlasan(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Masukan / Saran Perbaikan (Opsional)</label>
+          <textarea id="rating-saran" rows="3" placeholder="Sampaikan kendala atau saran tampilan/materi..." class="w-full px-3 py-2 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 bg-slate-800 text-white font-bold text-sm rounded-xl hover:bg-slate-900 shadow-md transition-all">
+          Kirim Rating & Keluar
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- MODAL: LOGIN GURU -->
   <div id="modal-login" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
@@ -363,53 +455,6 @@
         </div>
         <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
           Masuk ke Dashboard
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: ISI IDENTITAS SISWA (KEAKTIFAN/POIN SELESAI/UNDUH) -->
-  <div id="modal-identitas-siswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl space-y-6">
-      <div class="text-center space-y-2">
-        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center mx-auto text-xl">
-          <i class="fa-solid fa-id-card-clip"></i>
-        </div>
-        <h3 class="text-xl font-bold text-slate-900">Identitas Presensi & Keaktifan</h3>
-        <p class="text-xs text-slate-500">Lengkapi Nama dan Kelas Anda sebelum mengakses/mengunggah dokumen ini untuk mencatat poin keaktifan semester.</p>
-      </div>
-      <form onsubmit="konfirmasiAksesSiswa(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
-          <input type="text" id="siswa-nama" required placeholder="Contoh: Gabriel Tumewu" class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Kelas</label>
-          <select id="siswa-kelas" required class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
-            <option value="">-- Pilih Kelas --</option>
-            <option value="X-1">X-1</option>
-            <option value="X-2">X-2</option>
-            <option value="X-3">X-3</option>
-            <option value="X-4">X-4</option>
-            <option value="XI-1">XI-1</option>
-            <option value="XI-2">XI-2</option>
-            <option value="XI-3">XI-3</option>
-            <option value="XI-4">XI-4</option>
-            <option value="XI-5">XI-5</option>
-            <option value="XII-1">XII-1</option>
-            <option value="XII-2">XII-2</option>
-            <option value="XII-3">XII-3</option>
-            <option value="XII-4">XII-4</option>
-            <option value="XII-5">XII-5</option>
-          </select>
-        </div>
-        <!-- Hidden input Simpan Data Aktivitas sementara -->
-        <input type="hidden" id="temp-target-link">
-        <input type="hidden" id="temp-target-judul">
-        <input type="hidden" id="temp-target-tipe">
-
-        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
-          Lanjutkan Akses Dokumen
         </button>
       </form>
     </div>
@@ -500,9 +545,9 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // === KONFIGURASI FIREBASE (GRATIS TANPA KARTU KREDIT) ===
+    // === KONFIGURASI FIREBASE ===
     const firebaseConfig = {
       apiKey: "AIzaSyCTD-3NLDHGCucMSWHAosSHu2-e6znnLm8",
       authDomain: "informatika-sman4-manado.firebaseapp.com",
@@ -512,7 +557,6 @@
       appId: "1:781063295262:web:2678cf21a195ba2497b90f"
     };
 
-    // Inisialisasi
     let app, auth, db;
     let isFirebaseConfigured = false;
 
@@ -524,32 +568,138 @@
         isFirebaseConfigured = true;
       }
     } catch (e) {
-      console.warn("Menggunakan Mode LocalStorage (Fallback). Salin config Firebase asli Anda untuk beralih ke Mode Live.");
+      console.warn("Menggunakan Mode LocalStorage (Fallback).");
     }
 
     // STATE LOKAL APLIKASI
     window.state = {
       isLoggedIn: false,
-      tahunAjaran: "Tahun Ajaran 2026/2027, Semester Ganjil (Juli-Desember 2026)",
+      siswaData: JSON.parse(localStorage.getItem('siswa_sman4')) || null,
+      selectedRating: 5,
+      hasRated: false,
       materiList: [
         { id: '1', kelas: 'X', judul: 'Pengenalan Berpikir Komputasional', deskripsi: 'Prinsip dasar dekomposisi, pengenalan pola, dan abstraksi.', link: 'https://drive.google.com' },
         { id: '2', kelas: 'XI', judul: 'Arsitektur Jaringan Komputer & Topologi', deskripsi: 'Konsep dasar LAN, WAN, IP Address, dan routing.', link: 'https://drive.google.com' },
         { id: '3', kelas: 'XII', judul: 'Pengembangan Web Dinamis & Database', deskripsi: 'Pemrograman HTML, CSS, JavaScript, dan Database.', link: 'https://drive.google.com' }
       ],
-      tugasList: [
-        { id: '1', kelas: 'X', judul: 'Tugas 1: Analisis Masalah Algoritma', tenggat: '2026-10-15', linkForm: 'https://forms.google.com' },
-        { id: '2', kelas: 'XI', judul: 'Kuis 1: Konfigurasi IP Address Subnetting', tenggat: '2026-10-20', linkForm: 'https://forms.google.com' }
-      ],
       rekapList: [
-        { id: '1', kelas: 'X-1', nama: 'Ahmad Faisal', tipe: 'Unduh Materi', judul: 'Pengenalan Berpikir Komputasional', waktu: '2026-09-25 09:15' },
-        { id: '2', kelas: 'XI-2', nama: 'Beatrix Wowor', tipe: 'Kirim Tugas', judul: 'Kuis 1: Konfigurasi IP Address', waktu: '2026-09-25 10:30' }
+        { id: '1', kelas: 'X-1', nama: 'Ahmad Faisal', device: 'Android', tipe: 'Unduh Materi', judul: 'Pengenalan Berpikir Komputasional', waktu: '2026-09-25 09:15' },
+        { id: '2', kelas: 'XI-2', nama: 'Beatrix Wowor', device: 'Windows PC', tipe: 'Kirim Tugas', judul: 'Kuis 1: Konfigurasi IP Address', waktu: '2026-09-25 10:30' }
       ],
       currentPage: 1,
       rowsPerPage: 5,
       filterMateriKelas: 'ALL'
     };
 
-    // NAVIGASI DYNAMIC
+    // FUNGSIONALITAS DETEKSI DEVICE
+    function detectUserDevice() {
+      const ua = navigator.userAgent;
+      if (/android/i.test(ua)) return "Android Smartphone/Tablet";
+      if (/iPad|iPhone|iPod/.test(ua)) return "iOS Device (iPhone/iPad)";
+      if (/Macintosh/i.test(ua)) return "macOS (Apple Computer)";
+      if (/Windows/i.test(ua)) return "Windows Laptop/PC";
+      if (/Linux/i.test(ua)) return "Linux System";
+      return "Perangkat Mobile/Desktop";
+    }
+
+    // WELCOME SISWA & INITIALIZATION
+    window.addEventListener('DOMContentLoaded', () => {
+      const detectedDevice = detectUserDevice();
+      document.getElementById('detected-device-text').innerText = detectedDevice;
+
+      if (!window.state.siswaData) {
+        document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+      } else {
+        updateSiswaBadge();
+      }
+
+      // EXIT INTENT DETECTION (POPUP RATING SEBELUM KELUAR)
+      document.addEventListener('mouseleave', (e) => {
+        if (e.clientY <= 0 && window.state.siswaData && !window.state.hasRated && !window.state.isLoggedIn) {
+          openRatingModal();
+        }
+      });
+    });
+
+    window.simpanIdentitasAwal = function(e) {
+      e.preventDefault();
+      const nama = document.getElementById('welcome-nama').value;
+      const kelas = document.getElementById('welcome-kelas').value;
+
+      const siswaObj = { nama, kelas, device: detectUserDevice() };
+      window.state.siswaData = siswaObj;
+      localStorage.setItem('siswa_sman4', JSON.stringify(siswaObj));
+
+      document.getElementById('modal-welcome-siswa').classList.add('hidden');
+      updateSiswaBadge();
+
+      Swal.fire({
+        icon: 'success',
+        title: `Selamat Datang, ${nama}!`,
+        text: `Selamat belajar di website Informatika via ${siswaObj.device}.`,
+        confirmButtonColor: '#0284c7'
+      });
+    };
+
+    function updateSiswaBadge() {
+      if (window.state.siswaData) {
+        document.getElementById('siswa-badge').classList.remove('hidden');
+        document.getElementById('badge-siswa-nama').innerText = `${window.state.siswaData.nama} (${window.state.siswaData.kelas})`;
+      }
+    }
+
+    window.resetIdentitasSiswa = function() {
+      localStorage.removeItem('siswa_sman4');
+      window.state.siswaData = null;
+      document.getElementById('siswa-badge').classList.add('hidden');
+      document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+    };
+
+    // RATING HANDLERS
+    window.openRatingModal = function() {
+      if (window.state.siswaData) {
+        document.getElementById('exit-siswa-nama').innerText = window.state.siswaData.nama;
+        document.getElementById('modal-rating-exit').classList.remove('hidden');
+      }
+    };
+    window.closeRatingModal = () => document.getElementById('modal-rating-exit').classList.add('hidden');
+
+    window.setRating = function(stars) {
+      window.state.selectedRating = stars;
+      const starIcons = document.querySelectorAll('#star-container i');
+      starIcons.forEach((icon, idx) => {
+        if (idx < stars) {
+          icon.classList.remove('text-slate-300');
+          icon.classList.add('text-amber-400');
+        } else {
+          icon.classList.remove('text-amber-400');
+          icon.classList.add('text-slate-300');
+        }
+      });
+    };
+
+    window.kirimRatingUlasan = async function(e) {
+      e.preventDefault();
+      const saran = document.getElementById('rating-saran').value;
+      const payload = {
+        siswa: window.state.siswaData ? window.state.siswaData.nama : 'Anonim',
+        kelas: window.state.siswaData ? window.state.siswaData.kelas : '-',
+        device: detectUserDevice(),
+        rating: window.state.selectedRating,
+        saran: saran,
+        waktu: new Date().toLocaleString('id-ID')
+      };
+
+      if (isFirebaseConfigured) {
+        await addDoc(collection(db, "ulasan_website"), payload);
+      }
+
+      window.state.hasRated = true;
+      closeRatingModal();
+      Swal.fire('Terima Kasih!', 'Ulasan dan rating Anda sangat berharga untuk pengembangan website.', 'success');
+    };
+
+    // NAVIGASI PAGE
     window.switchPage = function(pageId) {
       document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
       const targetPage = document.getElementById(`page-${pageId}`);
@@ -584,12 +734,11 @@
           Swal.fire('Gagal', 'Email/Password Salah: ' + err.message, 'error');
         }
       } else {
-        // Fallback Simulasi
         if (email === "glendy@sman4.sch.id" && pass === "guru123") {
           window.state.isLoggedIn = true;
           updateAuthUI(true);
           closeLoginModal();
-          Swal.fire('Berhasil', 'Login Guru Berhasil (Mode Offline/Demo)', 'success');
+          Swal.fire('Berhasil', 'Login Guru Berhasil (Mode Demo)', 'success');
         } else {
           Swal.fire('Gagal', 'Gunakan Demo Email: glendy@sman4.sch.id / Pass: guru123', 'warning');
         }
@@ -620,14 +769,13 @@
       }
     }
 
-    // REALTIME FIREBASE LISTENERS
+    // REALTIME LISTENERS
     if (isFirebaseConfigured) {
       onAuthStateChanged(auth, (user) => {
         window.state.isLoggedIn = !!user;
         updateAuthUI(!!user);
       });
 
-      // Sync Firestore Data
       onSnapshot(collection(db, "materi"), (snapshot) => {
         window.state.materiList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         renderMateri();
@@ -639,7 +787,7 @@
       });
     }
 
-    // RENDER MATERI & FILTERING
+    // RENDER MATERI
     window.filterMateriByKelas = function(kelas) {
       window.state.filterMateriKelas = kelas;
       switchPage('materi');
@@ -668,7 +816,7 @@
             <h3 class="font-bold text-slate-800 text-base leading-snug">${item.judul}</h3>
             <p class="text-xs text-slate-500 leading-relaxed">${item.deskripsi || ''}</p>
           </div>
-          <button onclick="memicuAksesSiswa('${item.link}', '${item.judul}', 'Unduh/Buka Materi')" class="w-full py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-all">
+          <button onclick="memicuAksesMateri('${item.link}', '${item.judul}')" class="w-full py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-all">
             <i class="fa-solid fa-file-arrow-down"></i> Buka / Unduh Dokumen (GDrive)
           </button>
         `;
@@ -676,27 +824,19 @@
       });
     }
 
-    // MODAL PRESENSI SISWA HANDLER
-    window.memicuAksesSiswa = function(link, judul, tipe) {
-      document.getElementById('temp-target-link').value = link;
-      document.getElementById('temp-target-judul').value = judul;
-      document.getElementById('temp-target-tipe').value = tipe;
-      document.getElementById('modal-identitas-siswa').classList.remove('hidden');
-    };
-
-    window.konfirmasiAksesSiswa = async function(e) {
-      e.preventDefault();
-      const nama = document.getElementById('siswa-nama').value;
-      const kelas = document.getElementById('siswa-kelas').value;
-      const link = document.getElementById('temp-target-link').value;
-      const judul = document.getElementById('temp-target-judul').value;
-      const tipe = document.getElementById('temp-target-tipe').value;
+    // OTOMATIS CATAT KEAKTIFAN MATERI GUDANG DATA
+    window.memicuAksesMateri = async function(link, judul) {
+      if (!window.state.siswaData) {
+        document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+        return;
+      }
 
       const payload = {
-        nama: nama,
-        kelas: kelas,
+        nama: window.state.siswaData.nama,
+        kelas: window.state.siswaData.kelas,
+        device: detectUserDevice(),
+        tipe: 'Unduh Materi',
         judul: judul,
-        tipe: tipe,
         waktu: new Date().toLocaleString('id-ID')
       };
 
@@ -707,42 +847,36 @@
         renderRekapTable();
       }
 
-      document.getElementById('modal-identitas-siswa').classList.add('hidden');
       Swal.fire({
         icon: 'success',
         title: 'Presensi Dicatat',
-        text: 'Keaktifan Anda berhasil direkam untuk nilai tambah semester!',
-        timer: 1800,
+        text: `Keaktifan ${window.state.siswaData.nama} berhasil direkam!`,
+        timer: 1500,
         showConfirmButton: false
       });
 
-      // Buka Tautan Google Drive di Tab Baru
       window.open(link, '_blank');
     };
 
-    // REKAP TABLE & PAGINATION (SORTED A-Z BY KELAS & NAMA)
+    // REKAP TABLE & PAGINATION (SORTING A-Z KELAS)
     window.renderRekapTable = function() {
       const tbody = document.getElementById('rekap-table-body');
       tbody.innerHTML = '';
 
       const querySearch = document.getElementById('search-rekap').value.toLowerCase();
 
-      // SORTING OTOMATIS: Urutkan berdasarkan Kelas (A-Z) lalu Nama
       let sortedData = [...window.state.rekapList].sort((a, b) => {
         if (a.kelas < b.kelas) return -1;
         if (a.kelas > b.kelas) return 1;
         return a.nama.localeCompare(b.nama);
       });
 
-      // FILTER SEARCH
       let filteredData = sortedData.filter(d => 
         d.nama.toLowerCase().includes(querySearch) || 
         d.kelas.toLowerCase().includes(querySearch)
       );
 
-      // PAGINATION
       const total = filteredData.length;
-      const totalPages = Math.ceil(total / window.state.rowsPerPage) || 1;
       const start = (window.state.currentPage - 1) * window.state.rowsPerPage;
       const paginated = filteredData.slice(start, start + window.state.rowsPerPage);
 
@@ -753,6 +887,7 @@
           <td class="py-3 px-4 font-medium">${start + idx + 1}</td>
           <td class="py-3 px-4 font-bold text-sky-600">${row.kelas}</td>
           <td class="py-3 px-4 font-semibold">${row.nama}</td>
+          <td class="py-3 px-4 text-slate-500 text-[11px]"><i class="fa-solid fa-mobile-screen mr-1"></i>${row.device || 'Desktop'}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${row.tipe.includes('Tugas') ? 'bg-amber-100 text-amber-700' : 'bg-sky-100 text-sky-700'}">${row.tipe}</span></td>
           <td class="py-3 px-4">${row.judul}</td>
           <td class="py-3 px-4 text-slate-400">${row.waktu}</td>
@@ -778,11 +913,11 @@
       }
     };
 
-    // EXPORT REKAP KE CSV
+    // EXPORT REKAP TO CSV
     window.exportTableToCSV = function() {
-      let csv = 'No,Kelas,Nama Siswa,Aktivitas,Judul Dokumen,Waktu Akses\n';
+      let csv = 'No,Kelas,Nama Siswa,Perangkat,Aktivitas,Judul Dokumen,Waktu Akses\n';
       window.state.rekapList.forEach((row, idx) => {
-        csv += `"${idx + 1}","${row.kelas}","${row.nama}","${row.tipe}","${row.judul}","${row.waktu}"\n`;
+        csv += `"${idx + 1}","${row.kelas}","${row.nama}","${row.device || 'Desktop'}","${row.tipe}","${row.judul}","${row.waktu}"\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv' });
@@ -793,7 +928,7 @@
       a.click();
     };
 
-    // TAMBAH MATERI BARU (GURU)
+    // GURU MODAL
     window.openModalTambahMateri = () => document.getElementById('modal-tambah-materi').classList.remove('hidden');
     window.closeModalMateri = () => document.getElementById('modal-tambah-materi').classList.add('hidden');
 
@@ -817,13 +952,11 @@
       Swal.fire('Berhasil', 'Materi Google Drive berhasil dipublikasikan!', 'success');
     };
 
-    // UPDATE HEADER TAHUN AJARAN
     window.simpanTahunAjaran = function() {
       const ta = document.getElementById('input-ta').value;
       const sem = document.getElementById('input-semester').value;
       if (ta) {
-        const text = `Tahun Ajaran ${ta} - ${sem}`;
-        document.getElementById('ta-banner-text').innerText = text;
+        document.getElementById('ta-banner-text').innerText = `Tahun Ajaran ${ta} - ${sem}`;
         Swal.fire('Selesai', 'Tahun Ajaran berhasil diperbarui!', 'success');
       }
     };
