@@ -63,7 +63,13 @@
           <div id="siswa-badge" class="hidden flex items-center gap-2 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-xl text-xs font-medium text-sky-700">
             <i class="fa-solid fa-circle-user text-sky-500"></i>
             <span id="badge-siswa-nama">Siswa</span>
-            <button onclick="resetIdentitasSiswa()" class="text-slate-400 hover:text-rose-500 ml-1" title="Ganti Identitas"><i class="fa-solid fa-arrows-rotate"></i></button>
+            <button onclick="resetIdentitasSiswa()" class="text-slate-400 hover:text-rose-500 ml-1" title="Ganti Identitas Siswa"><i class="fa-solid fa-arrows-rotate"></i></button>
+          </div>
+
+          <!-- Active Guru Badge -->
+          <div id="guru-badge" class="hidden flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl text-xs font-bold text-amber-800">
+            <i class="fa-solid fa-user-shield text-amber-600"></i>
+            <span>Akses Guru Aktif</span>
           </div>
 
           <div id="logged-out-view">
@@ -351,7 +357,7 @@
     </section>
   </main>
 
-  <!-- MODAL: POPUP SELAMAT DATANG SISWA & DETEKSI DEVICE -->
+  <!-- MODAL: POPUP SELAMAT DATANG SISWA & DETEKSI DEVICE (WITH GURU BYPASS) -->
   <div id="modal-welcome-siswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
       <div class="text-center space-y-3">
@@ -361,9 +367,10 @@
         <h3 class="text-2xl font-extrabold text-slate-900">Selamat Datang!</h3>
         <div class="bg-sky-50 border border-sky-100 p-3 rounded-2xl text-xs text-sky-800 space-y-1">
           <p><i class="fa-solid fa-mobile-screen text-sky-600 mr-1"></i> Perangkat Terdeteksi: <strong id="detected-device-text" class="text-sky-900">Mengidentifikasi...</strong></p>
-          <p class="text-[11px] text-slate-500">Website ini dioptimalkan penuh untuk kenyamanan layar perangkat Anda.</p>
+          <p class="text-[11px] text-slate-500">Sistem menyesuaikan tampilan otomatis untuk perangkat Anda.</p>
         </div>
       </div>
+
       <form onsubmit="simpanIdentitasAwal(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
@@ -390,13 +397,21 @@
           </select>
         </div>
         <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
-          Masuk Pembelajaran
+          Masuk Pembelajaran (Siswa)
         </button>
       </form>
+
+      <!-- TOMBOL KHUSUS BAPAK/IBU GURU -->
+      <div class="pt-4 border-t border-slate-100 text-center">
+        <p class="text-xs text-slate-500 mb-2">Apakah Anda seorang Guru / Pengajar?</p>
+        <button onclick="pintuKhususGuru()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all">
+          <i class="fa-solid fa-user-shield text-sky-600"></i> Saya Guru / Pengajar (Masuk Akun)
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL: RATING & ULASAN SEBELUM KELUAR (EXIT INTENT) -->
+  <!-- MODAL: RATING & ULASAN SEBELUM KELUAR (EXIT INTENT - SISWA ONLY) -->
   <div id="modal-rating-exit" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
       <button onclick="closeRatingModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
@@ -460,7 +475,7 @@
     </div>
   </div>
 
-  <!-- MODAL: GURU TAMBAH MATERI (DENGAN TAUTAN GDRIVE) -->
+  <!-- MODAL: GURU TAMBAH MATERI -->
   <div id="modal-tambah-materi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl relative space-y-4">
       <button onclick="closeModalMateri()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
@@ -500,7 +515,6 @@
   <footer class="bg-slate-900 text-slate-400 pt-12 pb-8 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <!-- Col 1: Branding -->
         <div class="space-y-3 md:col-span-2">
           <div class="flex items-center space-x-3 text-white">
             <div class="w-10 h-10 rounded-xl sky-gradient flex items-center justify-center text-white">
@@ -513,7 +527,6 @@
           </p>
         </div>
 
-        <!-- Col 2: Navigasi Cepat -->
         <div>
           <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Navigasi</h4>
           <ul class="space-y-2 text-xs">
@@ -524,7 +537,6 @@
           </ul>
         </div>
 
-        <!-- Col 3: Kontak Instansi -->
         <div>
           <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Lokasi Sekolah</h4>
           <p class="text-xs leading-relaxed">
@@ -547,7 +559,6 @@
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // === KONFIGURASI FIREBASE ===
     const firebaseConfig = {
       apiKey: "AIzaSyCTD-3NLDHGCucMSWHAosSHu2-e6znnLm8",
       authDomain: "informatika-sman4-manado.firebaseapp.com",
@@ -573,7 +584,7 @@
 
     // STATE LOKAL APLIKASI
     window.state = {
-      isLoggedIn: false,
+      isLoggedIn: localStorage.getItem('is_guru_sman4') === 'true',
       siswaData: JSON.parse(localStorage.getItem('siswa_sman4')) || null,
       selectedRating: 5,
       hasRated: false,
@@ -591,7 +602,6 @@
       filterMateriKelas: 'ALL'
     };
 
-    // FUNGSIONALITAS DETEKSI DEVICE
     function detectUserDevice() {
       const ua = navigator.userAgent;
       if (/android/i.test(ua)) return "Android Smartphone/Tablet";
@@ -602,24 +612,32 @@
       return "Perangkat Mobile/Desktop";
     }
 
-    // WELCOME SISWA & INITIALIZATION
+    // WELCOME LOGIC (CHECK GURU FIRST)
     window.addEventListener('DOMContentLoaded', () => {
       const detectedDevice = detectUserDevice();
       document.getElementById('detected-device-text').innerText = detectedDevice;
 
-      if (!window.state.siswaData) {
+      if (window.state.isLoggedIn) {
+        updateAuthUI(true);
+      } else if (!window.state.siswaData) {
         document.getElementById('modal-welcome-siswa').classList.remove('hidden');
       } else {
         updateSiswaBadge();
       }
 
-      // EXIT INTENT DETECTION (POPUP RATING SEBELUM KELUAR)
+      // EXIT INTENT DETECTION (SISWA ONLY)
       document.addEventListener('mouseleave', (e) => {
         if (e.clientY <= 0 && window.state.siswaData && !window.state.hasRated && !window.state.isLoggedIn) {
           openRatingModal();
         }
       });
     });
+
+    // PINTU KHUSUS GURU
+    window.pintuKhususGuru = function() {
+      document.getElementById('modal-welcome-siswa').classList.add('hidden');
+      openLoginModal();
+    };
 
     window.simpanIdentitasAwal = function(e) {
       e.preventDefault();
@@ -642,7 +660,7 @@
     };
 
     function updateSiswaBadge() {
-      if (window.state.siswaData) {
+      if (window.state.siswaData && !window.state.isLoggedIn) {
         document.getElementById('siswa-badge').classList.remove('hidden');
         document.getElementById('badge-siswa-nama').innerText = `${window.state.siswaData.nama} (${window.state.siswaData.kelas})`;
       }
@@ -657,7 +675,7 @@
 
     // RATING HANDLERS
     window.openRatingModal = function() {
-      if (window.state.siswaData) {
+      if (window.state.siswaData && !window.state.isLoggedIn) {
         document.getElementById('exit-siswa-nama').innerText = window.state.siswaData.nama;
         document.getElementById('modal-rating-exit').classList.remove('hidden');
       }
@@ -728,6 +746,7 @@
       if (isFirebaseConfigured) {
         try {
           await signInWithEmailAndPassword(auth, email, pass);
+          localStorage.setItem('is_guru_sman4', 'true');
           Swal.fire('Berhasil', 'Login Guru Berhasil!', 'success');
           closeLoginModal();
         } catch (err) {
@@ -736,6 +755,7 @@
       } else {
         if (email === "glendy@sman4.sch.id" && pass === "guru123") {
           window.state.isLoggedIn = true;
+          localStorage.setItem('is_guru_sman4', 'true');
           updateAuthUI(true);
           closeLoginModal();
           Swal.fire('Berhasil', 'Login Guru Berhasil (Mode Demo)', 'success');
@@ -748,24 +768,29 @@
     window.logoutGuru = function() {
       if (isFirebaseConfigured) {
         signOut(auth);
-      } else {
-        window.state.isLoggedIn = false;
-        updateAuthUI(false);
-        switchPage('home');
       }
+      window.state.isLoggedIn = false;
+      localStorage.removeItem('is_guru_sman4');
+      updateAuthUI(false);
+      switchPage('home');
+      Swal.fire('Keluar', 'Sesi Guru Berakhir', 'info');
     };
 
     function updateAuthUI(isLoggedIn) {
       if (isLoggedIn) {
         document.getElementById('logged-out-view').classList.add('hidden');
         document.getElementById('logged-in-view').classList.remove('hidden');
+        document.getElementById('guru-badge').classList.remove('hidden');
+        document.getElementById('siswa-badge').classList.add('hidden');
         document.getElementById('mobile-logged-out').classList.add('hidden');
         document.getElementById('mobile-logged-in').classList.remove('hidden');
       } else {
         document.getElementById('logged-out-view').classList.remove('hidden');
         document.getElementById('logged-in-view').classList.add('hidden');
+        document.getElementById('guru-badge').classList.add('hidden');
         document.getElementById('mobile-logged-out').classList.remove('hidden');
         document.getElementById('mobile-logged-in').classList.add('hidden');
+        updateSiswaBadge();
       }
     }
 
@@ -773,6 +798,8 @@
     if (isFirebaseConfigured) {
       onAuthStateChanged(auth, (user) => {
         window.state.isLoggedIn = !!user;
+        if (user) localStorage.setItem('is_guru_sman4', 'true');
+        else localStorage.removeItem('is_guru_sman4');
         updateAuthUI(!!user);
       });
 
@@ -824,8 +851,12 @@
       });
     }
 
-    // OTOMATIS CATAT KEAKTIFAN MATERI GUDANG DATA
     window.memicuAksesMateri = async function(link, judul) {
+      if (window.state.isLoggedIn) {
+        window.open(link, '_blank');
+        return;
+      }
+
       if (!window.state.siswaData) {
         document.getElementById('modal-welcome-siswa').classList.remove('hidden');
         return;
@@ -858,7 +889,7 @@
       window.open(link, '_blank');
     };
 
-    // REKAP TABLE & PAGINATION (SORTING A-Z KELAS)
+    // REKAP TABLE & PAGINATION
     window.renderRekapTable = function() {
       const tbody = document.getElementById('rekap-table-body');
       tbody.innerHTML = '';
@@ -913,7 +944,6 @@
       }
     };
 
-    // EXPORT REKAP TO CSV
     window.exportTableToCSV = function() {
       let csv = 'No,Kelas,Nama Siswa,Perangkat,Aktivitas,Judul Dokumen,Waktu Akses\n';
       window.state.rekapList.forEach((row, idx) => {
@@ -961,7 +991,6 @@
       }
     };
 
-    // INIT INITIAL PAGE RENDER
     renderMateri();
     renderRekapTable();
   </script>
