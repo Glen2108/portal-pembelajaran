@@ -1,1159 +1,829 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<!DOCTYPE1 html>
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Informatika - SMA NEGERI 4 MANADO</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        skyBrand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                        navyDark: '#0f172a',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass-nav {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-        }
-        .sky-gradient {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%);
-        }
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -10px rgba(14, 165, 233, 0.3);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #38bdf8;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0284c7;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informatika - SMA Negeri 4 Manado</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+    }
+    .sky-gradient {
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #bae6fd 100%);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .active-nav {
+      background-color: #0284c7;
+      color: white !important;
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen text-slate-800">
 
-    <!-- TOP ANNOUNCEMENT & ACADEMIC YEAR BAR -->
-    <div class="bg-slate-900 text-slate-300 text-xs sm:text-sm py-2 px-4 border-b border-slate-800">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div class="flex items-center space-x-2 overflow-hidden">
-                <span class="bg-sky-500 text-white font-bold text-[10px] uppercase px-2 py-0.5 rounded-full animate-pulse">Info</span>
-                <marquee class="text-slate-300 w-full sm:w-auto">Selamat Datang di Portal Pembelajaran Informatika SMA Negeri 4 Manado! Tetap Semangat Belajar Digital!</marquee>
-            </div>
-            
-            <!-- Academic Year Indicator & Quick Edit -->
-            <div class="flex items-center space-x-3 bg-slate-800/80 px-3 py-1 rounded-full border border-slate-700/60">
-                <i class="fa-solid fa-calendar-days text-sky-400"></i>
-                <span id="currentAcademicTerm" class="font-medium text-sky-200">Tahun Ajaran 2026/2027 - Semester Ganjil</span>
-                <button onclick="openTermModal()" class="text-xs text-sky-400 hover:text-sky-300 underline ml-1 font-semibold" title="Ubah Tahun Ajaran / Semester">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-            </div>
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- Logo & Branding -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('home')">
+          <div class="w-12 h-12 rounded-xl sky-gradient flex items-center justify-center text-white shadow-md shadow-sky-200">
+            <i class="fa-solid fa-laptop-code text-2xl"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">INFORMATIKA</h1>
+            <p class="text-xs font-medium text-sky-600 mt-1">SMA NEGERI 4 MANADO</p>
+          </div>
         </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-1">
+          <button onclick="switchPage('home')" id="nav-home" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">Beranda</button>
+          <button onclick="switchPage('materi')" id="nav-materi" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">Materi Pembelajaran</button>
+          <button onclick="switchPage('tugas')" id="nav-tugas" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">Tugas & Kuis</button>
+          <button onclick="switchPage('pengumuman')" id="nav-pengumuman" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">Pengumuman</button>
+          <button onclick="switchPage('profil')" id="nav-profil" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">Profil Guru</button>
+        </nav>
+
+        <!-- Right Action (Guru Auth) -->
+        <div class="hidden md:flex items-center space-x-2">
+          <div id="logged-out-view">
+            <button onclick="openLoginModal()" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-sky-600 bg-sky-50 hover:bg-sky-100 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-right-to-bracket"></i> Login Guru
+            </button>
+          </div>
+          <div id="logged-in-view" class="hidden flex items-center gap-2">
+            <button onclick="switchPage('dashboard')" id="nav-dashboard" class="px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-sky-600 hover:bg-sky-700 shadow-md shadow-sky-200 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-chart-line"></i> Dashboard Guru
+            </button>
+            <button onclick="logoutGuru()" class="p-2.5 rounded-lg text-rose-600 bg-rose-50 hover:bg-rose-100 transition-all" title="Keluar">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center">
+          <button onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- MAIN NAVBAR -->
-    <header class="sticky top-0 z-40 glass-nav border-b border-slate-800 text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                
-                <!-- Brand / Logo -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('home')">
-                    <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/20 ring-2 ring-sky-300/30">
-                        <i class="fa-solid fa-laptop-code text-2xl text-white"></i>
-                    </div>
-                    <div>
-                        <span class="text-lg font-extrabold tracking-tight text-white block leading-tight">INFORMATIKA</span>
-                        <span class="text-xs font-medium text-sky-300 tracking-wider uppercase block">SMA NEGERI 4 MANADO</span>
-                    </div>
-                </div>
-
-                <!-- Desktop Navigation Menu -->
-                <nav class="hidden lg:flex items-center space-x-1">
-                    <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-sky-400 bg-slate-800/80 border border-sky-500/30">
-                        <i class="fa-solid fa-house mr-1.5"></i>Beranda
-                    </button>
-                    <button onclick="navigateTo('materi')" id="nav-materi" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-book-open mr-1.5"></i>Materi Pembelajaran
-                    </button>
-                    <button onclick="navigateTo('tugas')" id="nav-tugas" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-list-check mr-1.5"></i>Tugas & Kuis
-                    </button>
-                    <button onclick="navigateTo('pengumuman')" id="nav-pengumuman" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-bullhorn mr-1.5"></i>Pengumuman
-                    </button>
-                    <button onclick="navigateTo('guru')" id="nav-guru" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-user-tie mr-1.5"></i>Profil Guru
-                    </button>
-                </nav>
-
-                <!-- Mobile Hamburger Button -->
-                <div class="lg:hidden flex items-center">
-                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-slate-100 bg-white px-4 pt-2 pb-6 space-y-2">
+      <button onclick="switchPage('home')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium text-slate-600 hover:bg-sky-50">Beranda</button>
+      <button onclick="switchPage('materi')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium text-slate-600 hover:bg-sky-50">Materi Pembelajaran</button>
+      <button onclick="switchPage('tugas')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium text-slate-600 hover:bg-sky-50">Tugas & Kuis</button>
+      <button onclick="switchPage('pengumuman')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium text-slate-600 hover:bg-sky-50">Pengumuman</button>
+      <button onclick="switchPage('profil')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium text-slate-600 hover:bg-sky-50">Profil Guru</button>
+      <div class="pt-4 border-t border-slate-100">
+        <div id="mobile-logged-out">
+          <button onclick="openLoginModal()" class="w-full text-center px-4 py-2.5 rounded-lg font-semibold text-sky-600 bg-sky-50">Login Guru</button>
         </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobileMenu" class="hidden lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2">
-            <button onclick="navigateTo('home'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg font-medium text-slate-200 hover:bg-sky-600 hover:text-white flex items-center">
-                <i class="fa-solid fa-house w-6 text-sky-400"></i> Beranda
-            </button>
-            <button onclick="navigateTo('materi'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg font-medium text-slate-200 hover:bg-sky-600 hover:text-white flex items-center">
-                <i class="fa-solid fa-book-open w-6 text-sky-400"></i> Materi Pembelajaran
-            </button>
-            <button onclick="navigateTo('tugas'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg font-medium text-slate-200 hover:bg-sky-600 hover:text-white flex items-center">
-                <i class="fa-solid fa-list-check w-6 text-sky-400"></i> Tugas & Kuis
-            </button>
-            <button onclick="navigateTo('pengumuman'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg font-medium text-slate-200 hover:bg-sky-600 hover:text-white flex items-center">
-                <i class="fa-solid fa-bullhorn w-6 text-sky-400"></i> Pengumuman
-            </button>
-            <button onclick="navigateTo('guru'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg font-medium text-slate-200 hover:bg-sky-600 hover:text-white flex items-center">
-                <i class="fa-solid fa-user-tie w-6 text-sky-400"></i> Profil Guru
-            </button>
+        <div id="mobile-logged-in" class="hidden space-y-2">
+          <button onclick="switchPage('dashboard')" class="w-full text-center px-4 py-2.5 rounded-lg font-semibold text-white bg-sky-600">Dashboard Guru</button>
+          <button onclick="logoutGuru()" class="w-full text-center px-4 py-2.5 rounded-lg font-semibold text-rose-600 bg-rose-50">Keluar</button>
         </div>
-    </header>
-
-    <!-- MAIN CONTENT CONTAINER WITH DYNAMIC SPA VIEWS -->
-    <main class="flex-grow">
-
-        <!-- ================= PAGE 1: BERANDA (HOME) ================= -->
-        <section id="page-home" class="view-section">
-            <!-- Hero Banner -->
-            <div class="sky-gradient text-white relative overflow-hidden py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
-                <!-- Background decorative elements -->
-                <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-sky-400/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute left-10 top-10 w-64 h-64 bg-blue-400/10 rounded-full blur-2xl pointer-events-none"></div>
-
-                <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                        <div class="inline-flex items-center space-x-2 bg-sky-400/20 backdrop-blur-md border border-sky-300/30 text-sky-100 text-xs font-semibold px-3 py-1.5 rounded-full">
-                            <i class="fa-solid fa-school text-sky-300"></i>
-                            <span>Portal Resmi Pembelajaran Digital - SMA Negeri 4 Manado</span>
-                        </div>
-                        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight text-white">
-                            E-Learning <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-sky-300 to-sky-100">Informatika</span> Masa Depan
-                        </h1>
-                        <p class="text-slate-200 text-base sm:text-lg max-w-2xl leading-relaxed">
-                            Mengembangkan Berpikir Komputasional, Keterampilan Algoritma, Pemrograman, Jaringan Komputer, & Etika Digital untuk Siswa Kelas X, XI, dan XII.
-                        </p>
-                        
-                        <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
-                            <button onclick="navigateTo('materi')" class="px-6 py-3.5 bg-sky-400 hover:bg-sky-300 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/30 transition transform hover:-translate-y-0.5 flex items-center">
-                                <i class="fa-solid fa-play mr-2"></i> Mulai Belajar Materi
-                            </button>
-                            <button onclick="navigateTo('tugas')" class="px-6 py-3.5 bg-slate-800/80 hover:bg-slate-800 text-white font-semibold rounded-xl border border-sky-400/30 backdrop-blur-md transition flex items-center">
-                                <i class="fa-solid fa-tasks mr-2 text-sky-400"></i> Lihat Tugas Aktif
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Teacher Quick Widget Badge in Hero -->
-                    <div class="lg:col-span-5 flex justify-center">
-                        <div class="bg-slate-900/90 border border-sky-500/30 rounded-2xl p-6 shadow-2xl backdrop-blur-xl w-full max-w-md text-slate-200">
-                            <div class="flex items-center space-x-4 mb-4 pb-4 border-b border-slate-800">
-                                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-sky-500 to-blue-700 flex items-center justify-center text-2xl text-white font-bold border-2 border-sky-300">
-                                    GT
-                                </div>
-                                <div>
-                                    <h2 class="font-bold text-white text-lg">Glendy A. Taawoeda, S.Pd</h2>
-                                    <p class="text-xs text-sky-400 font-medium">Guru Mata Pelajaran Informatika</p>
-                                    <p class="text-[11px] text-slate-400 mt-0.5">NIP. 19930821 202221 1 005</p>
-                                </div>
-                            </div>
-                            <div class="space-y-2 text-xs">
-                                <div class="flex justify-between items-center bg-slate-800/60 p-2.5 rounded-lg">
-                                    <span class="text-slate-400"><i class="fa-solid fa-graduation-cap text-sky-400 mr-2"></i>Satuan Pendidikan:</span>
-                                    <span class="font-semibold text-white">SMA Negeri 4 Manado</span>
-                                </div>
-                                <div class="flex justify-between items-center bg-slate-800/60 p-2.5 rounded-lg">
-                                    <span class="text-slate-400"><i class="fa-solid fa-layer-group text-sky-400 mr-2"></i>Kelas Ampuhan:</span>
-                                    <span class="font-semibold text-sky-300">Kelas X, XI, & XII</span>
-                                </div>
-                                <div class="flex justify-between items-center bg-slate-800/60 p-2.5 rounded-lg">
-                                    <span class="text-slate-400"><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i>Status Portal:</span>
-                                    <span class="font-semibold text-emerald-400">Aktif & Terbarui</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Grade Fast Selector -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Kelas X -->
-                    <div onclick="filterMateriByGrade('X')" class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 card-hover cursor-pointer group">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="p-3 bg-sky-100 text-sky-600 rounded-xl group-hover:bg-sky-600 group-hover:text-white transition">
-                                <i class="fa-solid fa-seedling text-2xl"></i>
-                            </span>
-                            <span class="bg-sky-50 text-sky-700 font-bold text-xs px-3 py-1 rounded-full border border-sky-200">Fase E</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-sky-600 transition">Kelas X (Sepuluh)</h3>
-                        <p class="text-slate-600 text-sm mt-2">Dasar Berpikir Komputasional, TIK, Sistem Komputer, & Jaringan Komputer Dasar.</p>
-                        <div class="mt-4 flex items-center text-xs font-bold text-sky-600 group-hover:underline">
-                            Jelajahi Materi <i class="fa-solid fa-arrow-right ml-1"></i>
-                        </div>
-                    </div>
-
-                    <!-- Kelas XI -->
-                    <div onclick="filterMateriByGrade('XI')" class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 card-hover cursor-pointer group">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="p-3 bg-blue-100 text-blue-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition">
-                                <i class="fa-solid fa-code text-2xl"></i>
-                            </span>
-                            <span class="bg-blue-50 text-blue-700 font-bold text-xs px-3 py-1 rounded-full border border-blue-200">Fase F</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition">Kelas XI (Sebelas)</h3>
-                        <p class="text-slate-600 text-sm mt-2">Algoritma & Pemrograman (Python/C++), Analisis Data, & Dampak Sosial TIK.</p>
-                        <div class="mt-4 flex items-center text-xs font-bold text-blue-600 group-hover:underline">
-                            Jelajahi Materi <i class="fa-solid fa-arrow-right ml-1"></i>
-                        </div>
-                    </div>
-
-                    <!-- Kelas XII -->
-                    <div onclick="filterMateriByGrade('XII')" class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 card-hover cursor-pointer group">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="p-3 bg-indigo-100 text-indigo-600 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition">
-                                <i class="fa-solid fa-network-wired text-2xl"></i>
-                            </span>
-                            <span class="bg-indigo-50 text-indigo-700 font-bold text-xs px-3 py-1 rounded-full border border-indigo-200">Fase F Lanjutan</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition">Kelas XII (Dua Belas)</h3>
-                        <p class="text-slate-600 text-sm mt-2">Pengembangan Web, Keamanan Siber, Artificial Intelligence, & Praktik Lintas Bidang.</p>
-                        <div class="mt-4 flex items-center text-xs font-bold text-indigo-600 group-hover:underline">
-                            Jelajahi Materi <i class="fa-solid fa-arrow-right ml-1"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dashboard Stats Summary -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 text-white shadow-xl border border-slate-800">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-700/60">
-                        <div class="p-2">
-                            <span class="text-3xl lg:text-4xl font-extrabold text-sky-400 block">18+</span>
-                            <span class="text-xs sm:text-sm text-slate-400 mt-1 block">Modul & Bab Pembelajaran</span>
-                        </div>
-                        <div class="p-2 pt-4 md:pt-2">
-                            <span class="text-3xl lg:text-4xl font-extrabold text-sky-400 block">12</span>
-                            <span class="text-xs sm:text-sm text-slate-400 mt-1 block">Tugas & Praktikum Aktif</span>
-                        </div>
-                        <div class="p-2 pt-4 md:pt-2">
-                            <span class="text-3xl lg:text-4xl font-extrabold text-sky-400 block">3</span>
-                            <span class="text-xs sm:text-sm text-slate-400 mt-1 block">Tingkat Kelas (X, XI, XII)</span>
-                        </div>
-                        <div class="p-2 pt-4 md:pt-2">
-                            <span class="text-3xl lg:text-4xl font-extrabold text-sky-400 block">100%</span>
-                            <span class="text-xs sm:text-sm text-slate-400 mt-1 block">Akses Digital 24/7</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Highlights Section -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-                <div class="flex justify-between items-end mb-8">
-                    <div>
-                        <h2 class="text-2xl font-extrabold text-slate-900">Materi Terpopuler & Terbaru</h2>
-                        <p class="text-sm text-slate-500">Pilih modul materi di bawah ini untuk langsung membaca.</p>
-                    </div>
-                    <button onclick="navigateTo('materi')" class="text-sky-600 hover:text-sky-700 font-bold text-sm flex items-center">
-                        Lihat Semua Materi <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
-                    </button>
-                </div>
-
-                <div id="homeRecentMateriGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Populated dynamically via JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 2: MATERI PEMBELAJARAN ================= -->
-        <section id="page-materi" class="view-section hidden py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <!-- Header section -->
-            <div class="mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center">
-                            <i class="fa-solid fa-book-open text-sky-500 mr-3"></i> Materi Pembelajaran Informatika
-                        </h1>
-                        <p class="text-slate-500 text-sm mt-1">
-                            Akses modul, rangkuman, dan panduan praktikum Informatika SMA Negeri 4 Manado.
-                        </p>
-                    </div>
-
-                    <!-- Filter Search Bar -->
-                    <div class="relative w-full md:w-72">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="materiSearchInput" onkeyup="searchMateri()" placeholder="Cari materi / topik..." class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
-                    </div>
-                </div>
-
-                <!-- Grade Filter Tabs -->
-                <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-slate-100">
-                    <button onclick="filterMateriTab('ALL')" id="tab-materi-ALL" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-sky-600 text-white shadow-md">
-                        Semua Kelas
-                    </button>
-                    <button onclick="filterMateriTab('X')" id="tab-materi-X" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
-                        Kelas X (Fase E)
-                    </button>
-                    <button onclick="filterMateriTab('XI')" id="tab-materi-XI" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
-                        Kelas XI (Fase F)
-                    </button>
-                    <button onclick="filterMateriTab('XII')" id="tab-materi-XII" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
-                        Kelas XII (Fase F Lanjutan)
-                    </button>
-                </div>
-            </div>
-
-            <!-- Material List Grid Container -->
-            <div id="materiGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Cards render here dynamically -->
-            </div>
-        </section>
-
-        <!-- ================= PAGE 3: TUGAS & KUIS ================= -->
-        <section id="page-tugas" class="view-section hidden py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <div class="mb-8">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center">
-                    <i class="fa-solid fa-list-check text-sky-500 mr-3"></i> Penugasan & Kuis Interaktif
-                </h1>
-                <p class="text-slate-500 text-sm mt-1">
-                    Kumpulkan tugas Anda atau kerjakan kuis evaluasi pemahaman secara mandiri.
-                </p>
-            </div>
-
-            <!-- Section Tabs: Tugas Praktikum vs Kuis Interaktif -->
-            <div class="flex border-b border-slate-200 mb-8 space-x-6">
-                <button onclick="switchTugasSubTab('assignments')" id="subtab-assignments" class="pb-3 text-base font-bold text-sky-600 border-b-2 border-sky-600 flex items-center">
-                    <i class="fa-solid fa-file-pen mr-2"></i> Daftar Tugas Praktikum
-                </button>
-                <button onclick="switchTugasSubTab('quiz')" id="subtab-quiz" class="pb-3 text-base font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-600 flex items-center">
-                    <i class="fa-solid fa-circle-question mr-2"></i> Kuis Online Interaktif
-                </button>
-            </div>
-
-            <!-- ASSIGNMENTS SUBVIEW -->
-            <div id="assignmentsSubView" class="space-y-6">
-                <!-- Grade Filter buttons for Assignments -->
-                <div class="flex space-x-2">
-                    <button onclick="filterAssignments('ALL')" id="asgn-ALL" class="asgn-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white">Semua</button>
-                    <button onclick="filterAssignments('X')" id="asgn-X" class="asgn-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">Kelas X</button>
-                    <button onclick="filterAssignments('XI')" id="asgn-XI" class="asgn-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">Kelas XI</button>
-                    <button onclick="filterAssignments('XII')" id="asgn-XII" class="asgn-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">Kelas XII</button>
-                </div>
-
-                <div id="assignmentsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Assignment Cards rendered dynamically -->
-                </div>
-            </div>
-
-            <!-- QUIZ SUBVIEW -->
-            <div id="quizSubView" class="hidden">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 max-w-3xl mx-auto">
-                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
-                        <div>
-                            <span class="bg-sky-100 text-sky-700 text-xs font-bold px-2.5 py-1 rounded-full">Latihan Kuis</span>
-                            <h2 class="text-xl font-bold text-slate-900 mt-2">Kuis Informatika Umum & Algoritma</h2>
-                        </div>
-                        <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> Waktu: Bebas</span>
-                    </div>
-
-                    <!-- Quiz Question Container -->
-                    <div id="quizContainer">
-                        <!-- Rendered by JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 4: PENGUMUMAN ================= -->
-        <section id="page-pengumuman" class="view-section hidden py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <div class="mb-8">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center">
-                    <i class="fa-solid fa-bullhorn text-sky-500 mr-3"></i> Pengumuman & Informasi
-                </h1>
-                <p class="text-slate-500 text-sm mt-1">
-                    Pemberitahuan penting seputar pembelajaran Informatika di SMA Negeri 4 Manado.
-                </p>
-            </div>
-
-            <div class="space-y-4 max-w-4xl">
-                <!-- Announcement Item 1 -->
-                <div class="bg-white p-6 rounded-2xl border-l-4 border-sky-500 shadow-sm border-t border-r border-b border-slate-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-200">PENTING - UJIAN</span>
-                        <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 10 Oktober 2026</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900">Jadwal Penilaian Tengah Semester (PTS) Informatika</h3>
-                    <p class="text-slate-600 text-sm mt-2 leading-relaxed">
-                        Pelaksanaan Penilaian Tengah Semester untuk mata pelajaran Informatika Kelas X, XI, dan XII akan dilaksanakan secara digital online melalui portal ini. Dimohon seluruh siswa mempersiapkan perangkat laptop/smartphone masing-masing.
-                    </p>
-                </div>
-
-                <!-- Announcement Item 2 -->
-                <div class="bg-white p-6 rounded-2xl border-l-4 border-amber-500 shadow-sm border-t border-r border-b border-slate-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">PRAKTIKUM LAB</span>
-                        <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 28 September 2026</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900">Penggunaan Laboratorium Komputer SMA Negeri 4 Manado</h3>
-                    <p class="text-slate-600 text-sm mt-2 leading-relaxed">
-                        Siswa Kelas XI IPA/IPS yang memiliki jadwal praktikum Pemrograman Python diharapkan datang tepat waktu dan membawa buku catatan serta akun terdaftar di portal ini.
-                    </p>
-                </div>
-
-                <!-- Announcement Item 3 -->
-                <div class="bg-white p-6 rounded-2xl border-l-4 border-emerald-500 shadow-sm border-t border-r border-b border-slate-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">EKSTRAKURIKULER</span>
-                        <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 15 September 2026</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900">Pendaftaran Komunitas Coding & Cyber SMA Negeri 4 Manado</h3>
-                    <p class="text-slate-600 text-sm mt-2 leading-relaxed">
-                        Bagi siswa yang berminat mendalami Web Development dan persiapan Olimpiade Sains Nasional (OSN) Bidang Informatika, pendaftaran klub coding telah dibuka. Hubungi Pak Glendy A. Taawoeda.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 5: PROFIL GURU ================= -->
-        <section id="page-guru" class="view-section hidden py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 max-w-4xl mx-auto">
-                <!-- Header Banner -->
-                <div class="sky-gradient h-48 relative flex items-end px-8 pb-6">
-                    <div class="absolute right-6 top-6 text-white/10 text-9xl font-black select-none pointer-events-none">
-                        SMAN4
-                    </div>
-                </div>
-
-                <!-- Profile Info Content -->
-                <div class="px-6 sm:px-10 pb-10 relative">
-                    <!-- Profile Avatar -->
-                    <div class="relative -mt-20 mb-6 flex justify-between items-end">
-                        <div class="w-32 h-32 rounded-2xl bg-slate-900 border-4 border-white shadow-2xl flex items-center justify-center text-4xl text-sky-400 font-extrabold tracking-wider">
-                            GTA
-                        </div>
-                        <span class="bg-emerald-100 text-emerald-700 font-bold text-xs px-3 py-1.5 rounded-full border border-emerald-300 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-ping"></span> Guru Aktif
-                        </span>
-                    </div>
-
-                    <div class="border-b border-slate-200 pb-6 mb-6">
-                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Glendy A. Taawoeda, S.Pd</h1>
-                        <p class="text-sky-600 font-semibold text-base">Guru Mata Pelajaran Informatika</p>
-                        <p class="text-slate-500 text-sm mt-1">SMA NEGERI 4 MANADO</p>
-                    </div>
-
-                    <!-- Personal Details Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div class="space-y-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-xs text-slate-400 uppercase font-bold tracking-wider block">Nomor Induk Pegawai (NIP)</span>
-                                <span class="text-base font-semibold text-slate-800">19930821 202221 1 005</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-xs text-slate-400 uppercase font-bold tracking-wider block">Instansi / Unit Kerja</span>
-                                <span class="text-base font-semibold text-slate-800">SMA NEGERI 4 MANADO</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-xs text-slate-400 uppercase font-bold tracking-wider block">Spesialisasi Pembelajaran</span>
-                                <span class="text-base font-semibold text-slate-800">Berpikir Komputasional, Pemrograman & Web Dev</span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-xs text-slate-400 uppercase font-bold tracking-wider block">Jam Konsultasi & Layanan Siswa</span>
-                                <span class="text-base font-semibold text-slate-800">Senin - Jumat (08.00 - 15.00 WITA)</span>
-                            </div>
-                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                                <span class="text-xs text-slate-400 uppercase font-bold tracking-wider block">Lokasi Ruang Guru</span>
-                                <span class="text-base font-semibold text-slate-800">Ruang Guru / Lab Komputer SMAN 4 Manado</span>
-                            </div>
-                            <div class="p-4 bg-sky-50 rounded-xl border border-sky-200 flex items-center justify-between">
-                                <div>
-                                    <span class="text-xs text-sky-600 uppercase font-bold tracking-wider block">Kontak WhatsApp Guru</span>
-                                    <span class="text-sm font-semibold text-sky-900">+62 8xx-xxxx-xxxx</span>
-                                </div>
-                                <a href="https://wa.me/" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg flex items-center transition">
-                                    <i class="fa-brands fa-whatsapp mr-1.5 text-sm"></i> Kirim Pesan
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Philosophy Statement -->
-                    <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-6 rounded-2xl shadow-md">
-                        <h3 class="text-sky-400 font-bold text-sm uppercase tracking-wider mb-2">
-                            <i class="fa-solid fa-quote-left mr-2"></i> Filosofi Pembelajaran
-                        </h3>
-                        <p class="text-slate-200 italic text-sm leading-relaxed">
-                            "Informatika bukan sekadar tentang menggunakan komputer, melainkan tentang bagaimana kita melatih pola pikir kritis, kreatif, dan sistematis dalam memecahkan masalah kehidupan sehari-hari melalui teknologi."
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- ================= MODALS & POPUPS ================= -->
-
-    <!-- MODAL 1: DYNAMIC ACADEMIC YEAR EDIT MODAL -->
-    <div id="academicTermModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-pen-to-square text-sky-600 mr-2"></i>Pengaturan Tahun Ajaran</h3>
-                <button onclick="closeTermModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <div class="mt-4 space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tahun Ajaran</label>
-                    <input type="text" id="inputYear" placeholder="Contoh: 2026/2027" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Semester & Bulan</label>
-                    <select id="inputSemester" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                        <option value="Semester Ganjil (Juli-Desember)">Semester Ganjil (Juli-Desember)</option>
-                        <option value="Semester Genap (Januari-Juni)">Semester Genap (Januari-Juni)</option>
-                    </select>
-                </div>
-            </div>
-            <div class="mt-6 flex justify-end space-x-3">
-                <button onclick="closeTermModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm font-semibold hover:bg-slate-200">Batal</button>
-                <button onclick="saveAcademicTerm()" class="px-4 py-2 bg-sky-600 text-white rounded-lg text-sm font-bold hover:bg-sky-700 shadow-md">Simpan Perubahan</button>
-            </div>
-        </div>
+      </div>
     </div>
+  </header>
 
-    <!-- MODAL 2: MATERI READER MODAL -->
-    <div id="materiReaderModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
-                <div class="flex items-center space-x-3">
-                    <span id="modalMateriBadge" class="bg-sky-500 text-white font-bold text-xs px-2.5 py-1 rounded-full">Kelas X</span>
-                    <h3 id="modalMateriTitle" class="text-lg font-bold text-white truncate max-w-md">Judul Materi</h3>
-                </div>
-                <button onclick="closeMateriModal()" class="text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-2xl"></i>
-                </button>
-            </div>
-            
-            <div id="modalMateriContent" class="p-6 overflow-y-auto space-y-4 text-slate-700 leading-relaxed text-sm">
-                <!-- Rich Content dynamically loaded -->
-            </div>
-
-            <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex justify-between items-center">
-                <span class="text-xs text-slate-500">Penyusun: Glendy A. Taawoeda, S.Pd</span>
-                <button onclick="closeMateriModal()" class="px-4 py-2 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-slate-900">Tutup Modul</button>
-            </div>
-        </div>
+  <!-- DYNAMIC TAHUN AJARAN BANNER -->
+  <div class="bg-slate-900 text-white text-xs py-2 px-4 shadow-inner">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-sky-500 text-white">AKTIF</span>
+        <span id="ta-banner-text" class="font-medium text-slate-300">Tahun Ajaran 2026/2027 - Semester Ganjil (Juli - Desember 2026)</span>
+      </div>
+      <div class="text-slate-400 hidden sm:block">
+        <i class="fa-solid fa-school text-sky-400 mr-1"></i> SMAN 4 Manado Portal Official
+      </div>
     </div>
+  </div>
 
-    <!-- MODAL 3: ASSIGNMENT SUBMISSION FORM MODAL -->
-    <div id="submitAssignmentModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
-            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
-                <div>
-                    <span class="text-xs font-bold text-sky-600 uppercase">Form Pengumpulan Tugas</span>
-                    <h3 id="modalSubmitTaskTitle" class="text-lg font-bold text-slate-900">Judul Tugas</h3>
-                </div>
-                <button onclick="closeSubmitModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-            <form id="assignmentForm" onsubmit="handleFormSubmit(event)" class="mt-4 space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Lengkap Siswa *</label>
-                    <input type="text" required placeholder="Masukkan Nama Lengkap" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Kelas *</label>
-                        <select required class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                            <option value="">-- Pilih Kelas --</option>
-                            <option value="X IPA 1">X IPA 1</option>
-                            <option value="X IPA 2">X IPA 2</option>
-                            <option value="XI IPA 1">XI IPA 1</option>
-                            <option value="XI IPS 1">XI IPS 1</option>
-                            <option value="XII IPA 1">XII IPA 1</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">NIS / NISN *</label>
-                        <input type="text" required placeholder="Contoh: 00512345" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan / Tautan Tugas (Google Drive / GitHub)</label>
-                    <textarea rows="2" placeholder="Tempelkan link dokumen/kodingan Anda di sini..." class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Upload File Dokumen / Screenshot (Max 10MB)</label>
-                    <input type="file" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
-                </div>
-
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeSubmitModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm font-semibold hover:bg-slate-200">Batal</button>
-                    <button type="submit" class="px-5 py-2 bg-sky-600 text-white rounded-lg text-sm font-bold hover:bg-sky-700 shadow-md">Kirim Tugas Sekarang</button>
-                </div>
-            </form>
+    <!-- PAGE: HOME -->
+    <section id="page-home" class="page-content space-y-8">
+      <!-- Hero Banner -->
+      <div class="relative overflow-hidden rounded-3xl sky-gradient p-8 sm:p-12 text-white shadow-xl shadow-sky-100">
+        <div class="relative z-10 max-w-2xl space-y-4">
+          <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider text-white">Portal Resmi Pembelajaran</span>
+          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Media Pembelajaran Informatika Interaktif</h1>
+          <p class="text-sky-50 text-base sm:text-lg font-light leading-relaxed">
+            Selamat Datang di Ruang Belajar Digital khusus Kelas X, XI, dan XII SMA Negeri 4 Manado. Akses materi, kuis, dan pengumpulan tugas dengan cepat dan terintegrasi.
+          </p>
+          <div class="pt-2 flex flex-wrap gap-3">
+            <button onclick="switchPage('materi')" class="px-6 py-3 bg-white text-sky-700 font-bold rounded-xl shadow-lg hover:bg-sky-50 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-book-open"></i> Eksplorasi Materi
+            </button>
+            <button onclick="switchPage('tugas')" class="px-6 py-3 bg-sky-800/40 border border-white/30 text-white font-semibold rounded-xl hover:bg-sky-800/60 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-list-check"></i> Lihat Tugas
+            </button>
+          </div>
         </div>
+        <div class="absolute -right-10 -bottom-10 opacity-20 pointer-events-none hidden lg:block">
+          <i class="fa-solid fa-network-wired text-[280px]"></i>
+        </div>
+      </div>
+
+      <!-- Quick Class Access Grid -->
+      <div>
+        <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-sky-600"></i> Tingkat Kelas & Kurikulum
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Card Kelas X -->
+          <div class="glass-card rounded-2xl p-6 hover:shadow-lg transition-all border-t-4 border-sky-400 group">
+            <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">X</div>
+            <h3 class="text-lg font-bold text-slate-800">Kelas X Informatika</h3>
+            <p class="text-sm text-slate-500 mt-2">Dasar-dasar Berpikir Komputasional, Teknologi Informasi & Komunikasi, serta Sistem Komputer.</p>
+            <button onclick="filterMateriByKelas('X')" class="mt-4 text-sky-600 font-semibold text-sm hover:underline flex items-center gap-1">
+              Lihat Materi Kelas X <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Card Kelas XI -->
+          <div class="glass-card rounded-2xl p-6 hover:shadow-lg transition-all border-t-4 border-sky-500 group">
+            <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">XI</div>
+            <h3 class="text-lg font-bold text-slate-800">Kelas XI Informatika</h3>
+            <p class="text-sm text-slate-500 mt-2">Jaringan Komputer & Internet, Analisis Data, dan Pemrograman Terstruktur.</p>
+            <button onclick="filterMateriByKelas('XI')" class="mt-4 text-sky-600 font-semibold text-sm hover:underline flex items-center gap-1">
+              Lihat Materi Kelas XI <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Card Kelas XII -->
+          <div class="glass-card rounded-2xl p-6 hover:shadow-lg transition-all border-t-4 border-sky-600 group">
+            <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">XII</div>
+            <h3 class="text-lg font-bold text-slate-800">Kelas XII Informatika</h3>
+            <p class="text-sm text-slate-500 mt-2">Algoritma Lanjut, Algoritma Pemrograman Web, Rekayasa Perangkat Lunak, & Dampak Sosial Informatika.</p>
+            <button onclick="filterMateriByKelas('XII')" class="mt-4 text-sky-600 font-semibold text-sm hover:underline flex items-center gap-1">
+              Lihat Materi Kelas XII <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: MATERI -->
+    <section id="page-materi" class="page-content hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Materi Pembelajaran</h2>
+          <p class="text-sm text-slate-500">Pilih tingkat kelas untuk mengunduh modul atau melihat slide Google Drive.</p>
+        </div>
+        <!-- Filter Kelas -->
+        <div class="flex gap-2 bg-slate-100 p-1.5 rounded-xl text-sm font-semibold">
+          <button onclick="filterMateriByKelas('ALL')" id="btn-materi-all" class="px-4 py-2 rounded-lg bg-white text-sky-600 shadow-sm">Semua</button>
+          <button onclick="filterMateriByKelas('X')" id="btn-materi-x" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600">Kelas X</button>
+          <button onclick="filterMateriByKelas('XI')" id="btn-materi-xi" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600">Kelas XI</button>
+          <button onclick="filterMateriByKelas('XII')" id="btn-materi-xii" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600">Kelas XII</button>
+        </div>
+      </div>
+
+      <!-- Grid Daftar Materi -->
+      <div id="materi-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- PAGE: TUGAS -->
+    <section id="page-tugas" class="page-content hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <h2 class="text-2xl font-bold text-slate-800">Tugas & Lembar Kerja Siswa</h2>
+        <p class="text-sm text-slate-500">Kumpulkan tugas tepat waktu untuk mendapatkan poin keaktifan dan penilaian semester.</p>
+      </div>
+
+      <!-- Container Daftar Tugas -->
+      <div id="tugas-container" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- PAGE: PENGUMUMAN -->
+    <section id="page-pengumuman" class="page-content hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+        <h2 class="text-2xl font-bold text-slate-800">Pengumuman & Informasi Terbaru</h2>
+        <p class="text-sm text-slate-500">Informasi jadwal ujian, praktikum laboratorium, dan pengumuman kelas.</p>
+      </div>
+      <div id="pengumuman-container" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- PAGE: PROFIL GURU -->
+    <section id="page-profil" class="page-content hidden space-y-8">
+      <div class="glass-card rounded-3xl p-8 sm:p-12 max-w-4xl mx-auto shadow-xl">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <div class="w-40 h-40 rounded-full sky-gradient p-1.5 shadow-lg flex-shrink-0">
+            <div class="w-full h-full rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
+              <i class="fa-solid fa-user-tie text-7xl text-sky-600"></i>
+            </div>
+          </div>
+          <div class="space-y-3 text-center md:text-left">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-700">Guru Pengampu Informatika</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Glendy A. Taawoeda, S.Pd</h2>
+            <div class="space-y-1 text-slate-600 text-sm font-medium">
+              <p><i class="fa-solid fa-id-card text-sky-500 w-5"></i> NIP. 19930821 202221 1 005</p>
+              <p><i class="fa-solid fa-school text-sky-500 w-5"></i> SMA NEGERI 4 MANADO</p>
+              <p><i class="fa-solid fa-envelope text-sky-500 w-5"></i> glendy.taawoeda@sman4manado.sch.id</p>
+            </div>
+            <p class="text-xs text-slate-500 pt-2 border-t border-slate-200">
+              "Mengembangkan literasi digital dan keterampilan berpikir komputasional generasi muda Kota Manado menuju era Indonesia Emas."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: DASHBOARD GURU (RESTRICTED) -->
+    <section id="page-dashboard" class="page-content hidden space-y-8">
+      <!-- Top Control Card -->
+      <div class="glass-card p-6 rounded-2xl border-l-8 border-sky-600 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Panel Kelola Guru</h2>
+          <p class="text-sm text-slate-500">Kelola pengaturan semester, upload tautan materi Google Drive, dan pantau rekap keaktifan siswa.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="openModalTambahMateri()" class="px-4 py-2.5 bg-sky-600 text-white rounded-xl text-sm font-semibold hover:bg-sky-700 shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Tambah Materi (GDrive)
+          </button>
+          <button onclick="openModalTambahTugas()" class="px-4 py-2.5 bg-sky-800 text-white rounded-xl text-sm font-semibold hover:bg-sky-900 shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Tambah Tugas
+          </button>
+        </div>
+      </div>
+
+      <!-- Settings Tahun Ajaran -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-sky-600"></i> Pengaturan Tahun Ajaran & Semester
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Tahun Ajaran</label>
+            <input type="text" id="input-ta" placeholder="Contoh: 2026/2027" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Semester</label>
+            <select id="input-semester" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="Semester Ganjil (Juli - Desember)">Semester Ganjil (Juli - Desember)</option>
+              <option value="Semester Genap (Januari - Juni)">Semester Genap (Januari - Juni)</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button onclick="simpanTahunAjaran()" class="w-full py-2 bg-slate-800 text-white font-semibold text-sm rounded-lg hover:bg-slate-900 transition-all">
+              Update Header Web
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REKAPITULASI KEAKTIFAN SISWA (WITH SORTING & PAGINATION) -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden space-y-4 p-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-slate-800">Rekapitulasi Akses Materi & Tugas Siswa</h3>
+            <p class="text-xs text-slate-500">Tersusun otomatis berurutan dari Abjad Kelas (A-Z) & Nama Siswa untuk perhitungan nilai tambah semester.</p>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <input type="text" id="search-rekap" onkeyup="renderRekapTable()" placeholder="Cari Nama / Kelas..." class="px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none w-full sm:w-48">
+            <button onclick="exportTableToCSV()" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 flex items-center gap-1">
+              <i class="fa-solid fa-file-excel"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Rekap Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider border-b">
+                <th class="py-3 px-4 font-bold">No</th>
+                <th class="py-3 px-4 font-bold cursor-pointer hover:text-sky-600" onclick="sortTableByKelas()">
+                  Kelas <i class="fa-solid fa-sort text-xs"></i>
+                </th>
+                <th class="py-3 px-4 font-bold">Nama Siswa</th>
+                <th class="py-3 px-4 font-bold">Aktivitas</th>
+                <th class="py-3 px-4 font-bold">Judul Dokumen / Tugas</th>
+                <th class="py-3 px-4 font-bold">Waktu Akses</th>
+              </tr>
+            </thead>
+            <tbody id="rekap-table-body" class="divide-y divide-slate-100 text-slate-700 text-xs">
+              <!-- Rendered Dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="flex justify-between items-center pt-4 border-t border-slate-100 text-xs text-slate-500">
+          <span id="pagination-info">Menampilkan 1-10 dari total 0 data</span>
+          <div class="flex gap-1">
+            <button onclick="prevPage()" id="btn-prev-page" class="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200">Prev</button>
+            <button onclick="nextPage()" id="btn-next-page" class="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200">Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: LOGIN GURU -->
+  <div id="modal-login" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
+      <button onclick="closeLoginModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 rounded-2xl sky-gradient text-white flex items-center justify-center mx-auto text-xl shadow-md">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900">Login Akses Guru</h3>
+        <p class="text-xs text-slate-500">Gunakan akun email khusus guru yang terdaftar.</p>
+      </div>
+      <form onsubmit="handleLoginGuru(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Email Guru</label>
+          <input type="email" id="login-email" required class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi</label>
+          <input type="password" id="login-password" required class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
+          Masuk ke Dashboard
+        </button>
+      </form>
     </div>
+  </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-400 text-sm border-t border-slate-800 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <!-- Col 1: About School -->
-                <div class="md:col-span-2 space-y-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-lg bg-sky-500 flex items-center justify-center text-white font-bold">
-                            <i class="fa-solid fa-laptop-code text-xl"></i>
-                        </div>
-                        <span class="text-lg font-bold text-white tracking-tight">INFORMATIKA SMAN 4 MANADO</span>
-                    </div>
-                    <p class="text-slate-400 text-xs leading-relaxed max-w-md">
-                        Portal Resmi Mata Pelajaran Informatika SMA Negeri 4 Manado. Wadah Pembelajaran Digital Terintegrasi untuk membentuk Generasi Unggul Berdaya Saing Teknologi.
-                    </p>
-                    <div class="text-xs space-y-1 text-slate-400">
-                        <p><i class="fa-solid fa-location-dot text-sky-400 mr-2"></i>Jl. Adipura No. 24, Kima Atas, Kec. Mapanget, Kota Manado, Sulawesi Utara</p>
-                        <p><i class="fa-solid fa-user-check text-sky-400 mr-2"></i>Pengampu: <b>Glendy A. Taawoeda, S.Pd</b> (NIP. 19930821 202221 1 005)</p>
-                    </div>
-                </div>
-
-                <!-- Col 2: Quick Links -->
-                <div>
-                    <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-3">Navigasi Cepat</h4>
-                    <ul class="space-y-2 text-xs">
-                        <li><a href="#" onclick="navigateTo('home'); return false;" class="hover:text-sky-400 transition">Beranda Utama</a></li>
-                        <li><a href="#" onclick="navigateTo('materi'); return false;" class="hover:text-sky-400 transition">Materi Kelas X, XI, XII</a></li>
-                        <li><a href="#" onclick="navigateTo('tugas'); return false;" class="hover:text-sky-400 transition">Pengumpulan Tugas</a></li>
-                        <li><a href="#" onclick="navigateTo('pengumuman'); return false;" class="hover:text-sky-400 transition">Papan Pengumuman</a></li>
-                        <li><a href="#" onclick="navigateTo('guru'); return false;" class="hover:text-sky-400 transition">Profil & Kontak Guru</a></li>
-                    </ul>
-                </div>
-
-                <!-- Col 3: Social & Info -->
-                <div>
-                    <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-3">Media Sosial & Informasi</h4>
-                    <div class="flex space-x-3 mb-4">
-                        <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-sky-500 hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-sky-500 hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-slate-300 hover:bg-sky-500 hover:text-white transition"><i class="fa-brands fa-youtube"></i></a>
-                    </div>
-                    <p class="text-xs text-slate-500">
-                        Dikembangkan untuk SMA NEGERI 4 MANADO &copy; 2026. Hak Cipta Dilindungi.
-                    </p>
-                </div>
-            </div>
-
-            <div class="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
-                <p>Designed & Developed with <i class="fa-solid fa-heart text-sky-400 mx-1"></i> for SMAN 4 Manado</p>
-                <p class="mt-2 sm:mt-0">Guru Informatika: Glendy A. Taawoeda, S.Pd</p>
-            </div>
+  <!-- MODAL: ISI IDENTITAS SISWA (KEAKTIFAN/POIN SELESAI/UNDUH) -->
+  <div id="modal-identitas-siswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl space-y-6">
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center mx-auto text-xl">
+          <i class="fa-solid fa-id-card-clip"></i>
         </div>
-    </footer>
+        <h3 class="text-xl font-bold text-slate-900">Identitas Presensi & Keaktifan</h3>
+        <p class="text-xs text-slate-500">Lengkapi Nama dan Kelas Anda sebelum mengakses/mengunggah dokumen ini untuk mencatat poin keaktifan semester.</p>
+      </div>
+      <form onsubmit="konfirmasiAksesSiswa(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
+          <input type="text" id="siswa-nama" required placeholder="Contoh: Gabriel Tumewu" class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kelas</label>
+          <select id="siswa-kelas" required class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
+            <option value="">-- Pilih Kelas --</option>
+            <option value="X-1">X-1</option>
+            <option value="X-2">X-2</option>
+            <option value="X-3">X-3</option>
+            <option value="XI-1">XI-1</option>
+            <option value="XI-2">XI-2</option>
+            <option value="XII-1">XII-1</option>
+            <option value="XII-2">XII-2</option>
+          </select>
+        </div>
+        <!-- Hidden input Simpan Data Aktivitas sementara -->
+        <input type="hidden" id="temp-target-link">
+        <input type="hidden" id="temp-target-judul">
+        <input type="hidden" id="temp-target-tipe">
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // --- DATA STORE ---
-        const materiData = [
-            {
-                id: 'm1',
-                grade: 'X',
-                chapter: 'Bab 1',
-                title: 'Pengantar Berpikir Komputasional (Computational Thinking)',
-                desc: 'Memahami 4 pilar utama: Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma.',
-                icon: 'fa-brain',
-                color: 'sky',
-                content: `
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Apa itu Berpikir Komputasional?</h4>
-                    <p class="mb-4">Berpikir Komputasional (Computational Thinking) adalah metode menyelesaikan masalah dengan menerapkan teknik yang digunakan oleh ilmuwan komputer dalam menulis program.</p>
-                    <h5 class="font-bold text-slate-800">4 Pilar Berpikir Komputasional:</h5>
-                    <ul class="list-disc pl-5 space-y-1 my-3">
-                        <li><b>Dekomposisi:</b> Memecah masalah kompleks menjadi bagian-bagian kecil yang mudah dikelola.</li>
-                        <li><b>Pengenalan Pola:</b> Mencari kesamaan atau pola dalam masalah yang pernah ditemui.</li>
-                        <li><b>Abstraksi:</b> Berfokus pada informasi penting dan mengabaikan detail yang tidak relevan.</li>
-                        <li><b>Algoritma:</b> Menyusun langkah-langkah terstruktur untuk menyelesaikan masalah.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 'm2',
-                grade: 'X',
-                chapter: 'Bab 2',
-                title: 'Jaringan Komputer dan Internet',
-                desc: 'Mempelajari cara kerja jaringan LAN, WAN, IP Address, serta protokol komunikasi data.',
-                icon: 'fa-wifi',
-                color: 'sky',
-                content: `
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Jaringan Komputer & Internet</h4>
-                    <p class="mb-3">Jaringan komputer adalah dua atau lebih perangkat komputer yang terhubung satu sama lain untuk berbagi sumber daya data.</p>
-                    <p>Materi mencakup konsep IP Address (IPv4 & IPv6), Routing, Subnetting, serta fungsi Enkripsi data demi keamanan transaksi digital.</p>
-                `
-            },
-            {
-                id: 'm3',
-                grade: 'XI',
-                chapter: 'Bab 1',
-                title: 'Algoritma & Pemrograman Dasar (Python)',
-                desc: 'Sintaks dasar Python, variabel, tipe data, struktur kondisi (If-Else), dan perulangan (Loops).',
-                icon: 'fa-code',
-                color: 'blue',
-                content: `
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Pemrograman Bahasa Python</h4>
-                    <p class="mb-3">Python adalah bahasa pemrograman populer yang ramah pemula namun sangat ampuh untuk analisis data dan kecerdasan buatan.</p>
-                    <pre class="bg-slate-900 text-sky-300 p-4 rounded-xl text-xs font-mono my-3">
-# Contoh Kode Python Sederhana
-nama = "Siswa SMAN 4 Manado"
-nilai = 88
+        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
+          Lanjutkan Akses Dokumen
+        </button>
+      </form>
+    </div>
+  </div>
 
-if nilai >= 75:
-    print(f"Selamat {nama}, Anda Tuntas!")
-else:
-    print("Tetap Semangat Belajar!")
-                    </pre>
-                `
-            },
-            {
-                id: 'm4',
-                grade: 'XI',
-                chapter: 'Bab 2',
-                title: 'Analisis Data & Visualisasi',
-                desc: 'Pengumpulan data, pembersihan data (data cleaning), serta visualisasi chart menggunakan Spreadsheet.',
-                icon: 'fa-chart-pie',
-                color: 'blue',
-                content: `
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Pengolahan Data Informasi</h4>
-                    <p class="mb-3">Analisis data memungkinkan kita mengambil keputusan berdasarkan data nyata (data-driven decision making).</p>
-                    <p>Siswa akan belajar menggunakan Google Sheets / MS Excel untuk formula VLOOKUP, Pivot Table, dan Pembuatan Grafik Interaktif.</p>
-                `
-            },
-            {
-                id: 'm5',
-                grade: 'XII',
-                chapter: 'Bab 1',
-                title: 'Pengembangan Aplikasi Web (HTML, CSS, JS)',
-                desc: 'Merancang struktur halaman web modern, styling dengan CSS, dan interaktivitas JavaScript.',
-                icon: 'fa-globe',
-                color: 'indigo',
-                content: `
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Dasar Web Development</h4>
-                    <p class="mb-3">Pembuatan website interaktif terdiri dari 3 pilar utama:</p>
-                    <ul class="list-disc pl-5 space-y-1">
-                        <li><b>HTML:</b> Kerangka struktur website.</li>
-                        <li><b>CSS:</b> Tampilan dan penataan desain estetis.</li>
-                        <li><b>JavaScript:</b> Logika dan interaksi dinamis pengguna.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 'm6',
-                grade: 'XII',
-                chapter: 'Bab 2',
-                title: 'Kecerdasan Buatan (AI) & Dampak Sosial',
-                desc: 'Memahami konsep Machine Learning, Prompt Engineering, dan Etika Penggunaan AI di masyarakat.',
-                icon: 'fa-robot',
-                color: 'indigo',
-                content: `
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Artificial Intelligence Masa Depan</h4>
-                    <p class="mb-3">Kecerdasan buatan mengubah cara manusia bekerja dan belajar. Penting bagi siswa SMAN 4 Manado untuk memahami etika, plagiarisme digital, dan pemanfaatan AI secara bijak.</p>
-                `
-            }
-        ];
+  <!-- MODAL: GURU TAMBAH MATERI (DENGAN TAUTAN GDRIVE) -->
+  <div id="modal-tambah-materi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl relative space-y-4">
+      <button onclick="closeModalMateri()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+      <h3 class="text-xl font-bold text-slate-900">Tambah Materi Pembelajaran</h3>
+      <form onsubmit="simpanMateriBaru(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tingkat Kelas</label>
+          <select id="form-materi-kelas" required class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+            <option value="X">Kelas X</option>
+            <option value="XI">Kelas XI</option>
+            <option value="XII">Kelas XII</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Judul Materi</label>
+          <input type="text" id="form-materi-judul" required placeholder="Contoh: Algoritma dan Pemrograman Python" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label>
+          <textarea id="form-materi-deskripsi" rows="2" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tautan / Link Google Drive Dokumen</label>
+          <input type="url" id="form-materi-link" required placeholder="https://drive.google.com/file/d/..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+          <p class="text-[10px] text-slate-400 mt-1">*Pastikan akses berbagi di Google Drive diatur ke "Siapa saja yang memiliki link".</p>
+        </div>
+        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md">
+          Simpan & Publikasikan
+        </button>
+      </form>
+    </div>
+  </div>
 
-        const assignmentsData = [
-            {
-                id: 't1',
-                grade: 'X',
-                title: 'Praktikum 1: Analisis Studi Kasus Algoritma Sehari-hari',
-                deadline: '15 Oktober 2026',
-                status: 'Aktif',
-                desc: 'Buatlah bagan alur (flowchart) dari aktivitas pemecahan masalah di lingkungan sekolah SMAN 4 Manado.'
-            },
-            {
-                id: 't2',
-                grade: 'XI',
-                title: 'Tugas Coding 1: Program Kasir Sederhana Python',
-                deadline: '20 Oktober 2026',
-                status: 'Aktif',
-                desc: 'Buatlah script Python yang menghitung total belanja beserta diskon belanja menggunakan percabangan If-Else.'
-            },
-            {
-                id: 't3',
-                grade: 'XII',
-                title: 'Proyek Web: Membuat Portofolio Profil Diri HTML/CSS',
-                deadline: '30 Oktober 2026',
-                status: 'Aktif',
-                desc: 'Rancang halaman web sederhana yang memuat biodata, cita-cita, dan karya favorit Anda.'
-            }
-        ];
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 pt-12 pb-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Col 1: Branding -->
+        <div class="space-y-3 md:col-span-2">
+          <div class="flex items-center space-x-3 text-white">
+            <div class="w-10 h-10 rounded-xl sky-gradient flex items-center justify-center text-white">
+              <i class="fa-solid fa-laptop-code text-xl"></i>
+            </div>
+            <span class="text-lg font-bold tracking-tight">INFORMATIKA SMAN 4 MANADO</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            Website Resmi Pembelajaran Mata Pelajaran Informatika SMA Negeri 4 Manado. Fasilitas media belajar mandiri, tugas, serta materi digital interaktif.
+          </p>
+        </div>
 
-        const sampleQuiz = [
-            {
-                q: "1. Manakah dari pilar Berpikir Komputasional berikut yang memecah masalah besar menjadi bagian-bagian kecil?",
-                options: ["A. Abstraksi", "B. Dekomposisi", "C. Algoritma", "D. Pengenalan Pola"],
-                answer: 1
-            },
-            {
-                q: "2. Bahasa pemrograman yang dikenal dengan sintaksnya yang bersih dan serbaguna adalah...",
-                options: ["A. Python", "B. HTML", "C. Assembly", "D. Binary"],
-                answer: 0
-            },
-            {
-                q: "3. Perangkat keras yang berfungsi menghubungkan beberapa jaringan komputer adalah...",
-                options: ["A. Monitor", "B. Router", "C. Keyboard", "D. Flashdisk"],
-                answer: 1
-            }
-        ];
+        <!-- Col 2: Navigasi Cepat -->
+        <div>
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Navigasi</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#" onclick="switchPage('home')" class="hover:text-sky-400">Beranda</a></li>
+            <li><a href="#" onclick="switchPage('materi')" class="hover:text-sky-400">Materi Pembelajaran</a></li>
+            <li><a href="#" onclick="switchPage('tugas')" class="hover:text-sky-400">Tugas & Kuis</a></li>
+            <li><a href="#" onclick="switchPage('profil')" class="hover:text-sky-400">Profil Guru Pengampu</a></li>
+          </ul>
+        </div>
 
-        let currentActiveGradeFilter = 'ALL';
+        <!-- Col 3: Kontak Instansi -->
+        <div>
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Lokasi Sekolah</h4>
+          <p class="text-xs leading-relaxed">
+            Jl. Mapanget, Molas, Kec. Bunaken, Kota Manado, Sulawesi Utara.<br>
+            Email: info@sman4manado.sch.id
+          </p>
+        </div>
+      </div>
 
-        // --- NAVIGATION SPA SWITCHER ---
-        function navigateTo(pageId) {
-            // Hide all sections
-            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-            
-            // Show target section
-            const target = document.getElementById('page-' + pageId);
-            if (target) target.classList.remove('hidden');
+      <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+        <p>&copy; 2026 - Glendy A. Taawoeda, S.Pd (NIP. 19930821 202221 1 005). All rights reserved.</p>
+        <p>SMA Negeri 4 Manado</p>
+      </div>
+    </div>
+  </footer>
 
-            // Scroll top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+  <!-- SCRIPT FIREBASE SDK v10 (MODULAR) & LOGIC APLIKASI -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-            // Active button state styling
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-sky-400', 'bg-slate-800/80', 'border', 'border-sky-500/30');
-                btn.classList.add('text-slate-300');
-            });
+    // === KONFIGURASI FIREBASE (GRATIS TANPA KARTU KREDIT) ===
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTD-3NLDHGCucMSWHAosSHu2-e6znnLm8",
+      authDomain: "informatika-sman4-manado.firebaseapp.com",
+      projectId: "informatika-sman4-manado",
+      storageBucket: "informatika-sman4-manado.firebasestorage.app",
+      messagingSenderId: "781063295262",
+      appId: "1:781063295262:web:2678cf21a195ba2497b90f"
+    };
 
-            const activeNav = document.getElementById('nav-' + pageId);
-            if (activeNav) {
-                activeNav.classList.remove('text-slate-300');
-                activeNav.classList.add('text-sky-400', 'bg-slate-800/80', 'border', 'border-sky-500/30');
-            }
+    // Inisialisasi
+    let app, auth, db;
+    let isFirebaseConfigured = false;
+
+    try {
+      if (!firebaseConfig.apiKey.includes("EXAMPLE")) {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        isFirebaseConfigured = true;
+      }
+    } catch (e) {
+      console.warn("Menggunakan Mode LocalStorage (Fallback). Salin config Firebase asli Anda untuk beralih ke Mode Live.");
+    }
+
+    // STATE LOKAL APLIKASI
+    window.state = {
+      isLoggedIn: false,
+      tahunAjaran: "Tahun Ajaran 2026/2027, Semester Ganjil (Juli-Desember 2026)",
+      materiList: [
+        { id: '1', kelas: 'X', judul: 'Pengenalan Berpikir Komputasional', deskripsi: 'Prinsip dasar dekomposisi, pengenalan pola, dan abstraksi.', link: 'https://drive.google.com' },
+        { id: '2', kelas: 'XI', judul: 'Arsitektur Jaringan Komputer & Topologi', deskripsi: 'Konsep dasar LAN, WAN, IP Address, dan routing.', link: 'https://drive.google.com' },
+        { id: '3', kelas: 'XII', judul: 'Pengembangan Web Dinamis & Database', deskripsi: 'Pemrograman HTML, CSS, JavaScript, dan Database.', link: 'https://drive.google.com' }
+      ],
+      tugasList: [
+        { id: '1', kelas: 'X', judul: 'Tugas 1: Analisis Masalah Algoritma', tenggat: '2026-10-15', linkForm: 'https://forms.google.com' },
+        { id: '2', kelas: 'XI', judul: 'Kuis 1: Konfigurasi IP Address Subnetting', tenggat: '2026-10-20', linkForm: 'https://forms.google.com' }
+      ],
+      rekapList: [
+        { id: '1', kelas: 'X-1', nama: 'Ahmad Faisal', tipe: 'Unduh Materi', judul: 'Pengenalan Berpikir Komputasional', waktu: '2026-09-25 09:15' },
+        { id: '2', kelas: 'XI-2', nama: 'Beatrix Wowor', tipe: 'Kirim Tugas', judul: 'Kuis 1: Konfigurasi IP Address', waktu: '2026-09-25 10:30' }
+      ],
+      currentPage: 1,
+      rowsPerPage: 5,
+      filterMateriKelas: 'ALL'
+    };
+
+    // NAVIGASI DYNAMIC
+    window.switchPage = function(pageId) {
+      document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+      const targetPage = document.getElementById(`page-${pageId}`);
+      if (targetPage) targetPage.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active-nav'));
+      const activeNav = document.getElementById(`nav-${pageId}`);
+      if (activeNav) activeNav.classList.add('active-nav');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.toggleMobileMenu = function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    };
+
+    // AUTH GURU HANDLERS
+    window.openLoginModal = () => document.getElementById('modal-login').classList.remove('hidden');
+    window.closeLoginModal = () => document.getElementById('modal-login').classList.add('hidden');
+
+    window.handleLoginGuru = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-password').value;
+
+      if (isFirebaseConfigured) {
+        try {
+          await signInWithEmailAndPassword(auth, email, pass);
+          Swal.fire('Berhasil', 'Login Guru Berhasil!', 'success');
+          closeLoginModal();
+        } catch (err) {
+          Swal.fire('Gagal', 'Email/Password Salah: ' + err.message, 'error');
         }
-
-        // --- MOBILE MENU TOGGLE ---
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+      } else {
+        // Fallback Simulasi
+        if (email === "glendy@sman4.sch.id" && pass === "guru123") {
+          window.state.isLoggedIn = true;
+          updateAuthUI(true);
+          closeLoginModal();
+          Swal.fire('Berhasil', 'Login Guru Berhasil (Mode Offline/Demo)', 'success');
+        } else {
+          Swal.fire('Gagal', 'Gunakan Demo Email: glendy@sman4.sch.id / Pass: guru123', 'warning');
         }
+      }
+    };
 
-        // --- RENDER MATERI CARDS ---
-        function renderMateriCards(data) {
-            const container = document.getElementById('materiGridContainer');
-            if (!container) return;
+    window.logoutGuru = function() {
+      if (isFirebaseConfigured) {
+        signOut(auth);
+      } else {
+        window.state.isLoggedIn = false;
+        updateAuthUI(false);
+        switchPage('home');
+      }
+    };
 
-            if (data.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">Tidak ada materi yang cocok dengan pencarian Anda.</div>`;
-                return;
-            }
+    function updateAuthUI(isLoggedIn) {
+      if (isLoggedIn) {
+        document.getElementById('logged-out-view').classList.add('hidden');
+        document.getElementById('logged-in-view').classList.remove('hidden');
+        document.getElementById('mobile-logged-out').classList.add('hidden');
+        document.getElementById('mobile-logged-in').classList.remove('hidden');
+      } else {
+        document.getElementById('logged-out-view').classList.remove('hidden');
+        document.getElementById('logged-in-view').classList.add('hidden');
+        document.getElementById('mobile-logged-out').classList.remove('hidden');
+        document.getElementById('mobile-logged-in').classList.add('hidden');
+      }
+    }
 
-            container.innerHTML = data.map(item => `
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 card-hover flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-sky-100 text-sky-700">
-                                Kelas ${item.grade} (${item.chapter})
-                            </span>
-                            <span class="p-2 bg-slate-100 text-sky-600 rounded-lg">
-                                <i class="fa-solid ${item.icon} text-lg"></i>
-                            </span>
-                        </div>
-                        <h3 class="font-bold text-slate-900 text-base line-clamp-2">${item.title}</h3>
-                        <p class="text-slate-600 text-xs mt-2 line-clamp-3">${item.desc}</p>
-                    </div>
+    // REALTIME FIREBASE LISTENERS
+    if (isFirebaseConfigured) {
+      onAuthStateChanged(auth, (user) => {
+        window.state.isLoggedIn = !!user;
+        updateAuthUI(!!user);
+      });
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <button onclick="openMateriModal('${item.id}')" class="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center">
-                            <i class="fa-solid fa-book-reader mr-1.5"></i> Baca Modul
-                        </button>
-                        <button onclick="downloadSimulatedPdf('${item.title}')" class="text-xs text-slate-400 hover:text-slate-600" title="Unduh Modul PDF">
-                            <i class="fa-solid fa-download"></i> PDF
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+      // Sync Firestore Data
+      onSnapshot(collection(db, "materi"), (snapshot) => {
+        window.state.materiList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderMateri();
+      });
 
-        // Filter Materi Tab
-        function filterMateriTab(grade) {
-            currentActiveGradeFilter = grade;
-            
-            document.querySelectorAll('.materi-tab-btn').forEach(btn => {
-                btn.classList.remove('bg-sky-600', 'text-white', 'shadow-md');
-                btn.classList.add('bg-slate-100', 'text-slate-600');
-            });
+      onSnapshot(collection(db, "rekap_akses"), (snapshot) => {
+        window.state.rekapList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderRekapTable();
+      });
+    }
 
-            const activeBtn = document.getElementById('tab-materi-' + grade);
-            if (activeBtn) {
-                activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
-                activeBtn.classList.add('bg-sky-600', 'text-white', 'shadow-md');
-            }
+    // RENDER MATERI & FILTERING
+    window.filterMateriByKelas = function(kelas) {
+      window.state.filterMateriKelas = kelas;
+      switchPage('materi');
+      renderMateri();
+    };
 
-            if (grade === 'ALL') {
-                renderMateriCards(materiData);
-            } else {
-                renderMateriCards(materiData.filter(m => m.grade === grade));
-            }
-        }
+    function renderMateri() {
+      const container = document.getElementById('materi-container');
+      container.innerHTML = '';
 
-        function filterMateriByGrade(grade) {
-            navigateTo('materi');
-            filterMateriTab(grade);
-        }
+      const filtered = window.state.filterMateriKelas === 'ALL' 
+        ? window.state.materiList 
+        : window.state.materiList.filter(m => m.kelas === window.state.filterMateriKelas);
 
-        function searchMateri() {
-            const query = document.getElementById('materiSearchInput').value.toLowerCase();
-            const filtered = materiData.filter(m => 
-                (currentActiveGradeFilter === 'ALL' || m.grade === currentActiveGradeFilter) &&
-                (m.title.toLowerCase().includes(query) || m.desc.toLowerCase().includes(query))
-            );
-            renderMateriCards(filtered);
-        }
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">Belum ada dokumen materi untuk tingkat kelas ini.</div>`;
+        return;
+      }
 
-        // --- RENDER ASSIGNMENTS ---
-        function renderAssignments(data) {
-            const container = document.getElementById('assignmentsGrid');
-            if (!container) return;
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4";
+        card.innerHTML = `
+          <div class="space-y-2">
+            <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-sky-100 text-sky-700">Kelas ${item.kelas}</span>
+            <h3 class="font-bold text-slate-800 text-base leading-snug">${item.judul}</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">${item.deskripsi || ''}</p>
+          </div>
+          <button onclick="memicuAksesSiswa('${item.link}', '${item.judul}', 'Unduh/Buka Materi')" class="w-full py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-file-arrow-down"></i> Buka / Unduh Dokumen (GDrive)
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
 
-            container.innerHTML = data.map(task => `
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="bg-sky-100 text-sky-700 text-xs font-bold px-2.5 py-1 rounded-full">Kelas ${task.grade}</span>
-                            <span class="text-xs text-amber-600 font-medium"><i class="fa-regular fa-clock mr-1"></i>Tenggat: ${task.deadline}</span>
-                        </div>
-                        <h3 class="font-bold text-slate-900 text-lg">${task.title}</h3>
-                        <p class="text-slate-600 text-sm mt-2">${task.desc}</p>
-                    </div>
+    // MODAL PRESENSI SISWA HANDLER
+    window.memicuAksesSiswa = function(link, judul, tipe) {
+      document.getElementById('temp-target-link').value = link;
+      document.getElementById('temp-target-judul').value = judul;
+      document.getElementById('temp-target-tipe').value = tipe;
+      document.getElementById('modal-identitas-siswa').classList.remove('hidden');
+    };
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs text-slate-400">Status: <b class="text-emerald-600">Aktif</b></span>
-                        <button onclick="openSubmitModal('${task.title}')" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-md transition">
-                            <i class="fa-solid fa-paper-plane mr-1.5"></i> Kirim Tugas
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+    window.konfirmasiAksesSiswa = async function(e) {
+      e.preventDefault();
+      const nama = document.getElementById('siswa-nama').value;
+      const kelas = document.getElementById('siswa-kelas').value;
+      const link = document.getElementById('temp-target-link').value;
+      const judul = document.getElementById('temp-target-judul').value;
+      const tipe = document.getElementById('temp-target-tipe').value;
 
-        function filterAssignments(grade) {
-            document.querySelectorAll('.asgn-filter-btn').forEach(btn => {
-                btn.classList.remove('bg-sky-600', 'text-white');
-                btn.classList.add('bg-white', 'text-slate-600');
-            });
+      const payload = {
+        nama: nama,
+        kelas: kelas,
+        judul: judul,
+        tipe: tipe,
+        waktu: new Date().toLocaleString('id-ID')
+      };
 
-            const btn = document.getElementById('asgn-' + grade);
-            if (btn) {
-                btn.classList.remove('bg-white', 'text-slate-600');
-                btn.classList.add('bg-sky-600', 'text-white');
-            }
+      if (isFirebaseConfigured) {
+        await addDoc(collection(db, "rekap_akses"), payload);
+      } else {
+        window.state.rekapList.push(payload);
+        renderRekapTable();
+      }
 
-            if (grade === 'ALL') {
-                renderAssignments(assignmentsData);
-            } else {
-                renderAssignments(assignmentsData.filter(a => a.grade === grade));
-            }
-        }
+      document.getElementById('modal-identitas-siswa').classList.add('hidden');
+      Swal.fire({
+        icon: 'success',
+        title: 'Presensi Dicatat',
+        text: 'Keaktifan Anda berhasil direkam untuk nilai tambah semester!',
+        timer: 1800,
+        showConfirmButton: false
+      });
 
-        function switchTugasSubTab(type) {
-            const asgnView = document.getElementById('assignmentsSubView');
-            const quizView = document.getElementById('quizSubView');
-            const btnAsgn = document.getElementById('subtab-assignments');
-            const btnQuiz = document.getElementById('subtab-quiz');
+      // Buka Tautan Google Drive di Tab Baru
+      window.open(link, '_blank');
+    };
 
-            if (type === 'assignments') {
-                asgnView.classList.remove('hidden');
-                quizView.classList.add('hidden');
-                btnAsgn.classList.add('text-sky-600', 'border-sky-600');
-                btnAsgn.classList.remove('text-slate-400', 'border-transparent');
-                btnQuiz.classList.remove('text-sky-600', 'border-sky-600');
-                btnQuiz.classList.add('text-slate-400', 'border-transparent');
-            } else {
-                asgnView.classList.add('hidden');
-                quizView.classList.remove('hidden');
-                btnQuiz.classList.add('text-sky-600', 'border-sky-600');
-                btnQuiz.classList.remove('text-slate-400', 'border-transparent');
-                btnAsgn.classList.remove('text-sky-600', 'border-sky-600');
-                btnAsgn.classList.add('text-slate-400', 'border-transparent');
-                renderQuiz();
-            }
-        }
+    // REKAP TABLE & PAGINATION (SORTED A-Z BY KELAS & NAMA)
+    window.renderRekapTable = function() {
+      const tbody = document.getElementById('rekap-table-body');
+      tbody.innerHTML = '';
 
-        // --- RENDER QUIZ INTERACTIVE ---
-        function renderQuiz() {
-            const container = document.getElementById('quizContainer');
-            if (!container) return;
+      const querySearch = document.getElementById('search-rekap').value.toLowerCase();
 
-            container.innerHTML = `
-                <div class="space-y-6">
-                    ${sampleQuiz.map((q, qIndex) => `
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p class="font-bold text-slate-800 text-sm mb-3">${q.q}</p>
-                            <div class="space-y-2">
-                                ${q.options.map((opt, optIndex) => `
-                                    <label class="flex items-center space-x-3 p-2 rounded-lg bg-white border border-slate-200 hover:bg-sky-50 cursor-pointer text-xs font-medium text-slate-700">
-                                        <input type="radio" name="question_${qIndex}" value="${optIndex}" class="text-sky-600 focus:ring-sky-500">
-                                        <span>${opt}</span>
-                                    </label>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `).join('')}
+      // SORTING OTOMATIS: Urutkan berdasarkan Kelas (A-Z) lalu Nama
+      let sortedData = [...window.state.rekapList].sort((a, b) => {
+        if (a.kelas < b.kelas) return -1;
+        if (a.kelas > b.kelas) return 1;
+        return a.nama.localeCompare(b.nama);
+      });
 
-                    <button onclick="submitQuizAnswers()" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-md text-sm transition">
-                        Kirim & Lihat Nilai Kuis
-                    </button>
-                </div>
-            `;
-        }
+      // FILTER SEARCH
+      let filteredData = sortedData.filter(d => 
+        d.nama.toLowerCase().includes(querySearch) || 
+        d.kelas.toLowerCase().includes(querySearch)
+      );
 
-        function submitQuizAnswers() {
-            let score = 0;
-            sampleQuiz.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="question_${idx}"]:checked`);
-                if (selected && parseInt(selected.value) === q.answer) {
-                    score += 100 / sampleQuiz.length;
-                }
-            });
+      // PAGINATION
+      const total = filteredData.length;
+      const totalPages = Math.ceil(total / window.state.rowsPerPage) || 1;
+      const start = (window.state.currentPage - 1) * window.state.rowsPerPage;
+      const paginated = filteredData.slice(start, start + window.state.rowsPerPage);
 
-            alert(`Kuis Selesai!\nNilai Anda: ${Math.round(score)} / 100\nSangat bagus! Tingkatkan terus belajar Informatika.`);
-        }
+      paginated.forEach((row, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-medium">${start + idx + 1}</td>
+          <td class="py-3 px-4 font-bold text-sky-600">${row.kelas}</td>
+          <td class="py-3 px-4 font-semibold">${row.nama}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${row.tipe.includes('Tugas') ? 'bg-amber-100 text-amber-700' : 'bg-sky-100 text-sky-700'}">${row.tipe}</span></td>
+          <td class="py-3 px-4">${row.judul}</td>
+          <td class="py-3 px-4 text-slate-400">${row.waktu}</td>
+        `;
+        tbody.appendChild(tr);
+      });
 
-        // --- MODAL CONTROLLERS ---
-        function openTermModal() {
-            document.getElementById('academicTermModal').classList.remove('hidden');
-        }
-        function closeTermModal() {
-            document.getElementById('academicTermModal').classList.add('hidden');
-        }
+      document.getElementById('pagination-info').innerText = `Menampilkan ${total ? start + 1 : 0}-${Math.min(start + window.state.rowsPerPage, total)} dari total ${total} data`;
+    };
 
-        function saveAcademicTerm() {
-            const year = document.getElementById('inputYear').value.trim();
-            const semester = document.getElementById('inputSemester').value;
+    window.prevPage = () => {
+      if (window.state.currentPage > 1) {
+        window.state.currentPage--;
+        renderRekapTable();
+      }
+    };
 
-            if (year) {
-                const fullString = `Tahun Ajaran ${year} - ${semester}`;
-                document.getElementById('currentAcademicTerm').innerText = fullString;
-                localStorage.setItem('sman4_academic_term', fullString);
-                closeTermModal();
-            } else {
-                alert('Silakan masukkan Tahun Ajaran terlebih dahulu!');
-            }
-        }
+    window.nextPage = () => {
+      const totalPages = Math.ceil(window.state.rekapList.length / window.state.rowsPerPage);
+      if (window.state.currentPage < totalPages) {
+        window.state.currentPage++;
+        renderRekapTable();
+      }
+    };
 
-        function openMateriModal(id) {
-            const item = materiData.find(m => m.id === id);
-            if (!item) return;
+    // EXPORT REKAP KE CSV
+    window.exportTableToCSV = function() {
+      let csv = 'No,Kelas,Nama Siswa,Aktivitas,Judul Dokumen,Waktu Akses\n';
+      window.state.rekapList.forEach((row, idx) => {
+        csv += `"${idx + 1}","${row.kelas}","${row.nama}","${row.tipe}","${row.judul}","${row.waktu}"\n`;
+      });
 
-            document.getElementById('modalMateriBadge').innerText = `Kelas ${item.grade}`;
-            document.getElementById('modalMateriTitle').innerText = item.title;
-            document.getElementById('modalMateriContent').innerHTML = item.content;
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', `Rekap_Keaktifan_Informatika_SMAN4.csv`);
+      a.click();
+    };
 
-            document.getElementById('materiReaderModal').classList.remove('hidden');
-        }
-        function closeMateriModal() {
-            document.getElementById('materiReaderModal').classList.add('hidden');
-        }
+    // TAMBAH MATERI BARU (GURU)
+    window.openModalTambahMateri = () => document.getElementById('modal-tambah-materi').classList.remove('hidden');
+    window.closeModalMateri = () => document.getElementById('modal-tambah-materi').classList.add('hidden');
 
-        function openSubmitModal(title) {
-            document.getElementById('modalSubmitTaskTitle').innerText = title;
-            document.getElementById('submitAssignmentModal').classList.remove('hidden');
-        }
-        function closeSubmitModal() {
-            document.getElementById('submitAssignmentModal').classList.add('hidden');
-        }
+    window.simpanMateriBaru = async function(e) {
+      e.preventDefault();
+      const kelas = document.getElementById('form-materi-kelas').value;
+      const judul = document.getElementById('form-materi-judul').value;
+      const deskripsi = document.getElementById('form-materi-deskripsi').value;
+      const link = document.getElementById('form-materi-link').value;
 
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            alert('Terima kasih! Tugas Anda telah berhasil dikirim ke sistem Bapak Glendy A. Taawoeda, S.Pd.');
-            closeSubmitModal();
-            document.getElementById('assignmentForm').reset();
-        }
+      const newMateri = { kelas, judul, deskripsi, link };
 
-        function downloadSimulatedPdf(title) {
-            alert(`Mengunduh Modul PDF "${title}"...\nFormat file siap dibaca offline.`);
-        }
+      if (isFirebaseConfigured) {
+        await addDoc(collection(db, "materi"), newMateri);
+      } else {
+        window.state.materiList.push({ id: Date.now().toString(), ...newMateri });
+        renderMateri();
+      }
 
-        // --- INITIALIZATION ---
-        window.onload = function() {
-            // Load saved academic term if exists
-            const savedTerm = localStorage.getItem('sman4_academic_term');
-            if (savedTerm) {
-                document.getElementById('currentAcademicTerm').innerText = savedTerm;
-            }
+      closeModalMateri();
+      Swal.fire('Berhasil', 'Materi Google Drive berhasil dipublikasikan!', 'success');
+    };
 
-            // Populate Home recent section
-            const recentGrid = document.getElementById('homeRecentMateriGrid');
-            if (recentGrid) {
-                recentGrid.innerHTML = materiData.slice(0, 3).map(item => `
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm card-hover flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-sky-100 text-sky-700">Kelas ${item.grade}</span>
-                            <h3 class="font-bold text-slate-900 text-base mt-2">${item.title}</h3>
-                            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.desc}</p>
-                        </div>
-                        <button onclick="navigateTo('materi'); openMateriModal('${item.id}')" class="mt-4 text-xs font-bold text-sky-600 hover:underline flex items-center">
-                            Pelajari Modul <i class="fa-solid fa-arrow-right ml-1"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
+    // UPDATE HEADER TAHUN AJARAN
+    window.simpanTahunAjaran = function() {
+      const ta = document.getElementById('input-ta').value;
+      const sem = document.getElementById('input-semester').value;
+      if (ta) {
+        const text = `Tahun Ajaran ${ta} - ${sem}`;
+        document.getElementById('ta-banner-text').innerText = text;
+        Swal.fire('Selesai', 'Tahun Ajaran berhasil diperbarui!', 'success');
+      }
+    };
 
-            // Initial render for Materi & Assignments
-            renderMateriCards(materiData);
-            renderAssignments(assignmentsData);
-        };
-    </script>
+    // INIT INITIAL PAGE RENDER
+    renderMateri();
+    renderRekapTable();
+  </script>
 </body>
 </html>
