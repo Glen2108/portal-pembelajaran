@@ -528,439 +528,453 @@
   </footer>
 
   <!-- INTEGRASI FIREBASE & ANALYTICS -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+  <!-- INTEGRASI FIREBASE SDK & AUTHENTICATION -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+  import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged 
+  } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCTD-3NLDHGCucMSWHAosSHu2-e6znnLm8",
-      authDomain: "informatika-sman4-manado.firebaseapp.com",
-      projectId: "informatika-sman4-manado,
-      storageBucket: "informatika-sman4-manado.firebasestorage.app",
-      messagingSenderId: "781063295262",
-      appId: "1:781063295262:web:2678cf21a195ba2497b90f",
-      measurementId: "G-BLWGZ4RZFK"
-    };
+  // Konfigurasi Firebase milik Anda
+  const firebaseConfig = {
+    apiKey: "AIzaSyCTD-3NLDHGCucMSWHAosSHu2-e6znnLm8",
+    authDomain: "informatika-sman4-manado.firebaseapp.com",
+    projectId: "informatika-sman4-manado",
+    storageBucket: "informatika-sman4-manado.firebasestorage.app",
+    messagingSenderId: "781063295262",
+    appId: "1:781063295262:web:2678cf21a195ba2497b90f",
+    measurementId: "G-BLWGZ4RZFK"
+  };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
+  // Inisialisasi Firebase & Auth
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
 
-  <!-- SCRIPT LOGIC UTAMA APLIKASI WEB -->
-  <script type="module">
-    // STATE APLIKASI
-    window.state = {
-      isLoggedIn: localStorage.getItem('is_guru_sman4') === 'true',
-      siswaData: JSON.parse(localStorage.getItem('siswa_sman4')) || null,
-      
-      // LOG KEAKTIFAN SISWA (PENILAIAN)
-      keaktifanList: JSON.parse(localStorage.getItem('log_keaktifan_siswa')) || [
-        { id: 'k1', nama: 'Gabriel Tumewu', kelas: 'X-1', waktu: '26/09/2026, 08:15', status: 'Aktif Akses' }
-      ],
+  // STATE APLIKASI
+  window.state = {
+    isLoggedIn: false,
+    siswaData: JSON.parse(localStorage.getItem('siswa_sman4')) || null,
+    
+    keaktifanList: JSON.parse(localStorage.getItem('log_keaktifan_siswa')) || [
+      { id: 'k1', nama: 'Gabriel Tumewu', kelas: 'X-1', waktu: '26/09/2026, 08:15', status: 'Aktif Akses' }
+    ],
 
-      materiList: [
-        { id: '1', kelas: 'X', judul: 'Pengenalan Berpikir Komputasional', deskripsi: 'Prinsip dasar dekomposisi dan abstraksi.', link: 'https://drive.google.com' }
-      ],
-      tugasList: [
-        { id: 't1', tipe: 'Mandiri', kelas: 'X', judul: 'Analisis Algoritma Deskriptif', instruksi: 'Tuliskan alur algoritma pembuatan akun email secara terstruktur.', deadline: '2026-10-15' },
-        { id: 't2', tipe: 'Kelompok', kelas: 'XI', judul: 'Perancangan Topologi Jaringan Sekolah', instruksi: 'Buatlah bagan topologi jaringan laboratorium komputer kelompok (3-4 orang).', deadline: '2026-10-20' }
-      ],
-      submissionList: [
-        { id: 's1', tugasJudul: 'Analisis Algoritma Deskriptif', tipe: 'Mandiri', kelas: 'X-1', pengirim: 'Gabriel Tumewu', anggota: '-', link: 'https://drive.google.com', waktu: '26/09/2026, 08:30' }
-      ],
-      filterMateriKelas: 'ALL',
-      isGuruLoginAttemptFromWelcome: false
-    };
+    materiList: [
+      { id: '1', kelas: 'X', judul: 'Pengenalan Berpikir Komputasional', deskripsi: 'Prinsip dasar dekomposisi dan abstraksi.', link: 'https://drive.google.com' }
+    ],
+    tugasList: [
+      { id: 't1', tipe: 'Mandiri', kelas: 'X', judul: 'Analisis Algoritma Deskriptif', instruksi: 'Tuliskan alur algoritma pembuatan akun email secara terstruktur.', deadline: '2026-10-15' },
+      { id: 't2', tipe: 'Kelompok', kelas: 'XI', judul: 'Perancangan Topologi Jaringan Sekolah', instruksi: 'Buatlah bagan topologi jaringan laboratorium komputer kelompok (3-4 orang).', deadline: '2026-10-20' }
+    ],
+    submissionList: [
+      { id: 's1', tugasJudul: 'Analisis Algoritma Deskriptif', tipe: 'Mandiri', kelas: 'X-1', pengirim: 'Gabriel Tumewu', anggota: '-', link: 'https://drive.google.com', waktu: '26/09/2026, 08:30' }
+    ],
+    filterMateriKelas: 'ALL',
+    isGuruLoginAttemptFromWelcome: false
+  };
 
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.state.isLoggedIn) {
-        updateAuthUI(true);
-      } else if (!window.state.siswaData) {
-        document.getElementById('modal-welcome-siswa').classList.remove('hidden');
-      } else {
-        updateSiswaBadge();
-      }
-      renderMateri();
-      renderTugas();
-      renderSubmissions();
-      renderKeaktifan();
-    });
-
-    // WIDGET FLOATING BANNER LOGIC
-    window.toggleFloatingBanner = function() {
-      const banner = document.getElementById('floating-info-banner');
-      const btn = document.getElementById('floating-info-btn');
-      if (banner.classList.contains('hidden')) {
-        banner.classList.remove('hidden');
-        btn.classList.add('hidden');
-      } else {
-        banner.classList.add('hidden');
-        btn.classList.remove('hidden');
-      }
-    };
-
-    // LOGIKA PERBAIKAN PINTU MASUK & MODAL
-    window.pintuKhususGuru = function() {
-      window.state.isGuruLoginAttemptFromWelcome = true;
-      document.getElementById('modal-welcome-siswa').classList.add('hidden');
-      document.getElementById('modal-login').classList.remove('hidden');
-    };
-
-    window.openLoginModalDirect = function() {
-      window.state.isGuruLoginAttemptFromWelcome = false;
-      document.getElementById('modal-login').classList.remove('hidden');
-    };
-
-    // CLOSE LOGIN MODAL WITH RETURN TO WELCOME IF APPLICABLE
-    window.closeLoginModalWithReturn = function() {
-      document.getElementById('modal-login').classList.add('hidden');
-      if (!window.state.isLoggedIn && !window.state.siswaData) {
-        document.getElementById('modal-welcome-siswa').classList.remove('hidden');
-      }
-    };
-
-    // SIMPAN IDENTITAS SISWA & PENILAIAN KEAKTIFAN
-    window.simpanIdentitasAwal = function(e) {
-      e.preventDefault();
-      const nama = document.getElementById('welcome-nama').value;
-      const kelas = document.getElementById('welcome-kelas').value;
-
-      const siswaObj = { nama, kelas };
-      window.state.siswaData = siswaObj;
-      localStorage.setItem('siswa_sman4', JSON.stringify(siswaObj));
-
-      // Catat log keaktifan siswa untuk Penilaian Guru
-      const logBaru = {
-        id: Date.now().toString(),
-        nama: nama,
-        kelas: kelas,
-        waktu: new Date().toLocaleString('id-ID'),
-        status: 'Aktif Akses'
-      };
-
-      window.state.keaktifanList.unshift(logBaru);
-      localStorage.setItem('log_keaktifan_siswa', JSON.stringify(window.state.keaktifanList));
-
-      document.getElementById('modal-welcome-siswa').classList.add('hidden');
-      updateSiswaBadge();
-      renderKeaktifan();
-
-      Swal.fire('Selamat Datang!', `Halo ${nama} (${kelas}), keaktifan kunjunganmu telah tercatat! Selamat belajar.`, 'success');
-    };
-
-    function updateSiswaBadge() {
-      if (window.state.siswaData && !window.state.isLoggedIn) {
-        document.getElementById('siswa-badge').classList.remove('hidden');
-        document.getElementById('badge-siswa-nama').innerText = `${window.state.siswaData.nama} (${window.state.siswaData.kelas})`;
-      }
-    }
-
-    window.resetIdentitasSiswa = function() {
-      localStorage.removeItem('siswa_sman4');
-      window.state.siswaData = null;
-      document.getElementById('siswa-badge').classList.add('hidden');
-      document.getElementById('modal-welcome-siswa').classList.remove('hidden');
-    };
-
-    // NAVIGASI
-    window.switchPage = function(pageId) {
-      document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
-      const targetPage = document.getElementById(`page-${pageId}`);
-      if (targetPage) targetPage.classList.remove('hidden');
-
-      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active-nav'));
-      const activeNav = document.getElementById(`nav-${pageId}`);
-      if (activeNav) activeNav.classList.add('active-nav');
-    };
-
-    window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
-
-    // AUTH GURU
-    window.handleLoginGuru = function(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value;
-      const pass = document.getElementById('login-password').value;
-
-      if (email === "glendy@sman4.sch.id" && pass === "guru123") {
-        window.state.isLoggedIn = true;
-        localStorage.setItem('is_guru_sman4', 'true');
-        updateAuthUI(true);
-        document.getElementById('modal-login').classList.add('hidden');
-        switchPage('dashboard');
-        Swal.fire('Berhasil', 'Login Akses Guru Berhasil!', 'success');
-      } else {
-        Swal.fire('Gagal', 'Email/Password Salah! Gunakan glendy@sman4.sch.id / guru123', 'error');
-      }
-    };
-
-    window.logoutGuru = function() {
+  // PANTAU STATUS AUTHENTICATION REALTIME DARI FIREBASE
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window.state.isLoggedIn = true;
+      updateAuthUI(true);
+    } else {
       window.state.isLoggedIn = false;
-      localStorage.removeItem('is_guru_sman4');
       updateAuthUI(false);
-      switchPage('home');
-    };
-
-    function updateAuthUI(isLoggedIn) {
-      if (isLoggedIn) {
-        document.getElementById('logged-out-view').classList.add('hidden');
-        document.getElementById('logged-in-view').classList.remove('hidden');
-        document.getElementById('guru-badge').classList.remove('hidden');
-        document.getElementById('siswa-badge').classList.add('hidden');
-      } else {
-        document.getElementById('logged-out-view').classList.remove('hidden');
-        document.getElementById('logged-in-view').classList.add('hidden');
-        document.getElementById('guru-badge').classList.add('hidden');
-        updateSiswaBadge();
-      }
-    }
-
-    // RENDER REKAP KEAKTIFAN SISWA
-    function renderKeaktifan() {
-      const tbody = document.getElementById('keaktifan-table-body');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      if (window.state.keaktifanList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada catatan keaktifan siswa.</td></tr>`;
-        return;
-      }
-
-      window.state.keaktifanList.forEach((row, idx) => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-50";
-        tr.innerHTML = `
-          <td class="py-3 px-4 font-medium">${idx + 1}</td>
-          <td class="py-3 px-4 font-bold text-slate-800">${row.nama}</td>
-          <td class="py-3 px-4 font-semibold text-sky-600">${row.kelas}</td>
-          <td class="py-3 px-4 text-slate-500">${row.waktu}</td>
-          <td class="py-3 px-4">
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1 w-fit">
-              <i class="fa-solid fa-circle text-[6px]"></i> ${row.status}
-            </span>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    window.exportKeaktifanToCSV = function() {
-      let csv = 'No,Nama Siswa,Kelas,Waktu Login/Akses,Status Keaktifan\n';
-      window.state.keaktifanList.forEach((row, idx) => {
-        csv += `"${idx + 1}","${row.nama}","${row.kelas}","${row.waktu}","${row.status}"\n`;
-      });
-
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.setAttribute('href', url);
-      a.setAttribute('download', `Rekap_Keaktifan_Siswa_Informatika.csv`);
-      a.click();
-    };
-
-    // RENDER MATERI
-    window.filterMateriByKelas = function(kelas) {
-      window.state.filterMateriKelas = kelas;
-      switchPage('materi');
-      renderMateri();
-    };
-
-    function renderMateri() {
-      const container = document.getElementById('materi-container');
-      container.innerHTML = '';
-      const filtered = window.state.filterMateriKelas === 'ALL' 
-        ? window.state.materiList 
-        : window.state.materiList.filter(m => m.kelas === window.state.filterMateriKelas);
-
-      filtered.forEach(item => {
-        const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4";
-        card.innerHTML = `
-          <div>
-            <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-sky-100 text-sky-700">Kelas ${item.kelas}</span>
-            <h3 class="font-bold text-slate-800 mt-2">${item.judul}</h3>
-            <p class="text-xs text-slate-500 mt-1">${item.deskripsi || ''}</p>
-          </div>
-          <a href="${item.link}" target="_blank" class="block text-center py-2 bg-sky-50 text-sky-700 font-semibold text-xs rounded-xl hover:bg-sky-100">
-            Buka Dokumen
-          </a>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    // MODAL & LOGIC TAMBAH TUGAS (GURU)
-    window.openModalTambahTugas = () => document.getElementById('modal-tambah-tugas').classList.remove('hidden');
-    window.closeModalTambahTugas = () => document.getElementById('modal-tambah-tugas').classList.add('hidden');
-
-    window.simpanTugasBaru = function(e) {
-      e.preventDefault();
-      const tipe = document.getElementById('form-tugas-tipe').value;
-      const kelas = document.getElementById('form-tugas-kelas').value;
-      const judul = document.getElementById('form-tugas-judul').value;
-      const instruksi = document.getElementById('form-tugas-instruksi').value;
-      const deadline = document.getElementById('form-tugas-deadline').value;
-
-      const newTask = { id: Date.now().toString(), tipe, kelas, judul, instruksi, deadline };
-      window.state.tugasList.push(newTask);
-
-      renderTugas();
-      closeModalTambahTugas();
-      Swal.fire('Terbit!', 'Tugas baru berhasil diterbitkan untuk siswa.', 'success');
-    };
-
-    // RENDER DAFTAR TUGAS
-    function renderTugas() {
-      const container = document.getElementById('tugas-container');
-      container.innerHTML = '';
-
-      if (window.state.tugasList.length === 0) {
-        container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Belum ada tugas yang diterbitkan.</div>`;
-        return;
-      }
-
-      window.state.tugasList.forEach(t => {
-        const item = document.createElement('div');
-        item.className = "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
-        item.innerHTML = `
-          <div class="space-y-2 max-w-2xl">
-            <div class="flex items-center gap-2">
-              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${t.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${t.tipe}</span>
-              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">Kelas ${t.kelas}</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-800">${t.judul}</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">${t.instruksi}</p>
-            <p class="text-[11px] font-semibold text-rose-600"><i class="fa-solid fa-clock mr-1"></i> Deadline: ${t.deadline}</p>
-          </div>
-          <div>
-            <button onclick="bukaModalKumpulTugas('${t.id}', '${t.judul}', '${t.tipe}')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-2">
-              <i class="fa-solid fa-paper-plane"></i> Kumpulkan Tugas
-            </button>
-          </div>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-    // LOGIC SISWA KUMPULKAN TUGAS
-    window.bukaModalKumpulTugas = function(id, judul, tipe) {
       if (!window.state.siswaData) {
         document.getElementById('modal-welcome-siswa').classList.remove('hidden');
-        return;
       }
+    }
+  });
 
-      document.getElementById('kumpul-tugas-id').value = id;
-      document.getElementById('kumpul-tugas-judul-val').value = judul;
-      document.getElementById('kumpul-tugas-tipe-val').value = tipe;
-      document.getElementById('kumpul-judul-tugas').innerText = judul;
-      document.getElementById('kumpul-tipe-badge').innerText = `Tugas ${tipe}`;
+  window.addEventListener('DOMContentLoaded', () => {
+    renderMateri();
+    renderTugas();
+    renderSubmissions();
+    renderKeaktifan();
+  });
 
-      if (tipe === 'Kelompok') {
-        document.getElementById('field-anggota-kelompok').classList.remove('hidden');
-      } else {
-        document.getElementById('field-anggota-kelompok').classList.add('hidden');
+  // FUNGSI LOGIN GURU DENGAN FIREBASE AUTH
+  window.handleLoginGuru = async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+
+    Swal.fire({
+      title: 'Memproses...',
+      text: 'Verifikasi akun guru ke Firebase',
+      allowOutsideClick: false,
+      didOpen: () => { Swal.showLoading(); }
+    });
+
+    try {
+      // Mengirimkan kredensial ke Firebase Authentication
+      await signInWithEmailAndPassword(auth, email, pass);
+      
+      document.getElementById('modal-login').classList.add('hidden');
+      switchPage('dashboard');
+      Swal.fire('Berhasil Login!', `Selamat datang kembali, ${email}`, 'success');
+    } catch (error) {
+      let pesanEror = "Gagal login ke Firebase.";
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+        pesanEror = "Email atau Password yang Anda masukkan salah.";
+      } else if (error.code === 'auth/invalid-email') {
+        pesanEror = "Format email tidak valid.";
       }
+      Swal.fire('Gagal Login', pesanEror, 'error');
+    }
+  };
 
-      document.getElementById('modal-kumpul-tugas').classList.remove('hidden');
+  // FUNGSI LOGOUT FIREBASE
+  window.logoutGuru = async function() {
+    await signOut(auth);
+    switchPage('home');
+    Swal.fire('Berhasil Keluar', 'Sesi login guru telah berakhir.', 'info');
+  };
+
+  // UTILITY & UI FUNCTIONS
+  window.toggleFloatingBanner = function() {
+    const banner = document.getElementById('floating-info-banner');
+    const btn = document.getElementById('floating-info-btn');
+    if (banner.classList.contains('hidden')) {
+      banner.classList.remove('hidden');
+      btn.classList.add('hidden');
+    } else {
+      banner.classList.add('hidden');
+      btn.classList.remove('hidden');
+    }
+  };
+
+  window.pintuKhususGuru = function() {
+    window.state.isGuruLoginAttemptFromWelcome = true;
+    document.getElementById('modal-welcome-siswa').classList.add('hidden');
+    document.getElementById('modal-login').classList.remove('hidden');
+  };
+
+  window.openLoginModalDirect = function() {
+    window.state.isGuruLoginAttemptFromWelcome = false;
+    document.getElementById('modal-login').classList.remove('hidden');
+  };
+
+  window.closeLoginModalWithReturn = function() {
+    document.getElementById('modal-login').classList.add('hidden');
+    if (!window.state.isLoggedIn && !window.state.siswaData) {
+      document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+    }
+  };
+
+  window.simpanIdentitasAwal = function(e) {
+    e.preventDefault();
+    const nama = document.getElementById('welcome-nama').value;
+    const kelas = document.getElementById('welcome-kelas').value;
+
+    const siswaObj = { nama, kelas };
+    window.state.siswaData = siswaObj;
+    localStorage.setItem('siswa_sman4', JSON.stringify(siswaObj));
+
+    const logBaru = {
+      id: Date.now().toString(),
+      nama: nama,
+      kelas: kelas,
+      waktu: new Date().toLocaleString('id-ID'),
+      status: 'Aktif Akses'
     };
 
-    window.closeModalKumpulTugas = () => document.getElementById('modal-kumpul-tugas').classList.add('hidden');
+    window.state.keaktifanList.unshift(logBaru);
+    localStorage.setItem('log_keaktifan_siswa', JSON.stringify(window.state.keaktifanList));
 
-    window.simpanPengumpulanSiswa = function(e) {
-      e.preventDefault();
-      const judul = document.getElementById('kumpul-tugas-judul-val').value;
-      const tipe = document.getElementById('kumpul-tugas-tipe-val').value;
-      const link = document.getElementById('kumpul-link').value;
-      const anggota = document.getElementById('kumpul-anggota').value || '-';
+    document.getElementById('modal-welcome-siswa').classList.add('hidden');
+    updateSiswaBadge();
+    renderKeaktifan();
 
-      const payload = {
-        id: Date.now().toString(),
-        tugasJudul: judul,
-        tipe: tipe,
-        kelas: window.state.siswaData.kelas,
-        pengirim: window.state.siswaData.nama,
-        anggota: tipe === 'Kelompok' ? anggota : '-',
-        link: link,
-        waktu: new Date().toLocaleString('id-ID')
-      };
+    Swal.fire('Selamat Datang!', `Halo ${nama} (${kelas}), keaktifan kunjunganmu telah tercatat!`, 'success');
+  };
 
-      window.state.submissionList.push(payload);
-      renderSubmissions();
-      closeModalKumpulTugas();
+  function updateSiswaBadge() {
+    if (window.state.siswaData && !window.state.isLoggedIn) {
+      document.getElementById('siswa-badge').classList.remove('hidden');
+      document.getElementById('badge-siswa-nama').innerText = `${window.state.siswaData.nama} (${window.state.siswaData.kelas})`;
+    }
+  }
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Tugas Terkirim!',
-        text: `Tugas ${tipe} Anda berhasil dikirimkan ke guru.`,
-        confirmButtonColor: '#059669'
-      });
-    };
+  window.resetIdentitasSiswa = function() {
+    localStorage.removeItem('siswa_sman4');
+    window.state.siswaData = null;
+    document.getElementById('siswa-badge').classList.add('hidden');
+    document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+  };
 
-    // RENDER DASHBOARD GURU: REKAP TUGAS TERKIRIM
-    function renderSubmissions() {
-      const tbody = document.getElementById('submission-table-body');
-      if (!tbody) return;
-      tbody.innerHTML = '';
+  window.switchPage = function(pageId) {
+    document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+    const targetPage = document.getElementById(`page-${pageId}`);
+    if (targetPage) targetPage.classList.remove('hidden');
 
-      if (window.state.submissionList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">Belum ada tugas yang dikumpulkan siswa.</td></tr>`;
-        return;
-      }
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active-nav'));
+    const activeNav = document.getElementById(`nav-${pageId}`);
+    if (activeNav) activeNav.classList.add('active-nav');
+  };
 
-      window.state.submissionList.forEach((row, idx) => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-50";
-        tr.innerHTML = `
-          <td class="py-3 px-4 font-medium">${idx + 1}</td>
-          <td class="py-3 px-4">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${row.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${row.tipe}</span>
-            <div class="font-bold text-slate-800 mt-0.5">${row.tugasJudul}</div>
-          </td>
-          <td class="py-3 px-4 font-semibold text-sky-600">${row.kelas}</td>
-          <td class="py-3 px-4">
-            <div class="font-bold text-slate-800">${row.pengirim}</div>
-            ${row.tipe === 'Kelompok' ? `<div class="text-[10px] text-slate-500">Anggota: ${row.anggota}</div>` : ''}
-          </td>
-          <td class="py-3 px-4 text-slate-400">${row.waktu}</td>
-          <td class="py-3 px-4">
-            <a href="${row.link}" target="_blank" class="px-3 py-1.5 bg-sky-50 text-sky-700 font-bold text-[11px] rounded-lg hover:bg-sky-100 flex items-center gap-1 w-fit">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Periksa Berkas
-            </a>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+  window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
+
+  function updateAuthUI(isLoggedIn) {
+    if (isLoggedIn) {
+      document.getElementById('logged-out-view').classList.add('hidden');
+      document.getElementById('logged-in-view').classList.remove('hidden');
+      document.getElementById('guru-badge').classList.remove('hidden');
+      document.getElementById('siswa-badge').classList.add('hidden');
+    } else {
+      document.getElementById('logged-out-view').classList.remove('hidden');
+      document.getElementById('logged-in-view').classList.add('hidden');
+      document.getElementById('guru-badge').classList.add('hidden');
+      updateSiswaBadge();
+    }
+  }
+
+  function renderKeaktifan() {
+    const tbody = document.getElementById('keaktifan-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (window.state.keaktifanList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada catatan keaktifan siswa.</td></tr>`;
+      return;
     }
 
-    window.exportSubmissionToCSV = function() {
-      let csv = 'No,Tipe Tugas,Judul Tugas,Kelas,Ketua/Pengirim,Anggota Kelompok,Link Berkas,Waktu Kirim\n';
-      window.state.submissionList.forEach((row, idx) => {
-        csv += `"${idx + 1}","${row.tipe}","${row.tugasJudul}","${row.kelas}","${row.pengirim}","${row.anggota}","${row.link}","${row.waktu}"\n`;
-      });
+    window.state.keaktifanList.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = "hover:bg-slate-50";
+      tr.innerHTML = `
+        <td class="py-3 px-4 font-medium">${idx + 1}</td>
+        <td class="py-3 px-4 font-bold text-slate-800">${row.nama}</td>
+        <td class="py-3 px-4 font-semibold text-sky-600">${row.kelas}</td>
+        <td class="py-3 px-4 text-slate-500">${row.waktu}</td>
+        <td class="py-3 px-4">
+          <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1 w-fit">
+            <i class="fa-solid fa-circle text-[6px]"></i> ${row.status}
+          </span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
 
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.setAttribute('href', url);
-      a.setAttribute('download', `Rekap_Pengumpulan_Tugas_Informatika.csv`);
-      a.click();
+  window.exportKeaktifanToCSV = function() {
+    let csv = 'No,Nama Siswa,Kelas,Waktu Login/Akses,Status Keaktifan\n';
+    window.state.keaktifanList.forEach((row, idx) => {
+      csv += `"${idx + 1}","${row.nama}","${row.kelas}","${row.waktu}","${row.status}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `Rekap_Keaktifan_Siswa_Informatika.csv`);
+    a.click();
+  };
+
+  window.filterMateriByKelas = function(kelas) {
+    window.state.filterMateriKelas = kelas;
+    switchPage('materi');
+    renderMateri();
+  };
+
+  function renderMateri() {
+    const container = document.getElementById('materi-container');
+    container.innerHTML = '';
+    const filtered = window.state.filterMateriKelas === 'ALL' 
+      ? window.state.materiList 
+      : window.state.materiList.filter(m => m.kelas === window.state.filterMateriKelas);
+
+    filtered.forEach(item => {
+      const card = document.createElement('div');
+      card.className = "bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4";
+      card.innerHTML = `
+        <div>
+          <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-sky-100 text-sky-700">Kelas ${item.kelas}</span>
+          <h3 class="font-bold text-slate-800 mt-2">${item.judul}</h3>
+          <p class="text-xs text-slate-500 mt-1">${item.deskripsi || ''}</p>
+        </div>
+        <a href="${item.link}" target="_blank" class="block text-center py-2 bg-sky-50 text-sky-700 font-semibold text-xs rounded-xl hover:bg-sky-100">
+          Buka Dokumen
+        </a>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  window.openModalTambahTugas = () => document.getElementById('modal-tambah-tugas').classList.remove('hidden');
+  window.closeModalTambahTugas = () => document.getElementById('modal-tambah-tugas').classList.add('hidden');
+
+  window.simpanTugasBaru = function(e) {
+    e.preventDefault();
+    const tipe = document.getElementById('form-tugas-tipe').value;
+    const kelas = document.getElementById('form-tugas-kelas').value;
+    const judul = document.getElementById('form-tugas-judul').value;
+    const instruksi = document.getElementById('form-tugas-instruksi').value;
+    const deadline = document.getElementById('form-tugas-deadline').value;
+
+    const newTask = { id: Date.now().toString(), tipe, kelas, judul, instruksi, deadline };
+    window.state.tugasList.push(newTask);
+
+    renderTugas();
+    closeModalTambahTugas();
+    Swal.fire('Terbit!', 'Tugas baru berhasil diterbitkan untuk siswa.', 'success');
+  };
+
+  function renderTugas() {
+    const container = document.getElementById('tugas-container');
+    container.innerHTML = '';
+
+    if (window.state.tugasList.length === 0) {
+      container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Belum ada tugas yang diterbitkan.</div>`;
+      return;
+    }
+
+    window.state.tugasList.forEach(t => {
+      const item = document.createElement('div');
+      item.className = "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
+      item.innerHTML = `
+        <div class="space-y-2 max-w-2xl">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${t.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${t.tipe}</span>
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">Kelas ${t.kelas}</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800">${t.judul}</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">${t.instruksi}</p>
+          <p class="text-[11px] font-semibold text-rose-600"><i class="fa-solid fa-clock mr-1"></i> Deadline: ${t.deadline}</p>
+        </div>
+        <div>
+          <button onclick="bukaModalKumpulTugas('${t.id}', '${t.judul}', '${t.tipe}')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i> Kumpulkan Tugas
+          </button>
+        </div>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  window.bukaModalKumpulTugas = function(id, judul, tipe) {
+    if (!window.state.siswaData) {
+      document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+      return;
+    }
+
+    document.getElementById('kumpul-tugas-id').value = id;
+    document.getElementById('kumpul-tugas-judul-val').value = judul;
+    document.getElementById('kumpul-tugas-tipe-val').value = tipe;
+    document.getElementById('kumpul-judul-tugas').innerText = judul;
+    document.getElementById('kumpul-tipe-badge').innerText = `Tugas ${tipe}`;
+
+    if (tipe === 'Kelompok') {
+      document.getElementById('field-anggota-kelompok').classList.remove('hidden');
+    } else {
+      document.getElementById('field-anggota-kelompok').classList.add('hidden');
+    }
+
+    document.getElementById('modal-kumpul-tugas').classList.remove('hidden');
+  };
+
+  window.closeModalKumpulTugas = () => document.getElementById('modal-kumpul-tugas').classList.add('hidden');
+
+  window.simpanPengumpulanSiswa = function(e) {
+    e.preventDefault();
+    const judul = document.getElementById('kumpul-tugas-judul-val').value;
+    const tipe = document.getElementById('kumpul-tugas-tipe-val').value;
+    const link = document.getElementById('kumpul-link').value;
+    const anggota = document.getElementById('kumpul-anggota').value || '-';
+
+    const payload = {
+      id: Date.now().toString(),
+      tugasJudul: judul,
+      tipe: tipe,
+      kelas: window.state.siswaData.kelas,
+      pengirim: window.state.siswaData.nama,
+      anggota: tipe === 'Kelompok' ? anggota : '-',
+      link: link,
+      waktu: new Date().toLocaleString('id-ID')
     };
 
-    window.openModalTambahMateri = () => document.getElementById('modal-tambah-materi').classList.remove('hidden');
-    window.closeModalMateri = () => document.getElementById('modal-tambah-materi').classList.add('hidden');
+    window.state.submissionList.push(payload);
+    renderSubmissions();
+    closeModalKumpulTugas();
 
-    window.simpanMateriBaru = function(e) {
-      e.preventDefault();
-      const kelas = document.getElementById('form-materi-kelas').value;
-      const judul = document.getElementById('form-materi-judul').value;
-      const deskripsi = document.getElementById('form-materi-deskripsi').value;
-      const link = document.getElementById('form-materi-link').value;
+    Swal.fire({
+      icon: 'success',
+      title: 'Tugas Terkirim!',
+      text: `Tugas ${tipe} Anda berhasil dikirimkan ke guru.`,
+      confirmButtonColor: '#059669'
+    });
+  };
 
-      window.state.materiList.push({ id: Date.now().toString(), kelas, judul, deskripsi, link });
-      renderMateri();
-      closeModalMateri();
-      Swal.fire('Berhasil', 'Materi berhasil dipublikasikan!', 'success');
-    };
-  </script>
+  function renderSubmissions() {
+    const tbody = document.getElementById('submission-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (window.state.submissionList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">Belum ada tugas yang dikumpulkan siswa.</td></tr>`;
+      return;
+    }
+
+    window.state.submissionList.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = "hover:bg-slate-50";
+      tr.innerHTML = `
+        <td class="py-3 px-4 font-medium">${idx + 1}</td>
+        <td class="py-3 px-4">
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold ${row.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${row.tipe}</span>
+          <div class="font-bold text-slate-800 mt-0.5">${row.tugasJudul}</div>
+        </td>
+        <td class="py-3 px-4 font-semibold text-sky-600">${row.kelas}</td>
+        <td class="py-3 px-4">
+          <div class="font-bold text-slate-800">${row.pengirim}</div>
+          ${row.tipe === 'Kelompok' ? `<div class="text-[10px] text-slate-500">Anggota: ${row.anggota}</div>` : ''}
+        </td>
+        <td class="py-3 px-4 text-slate-400">${row.waktu}</td>
+        <td class="py-3 px-4">
+          <a href="${row.link}" target="_blank" class="px-3 py-1.5 bg-sky-50 text-sky-700 font-bold text-[11px] rounded-lg hover:bg-sky-100 flex items-center gap-1 w-fit">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Periksa Berkas
+          </a>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  window.exportSubmissionToCSV = function() {
+    let csv = 'No,Tipe Tugas,Judul Tugas,Kelas,Ketua/Pengirim,Anggota Kelompok,Link Berkas,Waktu Kirim\n';
+    window.state.submissionList.forEach((row, idx) => {
+      csv += `"${idx + 1}","${row.tipe}","${row.tugasJudul}","${row.kelas}","${row.pengirim}","${row.anggota}","${row.link}","${row.waktu}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `Rekap_Pengumpulan_Tugas_Informatika.csv`);
+    a.click();
+  };
+
+  window.openModalTambahMateri = () => document.getElementById('modal-tambah-materi').classList.remove('hidden');
+  window.closeModalMateri = () => document.getElementById('modal-tambah-materi').classList.add('hidden');
+
+  window.simpanMateriBaru = function(e) {
+    e.preventDefault();
+    const kelas = document.getElementById('form-materi-kelas').value;
+    const judul = document.getElementById('form-materi-judul').value;
+    const deskripsi = document.getElementById('form-materi-deskripsi').value;
+    const link = document.getElementById('form-materi-link').value;
+
+    window.state.materiList.push({ id: Date.now().toString(), kelas, judul, deskripsi, link });
+    renderMateri();
+    closeModalMateri();
+    Swal.fire('Berhasil', 'Materi berhasil dipublikasikan!', 'success');
+  };
+</script>
 </body>
 </html>
