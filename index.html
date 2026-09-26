@@ -135,26 +135,105 @@
   <!-- MAIN CONTENT CONTAINER -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <!-- PAGE: HOME -->
-    <section id="page-home" class="page-content space-y-8">
-      <div class="relative overflow-hidden rounded-3xl sky-gradient p-8 sm:p-12 text-white shadow-xl shadow-sky-100">
-        <div class="relative z-10 max-w-2xl space-y-4">
-          <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider text-white">Portal Resmi Pembelajaran</span>
-          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Media Pembelajaran Informatika Interaktif</h1>
-          <p class="text-sky-50 text-base sm:text-lg font-light leading-relaxed">
-            Selamat Datang di Ruang Belajar Digital khusus Kelas X, XI, dan XII SMA Negeri 4 Manado. Akses materi, kuis, dan pengumpulkan tugas secara online.
-          </p>
-          <div class="pt-2 flex flex-wrap gap-3">
-            <button onclick="switchPage('materi')" class="px-6 py-3 bg-white text-sky-700 font-bold rounded-xl shadow-lg hover:bg-sky-50 transition-all flex items-center gap-2">
-              <i class="fa-solid fa-book-open"></i> Eksplorasi Materi
-            </button>
-            <button onclick="switchPage('tugas')" class="px-6 py-3 bg-sky-800/40 border border-white/30 text-white font-semibold rounded-xl hover:bg-sky-800/60 transition-all flex items-center gap-2">
-              <i class="fa-solid fa-list-check"></i> Lihat Tugas
-            </button>
+    <!-- BERANDA / HOME PAGE -->
+    <!-- BERANDA / HOME PAGE -->
+<div id="page-home" class="page-content space-y-8">
+
+  <!-- CARD UTAMA & JAM DIGITAL / KALENDER -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Hero Banner Utama -->
+    <div class="lg:col-span-2 bg-gradient-to-br from-indigo-700 via-indigo-800 to-slate-900 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[260px]">
+      <div class="absolute -right-10 -bottom-10 w-52 h-52 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="relative z-10 space-y-3">
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/10 backdrop-blur-md border border-white/20 text-indigo-200 inline-block">
+          <i class="fa-solid fa-graduation-cap mr-1"></i> Portal Informatika SMAN 4 Manado
+        </span>
+        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug">
+          Pembelajaran Digital & Informasi Kuis Terintegrasi
+        </h1>
+        <p class="text-xs md:text-sm text-indigo-100/80 leading-relaxed max-w-xl">
+          Akses materi pelajaran, pengumuman ujian, jadwal kuis, serta rekap keaktifan siswa secara real-time.
+        </p>
+      </div>
+
+      <div class="relative z-10 pt-6 flex flex-wrap items-center gap-3">
+        <button onclick="switchPage('materi')" class="px-5 py-2.5 bg-white text-indigo-900 font-extrabold text-xs rounded-xl shadow-lg hover:bg-slate-100 transition-all">
+          <i class="fa-solid fa-book-open mr-1.5"></i> Lihat Materi
+        </button>
+        <button onclick="switchPage('tugas')" class="px-5 py-2.5 bg-indigo-600/60 hover:bg-indigo-600 border border-indigo-400/30 text-white font-bold text-xs rounded-xl transition-all">
+          <i class="fa-solid fa-paper-plane mr-1.5"></i> Pengumpulan Tugas
+        </button>
+      </div>
+    </div>
+
+    <!-- Widget Jam Digital & Kalender Interaktif -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">
+          <i class="fa-solid fa-clock text-indigo-600 mr-1"></i> Waktu & Tanggal
+        </span>
+        <span id="badge-hari-ini" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700">
+          WITA
+        </span>
+      </div>
+
+      <!-- Live Digital Clock -->
+      <div class="text-center py-2 space-y-1">
+        <div id="live-digital-clock" class="text-4xl md:text-5xl font-black text-slate-800 tracking-tight font-mono">
+          00:00:00
+        </div>
+        <p id="live-digital-date" class="text-xs font-semibold text-indigo-600">
+          Senin, 1 Januari 2026
+        </p>
+      </div>
+
+      <!-- Mini Calendar View -->
+      <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-2">
+        <div class="flex justify-between items-center text-xs font-bold text-slate-700">
+          <span id="cal-month-year">September 2026</span>
+          <div class="flex gap-1 text-[10px] text-slate-400">
+            <i class="fa-solid fa-calendar-day text-indigo-600"></i> Hari Ini
           </div>
         </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-400 pt-1">
+          <span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+        </div>
+        <div id="mini-calendar-days" class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-slate-700">
+          <!-- Rendered via JS -->
+        </div>
       </div>
-    </section>
+    </div>
+
+  </div>
+
+  <!-- SECTION PENGUMUMAN DENGAN TOMBOL TAMBAH UNTUK GURU -->
+  <div class="space-y-4">
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+      <div class="space-y-0.5">
+        <h2 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-bullhorn text-rose-500"></i> Pengumuman & Informasi Kuis
+        </h2>
+        <p class="text-xs text-slate-500">
+          Informasi ujian, kuis, serta instruksi terbaru langsung dari guru.
+        </p>
+      </div>
+
+      <!-- Tombol Tambah Pengumuman (Otomatis Aktif & Muncul Ketika Guru Log In) -->
+      <div id="btn-tambah-pengumuman-wrapper" class="hidden">
+        <button onclick="openModalTambahPengumuman()" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Tambah Pengumuman
+        </button>
+      </div>
+    </div>
+
+    <!-- Container Daftar Pengumuman -->
+    <div id="pengumuman-container" class="grid grid-cols-1 gap-4">
+      <!-- Pengumuman di-render otomatis via JS -->
+    </div>
+  </div>
+
+</div>
 
     <!-- PAGE: MATERI -->
     <section id="page-materi" class="page-content hidden space-y-6">
@@ -603,6 +682,106 @@
         });
       }
       renderKeaktifan();
+
+      // --- 1. LOGIK JAM DIGITAL REAL-TIME ---
+function updateLiveClock() {
+  const now = new Date();
+  
+  // Format Waktu
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  
+  const clockEl = document.getElementById('live-digital-clock');
+  if (clockEl) {
+    clockEl.innerText = `${hours}:${minutes}:${seconds}`;
+  }
+
+  // Format Tanggal Indonesia
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const dateStr = now.toLocaleDateString('id-ID', options);
+  
+  const dateEl = document.getElementById('live-digital-date');
+  if (dateEl) {
+    dateEl.innerText = dateStr;
+  }
+}
+
+// Jalankan jam digital setiap 1 detik
+setInterval(updateLiveClock, 1000);
+updateLiveClock();
+
+// --- 2. LOGIK MINI KALENDER ---
+function renderMiniCalendar() {
+  const container = document.getElementById('mini-calendar-days');
+  const monthYearEl = document.getElementById('cal-month-year');
+  if (!container || !monthYearEl) return;
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const todayDate = now.getDate();
+
+  // Nama bulan Indonesia
+  const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  monthYearEl.innerText = `${namaBulan[month]} ${year}`;
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const totalDays = new Date(year, month + 1, 0).getDate();
+
+  container.innerHTML = '';
+
+  // Slot kosong awal bulan
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('span');
+    empty.className = "py-1";
+    container.appendChild(empty);
+  }
+
+  // Tanggal bulan berjalan
+  for (let d = 1; d <= totalDays; d++) {
+    const dayBtn = document.createElement('span');
+    dayBtn.className = "py-1 rounded-lg transition-all text-[11px] font-semibold";
+    
+    if (d === todayDate) {
+      dayBtn.className += " bg-indigo-600 text-white font-bold shadow-sm";
+    } else {
+      dayBtn.className += " hover:bg-slate-200/60 text-slate-700";
+    }
+    
+    dayBtn.innerText = d;
+    container.appendChild(dayBtn);
+  }
+}
+
+// Panggil renderer kalender saat DOM siap
+window.addEventListener('DOMContentLoaded', () => {
+  renderMiniCalendar();
+});
+
+// --- 3. KONTROL TAMPILAN TOMBOL PENGUMUMAN KHUSUS GURU ---
+// Pastikan fungsi updateAuthUI Anda diperbarui agar tombol pengumuman di Beranda ikut muncul saat Guru login:
+function updateAuthUI(isLoggedIn) {
+  const btnTambahWrapper = document.getElementById('btn-tambah-pengumuman-wrapper');
+
+  if (isLoggedIn) {
+    document.getElementById('logged-out-view')?.classList.add('hidden');
+    document.getElementById('logged-in-view')?.classList.remove('hidden');
+    document.getElementById('guru-badge')?.classList.remove('hidden');
+    document.getElementById('siswa-badge')?.classList.add('hidden');
+    
+    // Tampilkan tombol Tambah Pengumuman di Beranda khusus Guru
+    if (btnTambahWrapper) btnTambahWrapper.classList.remove('hidden');
+  } else {
+    document.getElementById('logged-out-view')?.classList.remove('hidden');
+    document.getElementById('logged-in-view')?.classList.add('hidden');
+    document.getElementById('guru-badge')?.classList.add('hidden');
+    
+    // Sembunyikan dari siswa
+    if (btnTambahWrapper) btnTambahWrapper.classList.add('hidden');
+    updateSiswaBadge();
+  }
+}
     });
 
     // Synchronize Pengumuman dari Firebase
