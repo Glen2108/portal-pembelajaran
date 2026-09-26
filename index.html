@@ -25,13 +25,9 @@
       background-color: #0284c7;
       color: white !important;
     }
-    .star-rating i {
-      cursor: pointer;
-      transition: color 0.2s;
-    }
   </style>
 </head>
-<body class="flex flex-col min-h-screen text-slate-800">
+<body class="flex flex-col min-h-screen text-slate-800 relative">
 
   <!-- NAVBAR -->
   <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100">
@@ -133,13 +129,12 @@
 
     <!-- PAGE: HOME -->
     <section id="page-home" class="page-content space-y-8">
-      <!-- Hero Banner -->
       <div class="relative overflow-hidden rounded-3xl sky-gradient p-8 sm:p-12 text-white shadow-xl shadow-sky-100">
         <div class="relative z-10 max-w-2xl space-y-4">
           <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider text-white">Portal Resmi Pembelajaran</span>
           <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Media Pembelajaran Informatika Interaktif</h1>
           <p class="text-sky-50 text-base sm:text-lg font-light leading-relaxed">
-            Selamat Datang di Ruang Belajar Digital khusus Kelas X, XI, dan XII SMA Negeri 4 Manado. Akses materi, kuis, dan pengumpulan tugas dengan cepat dan terintegrasi.
+            Selamat Datang di Ruang Belajar Digital khusus Kelas X, XI, dan XII SMA Negeri 4 Manado. Akses materi, kuis, dan pengumpulan tugas secara online.
           </p>
           <div class="pt-2 flex flex-wrap gap-3">
             <button onclick="switchPage('materi')" class="px-6 py-3 bg-white text-sky-700 font-bold rounded-xl shadow-lg hover:bg-sky-50 transition-all flex items-center gap-2">
@@ -147,47 +142,6 @@
             </button>
             <button onclick="switchPage('tugas')" class="px-6 py-3 bg-sky-800/40 border border-white/30 text-white font-semibold rounded-xl hover:bg-sky-800/60 transition-all flex items-center gap-2">
               <i class="fa-solid fa-list-check"></i> Lihat Tugas
-            </button>
-          </div>
-        </div>
-        <div class="absolute -right-10 -bottom-10 opacity-20 pointer-events-none hidden lg:block">
-          <i class="fa-solid fa-network-wired text-[280px]"></i>
-        </div>
-      </div>
-
-      <!-- Quick Class Access Grid -->
-      <div>
-        <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-          <i class="fa-solid fa-layer-group text-sky-600"></i> Tingkat Kelas & Kurikulum
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Card Kelas X -->
-          <div class="glass-card rounded-2xl p-6 hover:shadow-lg transition-all border-t-4 border-sky-400 group">
-            <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">X</div>
-            <h3 class="text-lg font-bold text-slate-800">Kelas X Informatika</h3>
-            <p class="text-sm text-slate-500 mt-2">Dasar-dasar Berpikir Komputasional, Teknologi Informasi & Komunikasi, serta Sistem Komputer.</p>
-            <button onclick="filterMateriByKelas('X')" class="mt-4 text-sky-600 font-semibold text-sm hover:underline flex items-center gap-1">
-              Lihat Materi Kelas X <i class="fa-solid fa-arrow-right text-xs"></i>
-            </button>
-          </div>
-
-          <!-- Card Kelas XI -->
-          <div class="glass-card rounded-2xl p-6 hover:shadow-lg transition-all border-t-4 border-sky-500 group">
-            <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">XI</div>
-            <h3 class="text-lg font-bold text-slate-800">Kelas XI Informatika</h3>
-            <p class="text-sm text-slate-500 mt-2">Jaringan Komputer & Internet, Analisis Data, dan Pemrograman Terstruktur.</p>
-            <button onclick="filterMateriByKelas('XI')" class="mt-4 text-sky-600 font-semibold text-sm hover:underline flex items-center gap-1">
-              Lihat Materi Kelas XI <i class="fa-solid fa-arrow-right text-xs"></i>
-            </button>
-          </div>
-
-          <!-- Card Kelas XII -->
-          <div class="glass-card rounded-2xl p-6 hover:shadow-lg transition-all border-t-4 border-sky-600 group">
-            <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">XII</div>
-            <h3 class="text-lg font-bold text-slate-800">Kelas XII Informatika</h3>
-            <p class="text-sm text-slate-500 mt-2">Algoritma Lanjut, Algoritma Pemrograman Web, Rekayasa Perangkat Lunak, & Dampak Sosial Informatika.</p>
-            <button onclick="filterMateriByKelas('XII')" class="mt-4 text-sky-600 font-semibold text-sm hover:underline flex items-center gap-1">
-              Lihat Materi Kelas XII <i class="fa-solid fa-arrow-right text-xs"></i>
             </button>
           </div>
         </div>
@@ -199,9 +153,8 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
         <div>
           <h2 class="text-2xl font-bold text-slate-800">Materi Pembelajaran</h2>
-          <p class="text-sm text-slate-500">Pilih tingkat kelas untuk mengunduh modul atau melihat slide Google Drive.</p>
+          <p class="text-sm text-slate-500">Pilih tingkat kelas untuk mengunduh modul atau melihat dokumen.</p>
         </div>
-        <!-- Filter Kelas -->
         <div class="flex gap-2 bg-slate-100 p-1.5 rounded-xl text-sm font-semibold">
           <button onclick="filterMateriByKelas('ALL')" id="btn-materi-all" class="px-4 py-2 rounded-lg bg-white text-sky-600 shadow-sm">Semua</button>
           <button onclick="filterMateriByKelas('X')" id="btn-materi-x" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600">Kelas X</button>
@@ -209,24 +162,18 @@
           <button onclick="filterMateriByKelas('XII')" id="btn-materi-xii" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600">Kelas XII</button>
         </div>
       </div>
-
-      <!-- Grid Daftar Materi -->
-      <div id="materi-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Rendered dynamically -->
-      </div>
+      <div id="materi-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
 
     <!-- PAGE: TUGAS -->
     <section id="page-tugas" class="page-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-        <h2 class="text-2xl font-bold text-slate-800">Tugas & Lembar Kerja Siswa</h2>
-        <p class="text-sm text-slate-500">Kumpulkan tugas tepat waktu untuk mendapatkan poin keaktifan dan penilaian semester.</p>
+      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Tugas & Lembar Kerja Siswa</h2>
+          <p class="text-sm text-slate-500">Kerjakan tugas secara Mandiri atau Kelompok dan kumpulkan secara online.</p>
+        </div>
       </div>
-
-      <!-- Container Daftar Tugas -->
-      <div id="tugas-container" class="space-y-4">
-        <!-- Rendered dynamically -->
-      </div>
+      <div id="tugas-container" class="space-y-4"></div>
     </section>
 
     <!-- PAGE: PENGUMUMAN -->
@@ -235,9 +182,7 @@
         <h2 class="text-2xl font-bold text-slate-800">Pengumuman & Informasi Terbaru</h2>
         <p class="text-sm text-slate-500">Informasi jadwal ujian, praktikum laboratorium, dan pengumuman kelas.</p>
       </div>
-      <div id="pengumuman-container" class="space-y-4">
-        <!-- Rendered dynamically -->
-      </div>
+      <div id="pengumuman-container" class="space-y-4"></div>
     </section>
 
     <!-- PAGE: PROFIL GURU -->
@@ -257,120 +202,99 @@
               <p><i class="fa-solid fa-school text-sky-500 w-5"></i> SMA NEGERI 4 MANADO</p>
               <p><i class="fa-solid fa-envelope text-sky-500 w-5"></i> glendy.taawoeda@sman4manado.sch.id</p>
             </div>
-            <p class="text-xs text-slate-500 pt-2 border-t border-slate-200">
-              "Mengembangkan literasi digital dan keterampilan berpikir komputasional generasi muda Kota Manado menuju era Indonesia Emas."
-            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PAGE: DASHBOARD GURU (RESTRICTED) -->
+    <!-- PAGE: DASHBOARD GURU -->
     <section id="page-dashboard" class="page-content hidden space-y-8">
-      <!-- Top Control Card -->
       <div class="glass-card p-6 rounded-2xl border-l-8 border-sky-600 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 class="text-2xl font-bold text-slate-900">Panel Kelola Guru</h2>
-          <p class="text-sm text-slate-500">Kelola pengaturan semester, upload tautan materi Google Drive, dan pantau rekap keaktifan siswa.</p>
+          <p class="text-sm text-slate-500">Kelola materi, buat tugas Mandiri/Kelompok, dan periksa kiriman siswa.</p>
         </div>
         <div class="flex flex-wrap gap-2">
           <button onclick="openModalTambahMateri()" class="px-4 py-2.5 bg-sky-600 text-white rounded-xl text-sm font-semibold hover:bg-sky-700 shadow-sm flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> Tambah Materi (GDrive)
+            <i class="fa-solid fa-plus"></i> Tambah Materi
           </button>
-          <button onclick="openModalTambahTugas()" class="px-4 py-2.5 bg-sky-800 text-white rounded-xl text-sm font-semibold hover:bg-sky-900 shadow-sm flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> Tambah Tugas
+          <button onclick="openModalTambahTugas()" class="px-4 py-2.5 bg-amber-600 text-white rounded-xl text-sm font-semibold hover:bg-amber-700 shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Tambah Tugas Baru
           </button>
         </div>
       </div>
 
-      <!-- Settings Tahun Ajaran -->
-      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
-        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-sliders text-sky-600"></i> Pengaturan Tahun Ajaran & Semester
-        </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <!-- TABEL DAFTAR TUGAS TERKIRIM SISWA -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden p-6 space-y-4">
+        <div class="flex justify-between items-center">
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Tahun Ajaran</label>
-            <input type="text" id="input-ta" placeholder="Contoh: 2026/2027" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+            <h3 class="text-lg font-bold text-slate-800">Daftar Kiriman Tugas Siswa (Mandiri / Kelompok)</h3>
+            <p class="text-xs text-slate-500">Daftar siswa yang telah mengumpulkan tugas. Klik tombol berkas untuk memeriksa pekerjaan mereka.</p>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Semester</label>
-            <select id="input-semester" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
-              <option value="Semester Ganjil (Juli - Desember)">Semester Ganjil (Juli - Desember)</option>
-              <option value="Semester Genap (Januari - Juni)">Semester Genap (Januari - Juni)</option>
-            </select>
-          </div>
-          <div class="flex items-end">
-            <button onclick="simpanTahunAjaran()" class="w-full py-2 bg-slate-800 text-white font-semibold text-sm rounded-lg hover:bg-slate-900 transition-all">
-              Update Header Web
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- REKAPITULASI KEAKTIFAN SISWA (WITH SORTING & PAGINATION) -->
-      <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden space-y-4 p-6">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h3 class="text-lg font-bold text-slate-800">Rekapitulasi Akses Materi & Tugas Siswa</h3>
-            <p class="text-xs text-slate-500">Tersusun otomatis berurutan dari Abjad Kelas (A-Z) & Nama Siswa untuk perhitungan nilai tambah semester.</p>
-          </div>
-          <div class="flex items-center gap-2 w-full sm:w-auto">
-            <input type="text" id="search-rekap" onkeyup="renderRekapTable()" placeholder="Cari Nama / Kelas..." class="px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none w-full sm:w-48">
-            <button onclick="exportTableToCSV()" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 flex items-center gap-1">
-              <i class="fa-solid fa-file-excel"></i> Export CSV
-            </button>
-          </div>
+          <button onclick="exportSubmissionToCSV()" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 flex items-center gap-1">
+            <i class="fa-solid fa-file-excel"></i> Export CSV Tugas
+          </button>
         </div>
 
-        <!-- Rekap Table -->
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm border-collapse">
             <thead>
               <tr class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider border-b">
                 <th class="py-3 px-4 font-bold">No</th>
-                <th class="py-3 px-4 font-bold cursor-pointer hover:text-sky-600" onclick="renderRekapTable()">
-                  Kelas <i class="fa-solid fa-sort text-xs"></i>
-                </th>
-                <th class="py-3 px-4 font-bold">Nama Siswa</th>
-                <th class="py-3 px-4 font-bold">Perangkat User</th>
-                <th class="py-3 px-4 font-bold">Aktivitas</th>
-                <th class="py-3 px-4 font-bold">Judul Dokumen / Tugas</th>
-                <th class="py-3 px-4 font-bold">Waktu Akses</th>
+                <th class="py-3 px-4 font-bold">Tipe & Tugas</th>
+                <th class="py-3 px-4 font-bold">Kelas</th>
+                <th class="py-3 px-4 font-bold">Pengirim / Anggota Kelompok</th>
+                <th class="py-3 px-4 font-bold">Waktu Kirim</th>
+                <th class="py-3 px-4 font-bold">Aksi / Berkas</th>
               </tr>
             </thead>
-            <tbody id="rekap-table-body" class="divide-y divide-slate-100 text-slate-700 text-xs">
+            <tbody id="submission-table-body" class="divide-y divide-slate-100 text-slate-700 text-xs">
               <!-- Rendered Dynamically -->
             </tbody>
           </table>
-        </div>
-
-        <!-- Pagination Controls -->
-        <div class="flex justify-between items-center pt-4 border-t border-slate-100 text-xs text-slate-500">
-          <span id="pagination-info">Menampilkan 1-10 dari total 0 data</span>
-          <div class="flex gap-1">
-            <button onclick="prevPage()" id="btn-prev-page" class="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200">Prev</button>
-            <button onclick="nextPage()" id="btn-next-page" class="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200">Next</button>
-          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- MODAL: POPUP SELAMAT DATANG SISWA & DETEKSI DEVICE (WITH GURU BYPASS) -->
+  <!-- FLOATING BANNER (INFO UJI COBA & PENGEMBANGAN) -->
+  <div id="floating-info-banner" class="fixed bottom-5 right-5 z-50 max-w-sm sm:max-w-md w-[calc(100%-2.5rem)] bg-slate-900/90 text-white p-4 rounded-2xl shadow-2xl border border-slate-700/80 backdrop-blur-md transition-all duration-300">
+    <div class="flex items-start gap-3">
+      <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-amber-500/30">
+        <i class="fa-solid fa-screwdriver-wrench text-base"></i>
+      </div>
+      <div class="flex-grow space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            Tahap Uji Coba
+          </span>
+          <button onclick="dismissFloatingBanner()" class="text-slate-400 hover:text-white text-xs p-1">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Website ini masih dalam <b>tahap uji coba & pengembangan oleh guru</b>. Mohon dimaklumi apabila terdapat kendala atau kekurangan. Sistem akan terus diperbaiki dan disempurnakan ke depannya.
+        </p>
+        <div class="pt-1 flex justify-end">
+          <button onclick="dismissFloatingBanner()" class="text-[11px] font-semibold text-sky-400 hover:text-sky-300 bg-sky-950/60 px-3 py-1 rounded-lg border border-sky-800/50">
+            Mengerti
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: POPUP WELCOME SISWA -->
   <div id="modal-welcome-siswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
       <div class="text-center space-y-3">
-        <div class="w-14 h-14 rounded-2xl sky-gradient text-white flex items-center justify-center mx-auto text-2xl shadow-lg shadow-sky-200">
+        <div class="w-14 h-14 rounded-2xl sky-gradient text-white flex items-center justify-center mx-auto text-2xl shadow-lg">
           <i class="fa-solid fa-hand-wave"></i>
         </div>
         <h3 class="text-2xl font-extrabold text-slate-900">Selamat Datang!</h3>
-        <div class="bg-sky-50 border border-sky-100 p-3 rounded-2xl text-xs text-sky-800 space-y-1">
-          <p><i class="fa-solid fa-mobile-screen text-sky-600 mr-1"></i> Perangkat Terdeteksi: <strong id="detected-device-text" class="text-sky-900">Mengidentifikasi...</strong></p>
-          <p class="text-[11px] text-slate-500">Sistem menyesuaikan tampilan otomatis untuk perangkat Anda.</p>
-        </div>
+        <p class="text-xs text-slate-500">Masukkan nama dan kelas untuk memulai pembelajaran.</p>
       </div>
-
       <form onsubmit="simpanIdentitasAwal(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
@@ -396,53 +320,15 @@
             <option value="XII-5">XII-5</option>
           </select>
         </div>
-        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
+        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md">
           Masuk Pembelajaran (Siswa)
         </button>
       </form>
-
-      <!-- TOMBOL KHUSUS BAPAK/IBU GURU -->
       <div class="pt-4 border-t border-slate-100 text-center">
-        <p class="text-xs text-slate-500 mb-2">Apakah Anda seorang Guru / Pengajar?</p>
-        <button onclick="pintuKhususGuru()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all">
+        <button onclick="pintuKhususGuru()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2">
           <i class="fa-solid fa-user-shield text-sky-600"></i> Saya Guru / Pengajar (Masuk Akun)
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- MODAL: RATING & ULASAN SEBELUM KELUAR (EXIT INTENT - SISWA ONLY) -->
-  <div id="modal-rating-exit" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
-      <button onclick="closeRatingModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
-        <i class="fa-solid fa-xmark text-xl"></i>
-      </button>
-      <div class="text-center space-y-2">
-        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-xl">
-          <i class="fa-solid fa-star"></i>
-        </div>
-        <h3 class="text-xl font-bold text-slate-900">Beri Rating Website</h3>
-        <p class="text-xs text-slate-500">Halo <strong id="exit-siswa-nama" class="text-sky-600">Siswa</strong>, bagaimana pengalaman Anda mengakses pembelajaran Informatika hari ini?</p>
-      </div>
-
-      <!-- Star Input -->
-      <div class="flex justify-center gap-2 text-2xl text-slate-300 star-rating" id="star-container">
-        <i class="fa-solid fa-star" onclick="setRating(1)"></i>
-        <i class="fa-solid fa-star" onclick="setRating(2)"></i>
-        <i class="fa-solid fa-star" onclick="setRating(3)"></i>
-        <i class="fa-solid fa-star" onclick="setRating(4)"></i>
-        <i class="fa-solid fa-star" onclick="setRating(5)"></i>
-      </div>
-
-      <form onsubmit="kirimRatingUlasan(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Masukan / Saran Perbaikan (Opsional)</label>
-          <textarea id="rating-saran" rows="3" placeholder="Sampaikan kendala atau saran tampilan/materi..." class="w-full px-3 py-2 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
-        </div>
-        <button type="submit" class="w-full py-3 bg-slate-800 text-white font-bold text-sm rounded-xl hover:bg-slate-900 shadow-md transition-all">
-          Kirim Rating & Keluar
-        </button>
-      </form>
     </div>
   </div>
 
@@ -453,11 +339,7 @@
         <i class="fa-solid fa-xmark text-xl"></i>
       </button>
       <div class="text-center space-y-2">
-        <div class="w-12 h-12 rounded-2xl sky-gradient text-white flex items-center justify-center mx-auto text-xl shadow-md">
-          <i class="fa-solid fa-lock"></i>
-        </div>
         <h3 class="text-xl font-bold text-slate-900">Login Akses Guru</h3>
-        <p class="text-xs text-slate-500">Gunakan akun email khusus guru yang terdaftar.</p>
       </div>
       <form onsubmit="handleLoginGuru(event)" class="space-y-4">
         <div>
@@ -468,7 +350,7 @@
           <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi</label>
           <input type="password" id="login-password" required class="w-full px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none">
         </div>
-        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition-all">
+        <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md">
           Masuk ke Dashboard
         </button>
       </form>
@@ -493,16 +375,15 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Judul Materi</label>
-          <input type="text" id="form-materi-judul" required placeholder="Contoh: Algoritma dan Pemrograman Python" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+          <input type="text" id="form-materi-judul" required placeholder="Contoh: Algoritma Python" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label>
           <textarea id="form-materi-deskripsi" rows="2" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Tautan / Link Google Drive Dokumen</label>
-          <input type="url" id="form-materi-link" required placeholder="https://drive.google.com/file/d/..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
-          <p class="text-[10px] text-slate-400 mt-1">*Pastikan akses berbagi di Google Drive diatur ke "Siapa saja yang memiliki link".</p>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Link Google Drive Dokumen</label>
+          <input type="url" id="form-materi-link" required placeholder="https://drive.google.com/..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
         </div>
         <button type="submit" class="w-full py-3 bg-sky-600 text-white font-bold text-sm rounded-xl hover:bg-sky-700 shadow-md">
           Simpan & Publikasikan
@@ -511,41 +392,99 @@
     </div>
   </div>
 
+  <!-- MODAL: GURU TAMBAH TUGAS -->
+  <div id="modal-tambah-tugas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl relative space-y-4">
+      <button onclick="closeModalTambahTugas()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+      <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+        <i class="fa-solid fa-pen-to-square text-amber-600"></i> Buat Tugas Baru
+      </h3>
+      <form onsubmit="simpanTugasBaru(event)" class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Pilihan Pengerjaan</label>
+            <select id="form-tugas-tipe" required class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="Mandiri">Mandiri (Individu)</option>
+              <option value="Kelompok">Kelompok</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Untuk Kelas</label>
+            <select id="form-tugas-kelas" required class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="X">Kelas X</option>
+              <option value="XI">Kelas XI</option>
+              <option value="XII">Kelas XII</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Judul Tugas / Kuis</label>
+          <input type="text" id="form-tugas-judul" required placeholder="Contoh: Praktikum Topologi Jaringan" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Instruksi / Petunjuk Tugas</label>
+          <textarea id="form-tugas-instruksi" rows="3" required placeholder="Jelaskan langkah pengerjaan atau format file yang diminta..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tenggat Waktu (Deadline)</label>
+          <input type="date" id="form-tugas-deadline" required class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm rounded-xl shadow-md transition-all">
+          Terbitkan Tugas
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SISWA KUMPULKAN TUGAS ONLINE -->
+  <div id="modal-kumpul-tugas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl relative space-y-4">
+      <button onclick="closeModalKumpulTugas()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+      <div class="space-y-1">
+        <span id="kumpul-tipe-badge" class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">Tugas</span>
+        <h3 id="kumpul-judul-tugas" class="text-xl font-bold text-slate-900">Pengumpulan Tugas</h3>
+      </div>
+
+      <form onsubmit="simpanPengumpulanSiswa(event)" class="space-y-4">
+        <input type="hidden" id="kumpul-tugas-id">
+        <input type="hidden" id="kumpul-tugas-judul-val">
+        <input type="hidden" id="kumpul-tugas-tipe-val">
+
+        <!-- Input Jika Tugas Kelompok -->
+        <div id="field-anggota-kelompok" class="hidden space-y-1 bg-amber-50 p-3 rounded-xl border border-amber-200">
+          <label class="block text-xs font-bold text-amber-900">Nama Anggota Kelompok (Satu kelompok 1 kiriman)</label>
+          <textarea id="kumpul-anggota" rows="2" placeholder="Contoh: 1. Gabriel, 2. Michael, 3. Sarah" class="w-full px-3 py-2 text-xs border rounded-lg focus:ring-2 focus:ring-amber-500 outline-none bg-white"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tautan / Link Berkas Tugas (Google Drive / Canva / Cloud)</label>
+          <input type="url" id="kumpul-link" required placeholder="https://drive.google.com/..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+          <p class="text-[10px] text-slate-400 mt-1">*Pastikan akses tautan di-set "Siapa saja yang memiliki link dapat melihat".</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Tambahan (Opsional)</label>
+          <input type="text" id="kumpul-catatan" placeholder="Catatan singkat untuk guru..." class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 outline-none">
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-emerald-600 text-white font-bold text-sm rounded-xl hover:bg-emerald-700 shadow-md">
+          Kirimkan Tugas Sekarang
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="bg-slate-900 text-slate-400 pt-12 pb-8 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div class="space-y-3 md:col-span-2">
-          <div class="flex items-center space-x-3 text-white">
-            <div class="w-10 h-10 rounded-xl sky-gradient flex items-center justify-center text-white">
-              <i class="fa-solid fa-laptop-code text-xl"></i>
-            </div>
-            <span class="text-lg font-bold tracking-tight">INFORMATIKA SMAN 4 MANADO</span>
-          </div>
-          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
-            Website Resmi Pembelajaran Mata Pelajaran Informatika SMA Negeri 4 Manado. Fasilitas media belajar mandiri, tugas, serta materi digital interaktif.
-          </p>
-        </div>
-
-        <div>
-          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Navigasi</h4>
-          <ul class="space-y-2 text-xs">
-            <li><a href="#" onclick="switchPage('home')" class="hover:text-sky-400">Beranda</a></li>
-            <li><a href="#" onclick="switchPage('materi')" class="hover:text-sky-400">Materi Pembelajaran</a></li>
-            <li><a href="#" onclick="switchPage('tugas')" class="hover:text-sky-400">Tugas & Kuis</a></li>
-            <li><a href="#" onclick="switchPage('profil')" class="hover:text-sky-400">Profil Guru Pengampu</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Lokasi Sekolah</h4>
-          <p class="text-xs leading-relaxed">
-            Jl. Manguni 11, Perkamil, Kec. Paal Dua, Kota Manado, Sulawesi Utara.<br>
-            Email: info@sman4manado.sch.id
-          </p>
-        </div>
-      </div>
-
       <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
         <p>&copy; 2026 - Glendy A. Taawoeda, S.Pd (NIP. 19930821 202221 1 005). All rights reserved.</p>
         <p>SMA Negeri 4 Manado</p>
@@ -553,7 +492,7 @@
     </div>
   </footer>
 
-  <!-- SCRIPT FIREBASE SDK v10 (MODULAR) & LOGIC APLIKASI -->
+  <!-- SCRIPT LOGIC APLIKASI -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -578,45 +517,26 @@
         db = getFirestore(app);
         isFirebaseConfigured = true;
       }
-    } catch (e) {
-      console.warn("Menggunakan Mode LocalStorage (Fallback).");
-    }
+    } catch (e) {}
 
-    // STATE LOKAL APLIKASI
+    // STATE APLIKASI
     window.state = {
       isLoggedIn: localStorage.getItem('is_guru_sman4') === 'true',
       siswaData: JSON.parse(localStorage.getItem('siswa_sman4')) || null,
-      selectedRating: 5,
-      hasRated: false,
       materiList: [
-        { id: '1', kelas: 'X', judul: 'Pengenalan Berpikir Komputasional', deskripsi: 'Prinsip dasar dekomposisi, pengenalan pola, dan abstraksi.', link: 'https://drive.google.com' },
-        { id: '2', kelas: 'XI', judul: 'Arsitektur Jaringan Komputer & Topologi', deskripsi: 'Konsep dasar LAN, WAN, IP Address, dan routing.', link: 'https://drive.google.com' },
-        { id: '3', kelas: 'XII', judul: 'Pengembangan Web Dinamis & Database', deskripsi: 'Pemrograman HTML, CSS, JavaScript, dan Database.', link: 'https://drive.google.com' }
+        { id: '1', kelas: 'X', judul: 'Pengenalan Berpikir Komputasional', deskripsi: 'Prinsip dasar dekomposisi dan abstraksi.', link: 'https://drive.google.com' }
       ],
-      rekapList: [
-        { id: '1', kelas: 'X-1', nama: 'Ahmad Faisal', device: 'Android', tipe: 'Unduh Materi', judul: 'Pengenalan Berpikir Komputasional', waktu: '2026-09-25 09:15' },
-        { id: '2', kelas: 'XI-2', nama: 'Beatrix Wowor', device: 'Windows PC', tipe: 'Kirim Tugas', judul: 'Kuis 1: Konfigurasi IP Address', waktu: '2026-09-25 10:30' }
+      tugasList: [
+        { id: 't1', tipe: 'Mandiri', kelas: 'X', judul: 'Analisis Algoritma Deskriptif', instruksi: 'Tuliskan alur algoritma pembuatan akun email secara terstruktur.', deadline: '2026-10-15' },
+        { id: 't2', tipe: 'Kelompok', kelas: 'XI', judul: 'Perancangan Topologi Jaringan Sekolah', instruksi: 'Buatlah bagan topologi jaringan laboratorium komputer kelompok (3-4 orang).', deadline: '2026-10-20' }
       ],
-      currentPage: 1,
-      rowsPerPage: 5,
+      submissionList: [
+        { id: 's1', tugasJudul: 'Analisis Algoritma Deskriptif', tipe: 'Mandiri', kelas: 'X-1', pengirim: 'Ahmad Faisal', anggota: '-', link: 'https://drive.google.com', waktu: '2026-09-26 08:30' }
+      ],
       filterMateriKelas: 'ALL'
     };
 
-    function detectUserDevice() {
-      const ua = navigator.userAgent;
-      if (/android/i.test(ua)) return "Android Smartphone/Tablet";
-      if (/iPad|iPhone|iPod/.test(ua)) return "iOS Device (iPhone/iPad)";
-      if (/Macintosh/i.test(ua)) return "macOS (Apple Computer)";
-      if (/Windows/i.test(ua)) return "Windows Laptop/PC";
-      if (/Linux/i.test(ua)) return "Linux System";
-      return "Perangkat Mobile/Desktop";
-    }
-
-    // WELCOME LOGIC (CHECK GURU FIRST)
     window.addEventListener('DOMContentLoaded', () => {
-      const detectedDevice = detectUserDevice();
-      document.getElementById('detected-device-text').innerText = detectedDevice;
-
       if (window.state.isLoggedIn) {
         updateAuthUI(true);
       } else if (!window.state.siswaData) {
@@ -624,16 +544,20 @@
       } else {
         updateSiswaBadge();
       }
-
-      // EXIT INTENT DETECTION (SISWA ONLY)
-      document.addEventListener('mouseleave', (e) => {
-        if (e.clientY <= 0 && window.state.siswaData && !window.state.hasRated && !window.state.isLoggedIn) {
-          openRatingModal();
-        }
-      });
+      renderMateri();
+      renderTugas();
+      renderSubmissions();
     });
 
-    // PINTU KHUSUS GURU
+    // FLOATING BANNER LOGIC
+    window.dismissFloatingBanner = function() {
+      const banner = document.getElementById('floating-info-banner');
+      if (banner) {
+        banner.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        setTimeout(() => banner.remove(), 300);
+      }
+    };
+
     window.pintuKhususGuru = function() {
       document.getElementById('modal-welcome-siswa').classList.add('hidden');
       openLoginModal();
@@ -644,19 +568,13 @@
       const nama = document.getElementById('welcome-nama').value;
       const kelas = document.getElementById('welcome-kelas').value;
 
-      const siswaObj = { nama, kelas, device: detectUserDevice() };
+      const siswaObj = { nama, kelas };
       window.state.siswaData = siswaObj;
       localStorage.setItem('siswa_sman4', JSON.stringify(siswaObj));
 
       document.getElementById('modal-welcome-siswa').classList.add('hidden');
       updateSiswaBadge();
-
-      Swal.fire({
-        icon: 'success',
-        title: `Selamat Datang, ${nama}!`,
-        text: `Selamat belajar di website Informatika via ${siswaObj.device}.`,
-        confirmButtonColor: '#0284c7'
-      });
+      Swal.fire('Selamat Datang!', `Halo ${nama}, selamat belajar!`, 'success');
     };
 
     function updateSiswaBadge() {
@@ -673,51 +591,7 @@
       document.getElementById('modal-welcome-siswa').classList.remove('hidden');
     };
 
-    // RATING HANDLERS
-    window.openRatingModal = function() {
-      if (window.state.siswaData && !window.state.isLoggedIn) {
-        document.getElementById('exit-siswa-nama').innerText = window.state.siswaData.nama;
-        document.getElementById('modal-rating-exit').classList.remove('hidden');
-      }
-    };
-    window.closeRatingModal = () => document.getElementById('modal-rating-exit').classList.add('hidden');
-
-    window.setRating = function(stars) {
-      window.state.selectedRating = stars;
-      const starIcons = document.querySelectorAll('#star-container i');
-      starIcons.forEach((icon, idx) => {
-        if (idx < stars) {
-          icon.classList.remove('text-slate-300');
-          icon.classList.add('text-amber-400');
-        } else {
-          icon.classList.remove('text-amber-400');
-          icon.classList.add('text-slate-300');
-        }
-      });
-    };
-
-    window.kirimRatingUlasan = async function(e) {
-      e.preventDefault();
-      const saran = document.getElementById('rating-saran').value;
-      const payload = {
-        siswa: window.state.siswaData ? window.state.siswaData.nama : 'Anonim',
-        kelas: window.state.siswaData ? window.state.siswaData.kelas : '-',
-        device: detectUserDevice(),
-        rating: window.state.selectedRating,
-        saran: saran,
-        waktu: new Date().toLocaleString('id-ID')
-      };
-
-      if (isFirebaseConfigured) {
-        await addDoc(collection(db, "ulasan_website"), payload);
-      }
-
-      window.state.hasRated = true;
-      closeRatingModal();
-      Swal.fire('Terima Kasih!', 'Ulasan dan rating Anda sangat berharga untuk pengembangan website.', 'success');
-    };
-
-    // NAVIGASI PAGE
+    // NAVIGASI
     window.switchPage = function(pageId) {
       document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
       const targetPage = document.getElementById(`page-${pageId}`);
@@ -726,15 +600,11 @@
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active-nav'));
       const activeNav = document.getElementById(`nav-${pageId}`);
       if (activeNav) activeNav.classList.add('active-nav');
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    window.toggleMobileMenu = function() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    };
+    window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
 
-    // AUTH GURU HANDLERS
+    // AUTH GURU
     window.openLoginModal = () => document.getElementById('modal-login').classList.remove('hidden');
     window.closeLoginModal = () => document.getElementById('modal-login').classList.add('hidden');
 
@@ -743,37 +613,22 @@
       const email = document.getElementById('login-email').value;
       const pass = document.getElementById('login-password').value;
 
-      if (isFirebaseConfigured) {
-        try {
-          await signInWithEmailAndPassword(auth, email, pass);
-          localStorage.setItem('is_guru_sman4', 'true');
-          Swal.fire('Berhasil', 'Login Guru Berhasil!', 'success');
-          closeLoginModal();
-        } catch (err) {
-          Swal.fire('Gagal', 'Email/Password Salah: ' + err.message, 'error');
-        }
+      if (email === "glendy@sman4.sch.id" && pass === "guru123") {
+        window.state.isLoggedIn = true;
+        localStorage.setItem('is_guru_sman4', 'true');
+        updateAuthUI(true);
+        closeLoginModal();
+        Swal.fire('Berhasil', 'Login Guru Berhasil!', 'success');
       } else {
-        if (email === "glendy@sman4.sch.id" && pass === "guru123") {
-          window.state.isLoggedIn = true;
-          localStorage.setItem('is_guru_sman4', 'true');
-          updateAuthUI(true);
-          closeLoginModal();
-          Swal.fire('Berhasil', 'Login Guru Berhasil (Mode Demo)', 'success');
-        } else {
-          Swal.fire('Gagal', 'Gunakan Demo Email: glendy@sman4.sch.id / Pass: guru123', 'warning');
-        }
+        Swal.fire('Gagal', 'Gunakan Demo Email: glendy@sman4.sch.id / Pass: guru123', 'warning');
       }
     };
 
     window.logoutGuru = function() {
-      if (isFirebaseConfigured) {
-        signOut(auth);
-      }
       window.state.isLoggedIn = false;
       localStorage.removeItem('is_guru_sman4');
       updateAuthUI(false);
       switchPage('home');
-      Swal.fire('Keluar', 'Sesi Guru Berakhir', 'info');
     };
 
     function updateAuthUI(isLoggedIn) {
@@ -782,36 +637,12 @@
         document.getElementById('logged-in-view').classList.remove('hidden');
         document.getElementById('guru-badge').classList.remove('hidden');
         document.getElementById('siswa-badge').classList.add('hidden');
-        document.getElementById('mobile-logged-out').classList.add('hidden');
-        document.getElementById('mobile-logged-in').classList.remove('hidden');
       } else {
         document.getElementById('logged-out-view').classList.remove('hidden');
         document.getElementById('logged-in-view').classList.add('hidden');
         document.getElementById('guru-badge').classList.add('hidden');
-        document.getElementById('mobile-logged-out').classList.remove('hidden');
-        document.getElementById('mobile-logged-in').classList.add('hidden');
         updateSiswaBadge();
       }
-    }
-
-    // REALTIME LISTENERS
-    if (isFirebaseConfigured) {
-      onAuthStateChanged(auth, (user) => {
-        window.state.isLoggedIn = !!user;
-        if (user) localStorage.setItem('is_guru_sman4', 'true');
-        else localStorage.removeItem('is_guru_sman4');
-        updateAuthUI(!!user);
-      });
-
-      onSnapshot(collection(db, "materi"), (snapshot) => {
-        window.state.materiList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        renderMateri();
-      });
-
-      onSnapshot(collection(db, "rekap_akses"), (snapshot) => {
-        window.state.rekapList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        renderRekapTable();
-      });
     }
 
     // RENDER MATERI
@@ -824,175 +655,199 @@
     function renderMateri() {
       const container = document.getElementById('materi-container');
       container.innerHTML = '';
-
       const filtered = window.state.filterMateriKelas === 'ALL' 
         ? window.state.materiList 
         : window.state.materiList.filter(m => m.kelas === window.state.filterMateriKelas);
 
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">Belum ada dokumen materi untuk tingkat kelas ini.</div>`;
-        return;
-      }
-
       filtered.forEach(item => {
         const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4";
+        card.className = "bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4";
         card.innerHTML = `
-          <div class="space-y-2">
+          <div>
             <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-sky-100 text-sky-700">Kelas ${item.kelas}</span>
-            <h3 class="font-bold text-slate-800 text-base leading-snug">${item.judul}</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">${item.deskripsi || ''}</p>
+            <h3 class="font-bold text-slate-800 mt-2">${item.judul}</h3>
+            <p class="text-xs text-slate-500 mt-1">${item.deskripsi || ''}</p>
           </div>
-          <button onclick="memicuAksesMateri('${item.link}', '${item.judul}')" class="w-full py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-file-arrow-down"></i> Buka / Unduh Dokumen (GDrive)
-          </button>
+          <a href="${item.link}" target="_blank" class="block text-center py-2 bg-sky-50 text-sky-700 font-semibold text-xs rounded-xl hover:bg-sky-100">
+            Buka Dokumen
+          </a>
         `;
         container.appendChild(card);
       });
     }
 
-    window.memicuAksesMateri = async function(link, judul) {
-      if (window.state.isLoggedIn) {
-        window.open(link, '_blank');
+    // MODAL & LOGIC TAMBAH TUGAS (GURU)
+    window.openModalTambahTugas = () => document.getElementById('modal-tambah-tugas').classList.remove('hidden');
+    window.closeModalTambahTugas = () => document.getElementById('modal-tambah-tugas').classList.add('hidden');
+
+    window.simpanTugasBaru = function(e) {
+      e.preventDefault();
+      const tipe = document.getElementById('form-tugas-tipe').value;
+      const kelas = document.getElementById('form-tugas-kelas').value;
+      const judul = document.getElementById('form-tugas-judul').value;
+      const instruksi = document.getElementById('form-tugas-instruksi').value;
+      const deadline = document.getElementById('form-tugas-deadline').value;
+
+      const newTask = { id: Date.now().toString(), tipe, kelas, judul, instruksi, deadline };
+      window.state.tugasList.push(newTask);
+
+      renderTugas();
+      closeModalTambahTugas();
+      Swal.fire('Terbit!', 'Tugas baru berhasil diterbitkan untuk siswa.', 'success');
+    };
+
+    // RENDER DAFTAR TUGAS
+    function renderTugas() {
+      const container = document.getElementById('tugas-container');
+      container.innerHTML = '';
+
+      if (window.state.tugasList.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Belum ada tugas yang diterbitkan.</div>`;
         return;
       }
 
+      window.state.tugasList.forEach(t => {
+        const item = document.createElement('div');
+        item.className = "bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
+        item.innerHTML = `
+          <div class="space-y-2 max-w-2xl">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${t.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${t.tipe}</span>
+              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">Kelas ${t.kelas}</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800">${t.judul}</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">${t.instruksi}</p>
+            <p class="text-[11px] font-semibold text-rose-600"><i class="fa-solid fa-clock mr-1"></i> Deadline: ${t.deadline}</p>
+          </div>
+          <div>
+            <button onclick="bukaModalKumpulTugas('${t.id}', '${t.judul}', '${t.tipe}')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-2">
+              <i class="fa-solid fa-paper-plane"></i> Kumpulkan Tugas
+            </button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // LOGIC SISWA KUMPULKAN TUGAS
+    window.bukaModalKumpulTugas = function(id, judul, tipe) {
       if (!window.state.siswaData) {
         document.getElementById('modal-welcome-siswa').classList.remove('hidden');
         return;
       }
 
+      document.getElementById('kumpul-tugas-id').value = id;
+      document.getElementById('kumpul-tugas-judul-val').value = judul;
+      document.getElementById('kumpul-tugas-tipe-val').value = tipe;
+      document.getElementById('kumpul-judul-tugas').innerText = judul;
+      document.getElementById('kumpul-tipe-badge').innerText = `Tugas ${tipe}`;
+
+      if (tipe === 'Kelompok') {
+        document.getElementById('field-anggota-kelompok').classList.remove('hidden');
+      } else {
+        document.getElementById('field-anggota-kelompok').classList.add('hidden');
+      }
+
+      document.getElementById('modal-kumpul-tugas').classList.remove('hidden');
+    };
+
+    window.closeModalKumpulTugas = () => document.getElementById('modal-kumpul-tugas').classList.add('hidden');
+
+    window.simpanPengumpulanSiswa = function(e) {
+      e.preventDefault();
+      const judul = document.getElementById('kumpul-tugas-judul-val').value;
+      const tipe = document.getElementById('kumpul-tugas-tipe-val').value;
+      const link = document.getElementById('kumpul-link').value;
+      const anggota = document.getElementById('kumpul-anggota').value || '-';
+
       const payload = {
-        nama: window.state.siswaData.nama,
+        id: Date.now().toString(),
+        tugasJudul: judul,
+        tipe: tipe,
         kelas: window.state.siswaData.kelas,
-        device: detectUserDevice(),
-        tipe: 'Unduh Materi',
-        judul: judul,
+        pengirim: window.state.siswaData.nama,
+        anggota: tipe === 'Kelompok' ? anggota : '-',
+        link: link,
         waktu: new Date().toLocaleString('id-ID')
       };
 
-      if (isFirebaseConfigured) {
-        await addDoc(collection(db, "rekap_akses"), payload);
-      } else {
-        window.state.rekapList.push(payload);
-        renderRekapTable();
-      }
+      window.state.submissionList.push(payload);
+      renderSubmissions();
+      closeModalKumpulTugas();
 
       Swal.fire({
         icon: 'success',
-        title: 'Presensi Dicatat',
-        text: `Keaktifan ${window.state.siswaData.nama} berhasil direkam!`,
-        timer: 1500,
-        showConfirmButton: false
+        title: 'Tugas Terkirim!',
+        text: `Tugas ${tipe} Anda berhasil dikirimkan ke guru.`,
+        confirmButtonColor: '#059669'
       });
-
-      window.open(link, '_blank');
     };
 
-    // REKAP TABLE & PAGINATION
-    window.renderRekapTable = function() {
-      const tbody = document.getElementById('rekap-table-body');
+    // RENDER DASHBOARD GURU: REKAP TUGAS TERKIRIM
+    function renderSubmissions() {
+      const tbody = document.getElementById('submission-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
 
-      const querySearch = document.getElementById('search-rekap').value.toLowerCase();
+      if (window.state.submissionList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">Belum ada tugas yang dikumpulkan siswa.</td></tr>`;
+        return;
+      }
 
-      let sortedData = [...window.state.rekapList].sort((a, b) => {
-        if (a.kelas < b.kelas) return -1;
-        if (a.kelas > b.kelas) return 1;
-        return a.nama.localeCompare(b.nama);
-      });
-
-      let filteredData = sortedData.filter(d => 
-        d.nama.toLowerCase().includes(querySearch) || 
-        d.kelas.toLowerCase().includes(querySearch)
-      );
-
-      const total = filteredData.length;
-      const start = (window.state.currentPage - 1) * window.state.rowsPerPage;
-      const paginated = filteredData.slice(start, start + window.state.rowsPerPage);
-
-      paginated.forEach((row, idx) => {
+      window.state.submissionList.forEach((row, idx) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50";
         tr.innerHTML = `
-          <td class="py-3 px-4 font-medium">${start + idx + 1}</td>
-          <td class="py-3 px-4 font-bold text-sky-600">${row.kelas}</td>
-          <td class="py-3 px-4 font-semibold">${row.nama}</td>
-          <td class="py-3 px-4 text-slate-500 text-[11px]"><i class="fa-solid fa-mobile-screen mr-1"></i>${row.device || 'Desktop'}</td>
-          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${row.tipe.includes('Tugas') ? 'bg-amber-100 text-amber-700' : 'bg-sky-100 text-sky-700'}">${row.tipe}</span></td>
-          <td class="py-3 px-4">${row.judul}</td>
+          <td class="py-3 px-4 font-medium">${idx + 1}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${row.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${row.tipe}</span>
+            <div class="font-bold text-slate-800 mt-0.5">${row.tugasJudul}</div>
+          </td>
+          <td class="py-3 px-4 font-semibold text-sky-600">${row.kelas}</td>
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-800">${row.pengirim}</div>
+            ${row.tipe === 'Kelompok' ? `<div class="text-[10px] text-slate-500">Anggota: ${row.anggota}</div>` : ''}
+          </td>
           <td class="py-3 px-4 text-slate-400">${row.waktu}</td>
+          <td class="py-3 px-4">
+            <a href="${row.link}" target="_blank" class="px-3 py-1.5 bg-sky-50 text-sky-700 font-bold text-[11px] rounded-lg hover:bg-sky-100 flex items-center gap-1 w-fit">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Periksa Berkas
+            </a>
+          </td>
         `;
         tbody.appendChild(tr);
       });
+    }
 
-      document.getElementById('pagination-info').innerText = `Menampilkan ${total ? start + 1 : 0}-${Math.min(start + window.state.rowsPerPage, total)} dari total ${total} data`;
-    };
-
-    window.prevPage = () => {
-      if (window.state.currentPage > 1) {
-        window.state.currentPage--;
-        renderRekapTable();
-      }
-    };
-
-    window.nextPage = () => {
-      const totalPages = Math.ceil(window.state.rekapList.length / window.state.rowsPerPage);
-      if (window.state.currentPage < totalPages) {
-        window.state.currentPage++;
-        renderRekapTable();
-      }
-    };
-
-    window.exportTableToCSV = function() {
-      let csv = 'No,Kelas,Nama Siswa,Perangkat,Aktivitas,Judul Dokumen,Waktu Akses\n';
-      window.state.rekapList.forEach((row, idx) => {
-        csv += `"${idx + 1}","${row.kelas}","${row.nama}","${row.device || 'Desktop'}","${row.tipe}","${row.judul}","${row.waktu}"\n`;
+    window.exportSubmissionToCSV = function() {
+      let csv = 'No,Tipe Tugas,Judul Tugas,Kelas,Ketua/Pengirim,Anggota Kelompok,Link Berkas,Waktu Kirim\n';
+      window.state.submissionList.forEach((row, idx) => {
+        csv += `"${idx + 1}","${row.tipe}","${row.tugasJudul}","${row.kelas}","${row.pengirim}","${row.anggota}","${row.link}","${row.waktu}"\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
-      a.setAttribute('download', `Rekap_Keaktifan_Informatika_SMAN4.csv`);
+      a.setAttribute('download', `Rekap_Pengumpulan_Tugas_Informatika.csv`);
       a.click();
     };
 
-    // GURU MODAL
     window.openModalTambahMateri = () => document.getElementById('modal-tambah-materi').classList.remove('hidden');
     window.closeModalMateri = () => document.getElementById('modal-tambah-materi').classList.add('hidden');
 
-    window.simpanMateriBaru = async function(e) {
+    window.simpanMateriBaru = function(e) {
       e.preventDefault();
       const kelas = document.getElementById('form-materi-kelas').value;
       const judul = document.getElementById('form-materi-judul').value;
       const deskripsi = document.getElementById('form-materi-deskripsi').value;
       const link = document.getElementById('form-materi-link').value;
 
-      const newMateri = { kelas, judul, deskripsi, link };
-
-      if (isFirebaseConfigured) {
-        await addDoc(collection(db, "materi"), newMateri);
-      } else {
-        window.state.materiList.push({ id: Date.now().toString(), ...newMateri });
-        renderMateri();
-      }
-
+      window.state.materiList.push({ id: Date.now().toString(), kelas, judul, deskripsi, link });
+      renderMateri();
       closeModalMateri();
-      Swal.fire('Berhasil', 'Materi Google Drive berhasil dipublikasikan!', 'success');
+      Swal.fire('Berhasil', 'Materi berhasil dipublikasikan!', 'success');
     };
-
-    window.simpanTahunAjaran = function() {
-      const ta = document.getElementById('input-ta').value;
-      const sem = document.getElementById('input-semester').value;
-      if (ta) {
-        document.getElementById('ta-banner-text').innerText = `Tahun Ajaran ${ta} - ${sem}`;
-        Swal.fire('Selesai', 'Tahun Ajaran berhasil diperbarui!', 'success');
-      }
-    };
-
-    renderMateri();
-    renderRekapTable();
   </script>
 </body>
 </html>
