@@ -682,8 +682,9 @@
         });
       }
       renderKeaktifan();
+    });
 
-      // --- 1. LOGIK JAM DIGITAL REAL-TIME ---
+    // --- 1. LOGIK JAM DIGITAL REAL-TIME ---
 function updateLiveClock() {
   const now = new Date();
   
@@ -782,7 +783,6 @@ function updateAuthUI(isLoggedIn) {
     updateSiswaBadge();
   }
 }
-    });
 
     // Synchronize Pengumuman dari Firebase
     const pengumumanRef = ref(db, 'pengumuman');
