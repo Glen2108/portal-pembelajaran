@@ -759,6 +759,26 @@
       link: document.getElementById('form-materi-link').value
     });
 
+    // FUNGSI UNTUK MENCATAT SISWA YANG MENGUNDUH MATERI KE FIREBASE
+  window.unduhMateriSiswa = function(judulMateri, linkDrive) {
+    // 1. Cek apakah identitas siswa sudah ada
+    if (!window.state.siswaData) {
+      document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+      return;
+    }
+
+    // 2. Kirim riwayat pengunduhan ke node 'riwayat_unduh' di Realtime Database
+    db.ref('keaktifan_siswa').push({
+      nama: window.state.siswaData.nama,
+      kelas: window.state.siswaData.kelas,
+      waktu: new Date().toLocaleString('id-ID'),
+      status: `Mengunduh Materi: ${judulMateri}`
+    });
+
+    // 3. Buka link Google Drive di tab baru
+    window.open(linkDrive, '_blank');
+  };
+
     closeModalMateri();
     document.getElementById('form-materi-judul').value = '';
     document.getElementById('form-materi-deskripsi').value = '';
@@ -934,7 +954,10 @@
             <h3 class="font-bold text-slate-800 mt-2">${item.judul}</h3>
             <p class="text-xs text-slate-500 mt-1">${item.deskripsi || ''}</p>
           </div>
-          <a href="${item.link}" target="_blank" class="block text-center py-2 bg-sky-50 text-sky-700 font-semibold text-xs rounded-xl hover:bg-sky-100">Buka Dokumen</a>
+          <!-- Tombol disesuaikan agar mencatat unduhan ke Firebase -->
+          <button onclick="unduhMateriSiswa('${item.judul}', '${item.link}')" class="w-full text-center py-2 bg-sky-50 text-sky-700 font-semibold text-xs rounded-xl hover:bg-sky-100 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> Buka & Unduh Materi
+          </button>
         </div>`;
     });
   }
