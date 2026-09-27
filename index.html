@@ -593,13 +593,12 @@
   </div>
 
 
-<!-- SCRIPT ENGINE (GUNAKAN BUNDLE SDK COMPAT KUSUS BROWSER) -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
 <script>
-  // Konfigurasi Firebase
+  // Konfigurasi Firebase Realtime Database
   const firebaseConfig = {
     apiKey: "AIzaSyCTD-3NLDHGCucMSWHAosSHu2-e6znnLm8",
     authDomain: "informatika-sman4-manado.firebaseapp.com",
@@ -610,7 +609,7 @@
     appId: "1:781063295262:web:2678cf21a195ba2497b90f"
   };
 
-  // Inisialisasi
+  // Inisialisasi Firebase App
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.database();
@@ -628,16 +627,49 @@
   };
 
   // FUNGSI UTAMA: CATAT KEAKTIFAN SISWA KE FIREBASE REALTIME DATABASE
-  function catatKeaktifanSiswa(nama, kelas) {
+  function catatKeaktifanSiswa(nama, kelas, status = 'Aktif Akses') {
+    if (!nama || !kelas) return;
     db.ref('keaktifan_siswa').push({
       nama: nama,
       kelas: kelas,
       waktu: new Date().toLocaleString('id-ID'),
-      status: 'Aktif Akses'
+      status: status
+    }).catch((err) => {
+      console.error("Gagal mencatat keaktifan:", err);
     });
   }
 
-  // 1. FIREBASE AUTHENTICATION (MODE GURU)
+  // FUNGSI UNTUK MENCATAT SISWA YANG MENGUNDUH MATERI KE FIREBASE (DITARUH DI GLOBAL SCOPE)
+  window.unduhMateriSiswa = function(judulMateri, linkDrive) {
+    // 1. Cek apakah identitas siswa sudah ada
+    if (!window.state.siswaData && !window.state.isLoggedIn) {
+      document.getElementById('modal-welcome-siswa')?.classList.remove('hidden');
+      Swal.fire({
+        icon: 'info',
+        title: 'Identitas Siswa Diperlukan',
+        text: 'Silakan isi nama dan kelas Anda terlebih dahulu sebelum mengunduh materi.'
+      });
+      return;
+    }
+
+    // 2. Kirim riwayat pengunduhan jika siswa terdaftar
+    if (window.state.siswaData) {
+      catatKeaktifanSiswa(
+        window.state.siswaData.nama,
+        window.state.siswaData.kelas,
+        `Mengunduh Materi: ${judulMateri}`
+      );
+    }
+
+    // 3. Buka link Google Drive/materi di tab baru
+    if (linkDrive) {
+      window.open(linkDrive, '_blank');
+    } else {
+      Swal.fire('Tautan Tidak Tersedia', 'Link unduhan untuk materi ini belum dikonfigurasi.', 'warning');
+    }
+  };
+
+  // 1. FIREBASE AUTHENTICATION OBSERVER (MODE GURU)
   auth.onAuthStateChanged((user) => {
     if (user) {
       window.state.isLoggedIn = true;
@@ -648,16 +680,35 @@
       if (!window.state.siswaData) {
         document.getElementById('modal-welcome-siswa')?.classList.remove('hidden');
       } else {
-        catatKeaktifanSiswa(window.state.siswaData.nama, window.state.siswaData.kelas);
+        catatKeaktifanSiswa(window.state.siswaData.nama, window.state.siswaData.kelas, 'Aktif Akses');
       }
     }
   });
 
-  // 2. REALTIME DATABASE LISTENERS
+  // Helper untuk Menangani Error Listener Firebase
+  function handleFirebaseError(err, nodeName) {
+    console.error(`Error Firebase Listener (${nodeName}):`, err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Koneksi Database Terkendala',
+      text: `Gagal menyinkronkan data ${nodeName}. Pastikan jaringan internet stabil.`
+    });
+  }
+
+  // 2. REALTIME DATABASE LISTENERS DENGAN ERROR CALLBACK & RENDERING INITIAL
   document.addEventListener('DOMContentLoaded', () => {
     renderMiniCalendar();
 
-    // Listen Keaktifan Siswa Realtime
+    // Render tampilan awal secara langsung
+    renderPengumuman();
+    renderPengumumanDashboard();
+    renderMateri();
+    renderTugas();
+    renderKeaktifan();
+    renderSubmissions();
+    updateSiswaBadge();
+
+    // Listener Realtime: Keaktifan Siswa
     db.ref('keaktifan_siswa').on('value', (snapshot) => {
       const data = snapshot.val();
       window.state.keaktifanList = [];
@@ -665,9 +716,9 @@
         Object.keys(data).forEach(k => window.state.keaktifanList.unshift({ id: k, ...data[k] }));
       }
       renderKeaktifan();
-    });
+    }, (err) => handleFirebaseError(err, 'Keaktifan Siswa'));
 
-    // Listen Pengumuman Realtime
+    // Listener Realtime: Pengumuman
     db.ref('pengumuman').on('value', (snapshot) => {
       const data = snapshot.val();
       window.state.pengumumanList = [];
@@ -676,9 +727,9 @@
       }
       renderPengumuman();
       renderPengumumanDashboard();
-    });
+    }, (err) => handleFirebaseError(err, 'Pengumuman'));
 
-    // Listen Materi Realtime
+    // Listener Realtime: Materi
     db.ref('materi').on('value', (snapshot) => {
       const data = snapshot.val();
       window.state.materiList = [];
@@ -686,9 +737,9 @@
         Object.keys(data).forEach(k => window.state.materiList.unshift({ id: k, ...data[k] }));
       }
       renderMateri();
-    });
+    }, (err) => handleFirebaseError(err, 'Materi Pelajaran'));
 
-    // Listen Tugas Realtime
+    // Listener Realtime: Tugas
     db.ref('tugas').on('value', (snapshot) => {
       const data = snapshot.val();
       window.state.tugasList = [];
@@ -696,9 +747,9 @@
         Object.keys(data).forEach(k => window.state.tugasList.unshift({ id: k, ...data[k] }));
       }
       renderTugas();
-    });
+    }, (err) => handleFirebaseError(err, 'Tugas'));
 
-    // Listen Submissions Realtime
+    // Listener Realtime: Submissions
     db.ref('submissions').on('value', (snapshot) => {
       const data = snapshot.val();
       window.state.submissionList = [];
@@ -706,20 +757,22 @@
         Object.keys(data).forEach(k => window.state.submissionList.unshift({ id: k, ...data[k] }));
       }
       renderSubmissions();
-    });
+    }, (err) => handleFirebaseError(err, 'Pengumpulan Tugas'));
   });
 
   // FUNGSI MUTASI DATA
   window.simpanIdentitasAwal = function(e) {
     e.preventDefault();
-    const nama = document.getElementById('welcome-nama').value;
+    const nama = document.getElementById('welcome-nama').value.trim();
     const kelas = document.getElementById('welcome-kelas').value;
+
+    if (!nama) return;
 
     const siswaObj = { nama, kelas };
     window.state.siswaData = siswaObj;
     localStorage.setItem('siswa_sman4', JSON.stringify(siswaObj));
 
-    catatKeaktifanSiswa(nama, kelas);
+    catatKeaktifanSiswa(nama, kelas, 'Aktif Akses');
 
     document.getElementById('modal-welcome-siswa').classList.add('hidden');
     updateSiswaBadge();
@@ -735,19 +788,33 @@
       isi: document.getElementById('form-pengumuman-isi').value,
       link: document.getElementById('form-pengumuman-link').value || '',
       waktu: new Date().toLocaleString('id-ID')
+    }).then(() => {
+      closeModalPengumuman();
+      document.getElementById('form-pengumuman-judul').value = '';
+      document.getElementById('form-pengumuman-isi').value = '';
+      document.getElementById('form-pengumuman-link').value = '';
+      Swal.fire('Terbit!', 'Pengumuman baru telah dikirimkan ke seluruh perangkat secara realtime.', 'success');
+    }).catch((err) => {
+      Swal.fire('Gagal Menyimpan', err.message, 'error');
     });
-
-    closeModalPengumuman();
-    document.getElementById('form-pengumuman-judul').value = '';
-    document.getElementById('form-pengumuman-isi').value = '';
-    document.getElementById('form-pengumuman-link').value = '';
-    Swal.fire('Terbit!', 'Pengumuman baru telah dikirimkan ke HP siswa secara realtime.', 'success');
   };
 
   window.hapusPengumuman = function(id) {
-    if (confirm('Hapus pengumuman ini dari server?')) {
-      db.ref(`pengumuman/${id}`).remove();
-    }
+    Swal.fire({
+      title: 'Hapus Pengumuman?',
+      text: "Pengumuman akan dihapus secara permanen dari database.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e11d48',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Ya, Hapus'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        db.ref(`pengumuman/${id}`).remove().then(() => {
+          Swal.fire('Terhapus!', 'Pengumuman berhasil dihapus.', 'success');
+        });
+      }
+    });
   };
 
   window.simpanMateriBaru = function(e) {
@@ -757,33 +824,33 @@
       judul: document.getElementById('form-materi-judul').value,
       deskripsi: document.getElementById('form-materi-deskripsi').value || '',
       link: document.getElementById('form-materi-link').value
+    }).then(() => {
+      closeModalMateri();
+      document.getElementById('form-materi-judul').value = '';
+      document.getElementById('form-materi-deskripsi').value = '';
+      document.getElementById('form-materi-link').value = '';
+      Swal.fire('Berhasil', 'Materi dipublikasikan ke seluruh perangkat siswa secara realtime!', 'success');
+    }).catch((err) => {
+      Swal.fire('Gagal Menyimpan', err.message, 'error');
     });
-
-    // FUNGSI UNTUK MENCATAT SISWA YANG MENGUNDUH MATERI KE FIREBASE
-  window.unduhMateriSiswa = function(judulMateri, linkDrive) {
-    // 1. Cek apakah identitas siswa sudah ada
-    if (!window.state.siswaData) {
-      document.getElementById('modal-welcome-siswa').classList.remove('hidden');
-      return;
-    }
-
-    // 2. Kirim riwayat pengunduhan ke node 'riwayat_unduh' di Realtime Database
-    db.ref('keaktifan_siswa').push({
-      nama: window.state.siswaData.nama,
-      kelas: window.state.siswaData.kelas,
-      waktu: new Date().toLocaleString('id-ID'),
-      status: `Mengunduh Materi: ${judulMateri}`
-    });
-
-    // 3. Buka link Google Drive di tab baru
-    window.open(linkDrive, '_blank');
   };
 
-    closeModalMateri();
-    document.getElementById('form-materi-judul').value = '';
-    document.getElementById('form-materi-deskripsi').value = '';
-    document.getElementById('form-materi-link').value = '';
-    Swal.fire('Berhasil', 'Materi dipublikasikan ke seluruh perangkat siswa secara realtime!', 'success');
+  window.hapusMateri = function(id) {
+    Swal.fire({
+      title: 'Hapus Materi?',
+      text: "Materi ini akan dihapus dari portal.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e11d48',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Ya, Hapus'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        db.ref(`materi/${id}`).remove().then(() => {
+          Swal.fire('Terhapus!', 'Materi berhasil dihapus.', 'success');
+        });
+      }
+    });
   };
 
   window.simpanTugasBaru = function(e) {
@@ -794,14 +861,42 @@
       judul: document.getElementById('form-tugas-judul').value,
       instruksi: document.getElementById('form-tugas-instruksi').value,
       deadline: document.getElementById('form-tugas-deadline').value
+    }).then(() => {
+      closeModalTambahTugas();
+      document.getElementById('form-tugas-judul').value = '';
+      document.getElementById('form-tugas-instruksi').value = '';
+      document.getElementById('form-tugas-deadline').value = '';
+      Swal.fire('Terbit!', 'Tugas diterbitkan secara realtime.', 'success');
+    }).catch((err) => {
+      Swal.fire('Gagal Menyimpan', err.message, 'error');
     });
+  };
 
-    closeModalTambahTugas();
-    Swal.fire('Terbit!', 'Tugas diterbitkan secara realtime.', 'success');
+  window.hapusTugas = function(id) {
+    Swal.fire({
+      title: 'Hapus Tugas?',
+      text: "Tugas akan dihapus dari portal.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e11d48',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Ya, Hapus'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        db.ref(`tugas/${id}`).remove().then(() => {
+          Swal.fire('Terhapus!', 'Tugas berhasil dihapus.', 'success');
+        });
+      }
+    });
   };
 
   window.simpanPengumpulanSiswa = function(e) {
     e.preventDefault();
+    if (!window.state.siswaData) {
+      document.getElementById('modal-welcome-siswa')?.classList.remove('hidden');
+      return;
+    }
+
     const judul = document.getElementById('kumpul-tugas-judul-val').value;
     const tipe = document.getElementById('kumpul-tugas-tipe-val').value;
     const link = document.getElementById('kumpul-link').value;
@@ -815,10 +910,14 @@
       anggota: tipe === 'Kelompok' ? anggota : '-',
       link: link,
       waktu: new Date().toLocaleString('id-ID')
+    }).then(() => {
+      closeModalKumpulTugas();
+      document.getElementById('kumpul-link').value = '';
+      document.getElementById('kumpul-anggota').value = '';
+      Swal.fire('Berhasil!', 'Tugas Anda terkirim langsung ke laptop guru secara realtime.', 'success');
+    }).catch((err) => {
+      Swal.fire('Gagal Mengirim', err.message, 'error');
     });
-
-    closeModalKumpulTugas();
-    Swal.fire('Berhasil!', 'Tugas Anda terkirim langsung ke laptop guru secara realtime.', 'success');
   };
 
   window.handleLoginGuru = function(e) {
@@ -838,7 +937,10 @@
   };
 
   window.logoutGuru = function() {
-    auth.signOut().then(() => switchPage('home'));
+    auth.signOut().then(() => {
+      switchPage('home');
+      Swal.fire('Logout', 'Anda telah keluar dari mode guru.', 'info');
+    });
   };
 
   // UI RENDERERS
@@ -879,7 +981,7 @@
     if (!tbody) return;
     tbody.innerHTML = '';
     if (window.state.keaktifanList.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada siswa yang login.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada aktivitas keaktifan siswa.</td></tr>`;
       return;
     }
     window.state.keaktifanList.forEach((row, idx) => {
@@ -899,7 +1001,7 @@
     if (!container) return;
     container.innerHTML = '';
     if (window.state.pengumumanList.length === 0) {
-      container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 text-sm">Belum ada pengumuman.</div>`;
+      container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 text-sm border border-slate-100">Belum ada pengumuman diterbitkan.</div>`;
       return;
     }
     window.state.pengumumanList.forEach(p => {
@@ -911,7 +1013,7 @@
           </div>
           <h3 class="text-base font-bold text-slate-800">${p.judul}</h3>
           <p class="text-xs text-slate-600 leading-relaxed">${p.isi}</p>
-          ${p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-md"><i class="fa-solid fa-link"></i> Buka Tautan</a>` : ''}
+          ${p.link ? `<a href="${p.link}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-all"><i class="fa-solid fa-link"></i> Buka Tautan</a>` : ''}
         </div>`;
     });
   }
@@ -920,6 +1022,10 @@
     const tbody = document.getElementById('pengumuman-dashboard-table-body');
     if (!tbody) return;
     tbody.innerHTML = '';
+    if (window.state.pengumumanList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">Belum ada pengumuman.</td></tr>`;
+      return;
+    }
     window.state.pengumumanList.forEach((row, idx) => {
       tbody.innerHTML += `
         <tr class="hover:bg-slate-50">
@@ -928,7 +1034,7 @@
           <td class="py-3 px-4">${row.judul}</td>
           <td class="py-3 px-4">${row.link ? `<a href="${row.link}" target="_blank" class="text-indigo-600 underline">Tautan</a>` : '-'}</td>
           <td class="py-3 px-4 text-slate-400">${row.waktu}</td>
-          <td class="py-3 px-4"><button onclick="hapusPengumuman('${row.id}')" class="px-2 py-1 bg-rose-100 text-rose-600 rounded-lg"><i class="fa-solid fa-trash"></i></button></td>
+          <td class="py-3 px-4"><button onclick="hapusPengumuman('${row.id}')" class="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold rounded-lg transition-all"><i class="fa-solid fa-trash"></i></button></td>
         </tr>`;
     });
   }
@@ -942,20 +1048,24 @@
       : window.state.materiList.filter(m => m.kelas === window.state.filterMateriKelas);
 
     if (filtered.length === 0) {
-      container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400 text-sm">Belum ada materi untuk kelas ini.</div>`;
+      container.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-100 text-slate-400 text-sm">Belum ada materi untuk kelas ini.</div>`;
       return;
     }
 
     filtered.forEach(item => {
+      const isGuru = window.state.isLoggedIn;
       container.innerHTML += `
-        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4">
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-4 flex flex-col justify-between">
           <div>
-            <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-sky-100 text-sky-700">Kelas ${item.kelas}</span>
-            <h3 class="font-bold text-slate-800 mt-2">${item.judul}</h3>
-            <p class="text-xs text-slate-500 mt-1">${item.deskripsi || ''}</p>
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-sky-100 text-sky-700">Kelas ${item.kelas}</span>
+              ${isGuru ? `<button onclick="hapusMateri('${item.id}')" class="text-xs text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button>` : ''}
+            </div>
+            <h3 class="font-bold text-slate-800 mt-2 text-base">${item.judul}</h3>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">${item.deskripsi || ''}</p>
           </div>
-          <!-- Tombol disesuaikan agar mencatat unduhan ke Firebase -->
-          <button onclick="unduhMateriSiswa('${item.judul}', '${item.link}')" class="w-full text-center py-2 bg-sky-50 text-sky-700 font-semibold text-xs rounded-xl hover:bg-sky-100 flex items-center justify-center gap-2">
+          <!-- Tombol unduh dipanggil via unduhMateriSiswa -->
+          <button onclick="unduhMateriSiswa('${item.judul.replace(/'/g, "\\'")}', '${item.link}')" class="w-full text-center py-2.5 bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2">
             <i class="fa-solid fa-download"></i> Buka & Unduh Materi
           </button>
         </div>`;
@@ -967,19 +1077,23 @@
     if (!container) return;
     container.innerHTML = '';
     if (window.state.tugasList.length === 0) {
-      container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Belum ada tugas diterbitkan.</div>`;
+      container.innerHTML = `<div class="text-center py-12 bg-white rounded-2xl border border-slate-100 text-slate-400 text-sm">Belum ada tugas diterbitkan.</div>`;
       return;
     }
     window.state.tugasList.forEach(t => {
+      const isGuru = window.state.isLoggedIn;
       container.innerHTML += `
         <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div class="space-y-2">
-            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${t.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${t.tipe} - Kelas ${t.kelas}</span>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${t.tipe === 'Kelompok' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}">${t.tipe} - Kelas ${t.kelas}</span>
+              ${isGuru ? `<button onclick="hapusTugas('${t.id}')" class="text-xs text-rose-500 hover:text-rose-700 ml-2"><i class="fa-solid fa-trash"></i> Hapus</button>` : ''}
+            </div>
             <h3 class="text-lg font-bold text-slate-800">${t.judul}</h3>
-            <p class="text-xs text-slate-600">${t.instruksi}</p>
+            <p class="text-xs text-slate-600 leading-relaxed">${t.instruksi}</p>
             <p class="text-[11px] font-semibold text-rose-600"><i class="fa-solid fa-clock"></i> Deadline: ${t.deadline}</p>
           </div>
-          <button onclick="bukaModalKumpulTugas('${t.id}', '${t.judul}', '${t.tipe}')" class="px-5 py-2.5 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-md"><i class="fa-solid fa-paper-plane mr-1"></i> Kumpulkan Tugas</button>
+          <button onclick="bukaModalKumpulTugas('${t.id}', '${t.judul.replace(/'/g, "\\'")}', '${t.tipe}')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all whitespace-nowrap"><i class="fa-solid fa-paper-plane mr-1"></i> Kumpulkan Tugas</button>
         </div>`;
     });
   }
@@ -1000,7 +1114,7 @@
           <td class="py-3 px-4 text-sky-600 font-semibold">${row.kelas}</td>
           <td class="py-3 px-4"><b>${row.pengirim}</b><br><span class="text-[10px] text-slate-400">${row.anggota}</span></td>
           <td class="py-3 px-4 text-slate-400">${row.waktu}</td>
-          <td class="py-3 px-4"><a href="${row.link}" target="_blank" class="px-3 py-1.5 bg-sky-50 text-sky-700 font-bold text-xs rounded-lg">Buka Link</a></td>
+          <td class="py-3 px-4"><a href="${row.link}" target="_blank" class="px-3 py-1.5 bg-sky-50 text-sky-700 font-bold text-xs rounded-lg hover:bg-sky-100 transition-all">Buka Link</a></td>
         </tr>`;
     });
   }
@@ -1068,21 +1182,22 @@
 
   function updateSiswaBadge() {
     if (window.state.siswaData && !window.state.isLoggedIn) {
-      document.getElementById('siswa-badge').classList.remove('hidden');
-      document.getElementById('badge-siswa-nama').innerText = `${window.state.siswaData.nama} (${window.state.siswaData.kelas})`;
+      document.getElementById('siswa-badge')?.classList.remove('hidden');
+      const badgeNama = document.getElementById('badge-siswa-nama');
+      if (badgeNama) badgeNama.innerText = `${window.state.siswaData.nama} (${window.state.siswaData.kelas})`;
     }
   }
 
   window.resetIdentitasSiswa = function() {
     localStorage.removeItem('siswa_sman4');
     window.state.siswaData = null;
-    document.getElementById('siswa-badge').classList.add('hidden');
-    document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+    document.getElementById('siswa-badge')?.classList.add('hidden');
+    document.getElementById('modal-welcome-siswa')?.classList.remove('hidden');
   };
 
   window.bukaModalKumpulTugas = function(id, judul, tipe) {
     if (!window.state.siswaData) {
-      document.getElementById('modal-welcome-siswa').classList.remove('hidden');
+      document.getElementById('modal-welcome-siswa')?.classList.remove('hidden');
       return;
     }
     document.getElementById('kumpul-tugas-id').value = id;
