@@ -611,6 +611,8 @@
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const auth = firebase.auth();
     const db = firebase.database();
 
