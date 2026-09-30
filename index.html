@@ -1,1280 +1,1091 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informatika - SMA Negeri 4 Manado</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Custom Color Config & Styling -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        skyDark: '#0F2C59',
-                        skyPrimary: '#1A5276',
-                        skyLight: '#85C1E9',
-                        goldDark: '#B8860B',
-                        goldPrimary: '#D4AF37',
-                        goldLight: '#F39C12',
-                        accentBg: '#F0F4F8'
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .gold-gradient {
-            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
-        }
-        .gold-text {
-            background: linear-gradient(135deg, #D4AF37 0%, #F39C12 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .sky-glass {
-            background: rgba(15, 44, 89, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -10px rgba(15, 44, 89, 0.3);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #F0F4F8;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1A5276;
-            border-radius: 4px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pembelajaran Interaktif Informatika - SMAN 4 Manado</title>
+  <!-- Google Fonts & FontAwesome icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ===================================================
+       THEME: BLUE SKY WITH GOLD (RESPONSIVE & MEMUKAU)
+       =================================================== */
+    :root {
+      --sky-blue-dark: #0f2027;
+      --sky-blue-mid: #203a43;
+      --sky-blue-light: #2c5364;
+      --accent-blue: #00d2ff;
+      --gold-primary: #f0a500;
+      --gold-hover: #cf8d00;
+      --gold-light: #fff4d4;
+      --bg-light: #f4f7f9;
+      --text-dark: #2c3e50;
+      --white: #ffffff;
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-bottom: 60px; /* Space for bottom nav on mobile */
+    }
+
+    /* HEADER & NAVBAR */
+    header {
+      background: linear-gradient(135deg, var(--sky-blue-dark), var(--sky-blue-mid), var(--sky-blue-light));
+      color: var(--white);
+      padding: 15px 20px;
+      border-bottom: 3px solid var(--gold-primary);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand i {
+      font-size: 2rem;
+      color: var(--gold-primary);
+    }
+
+    .brand-text h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: var(--accent-blue);
+    }
+
+    .user-info-bar {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 15px;
+      border-radius: 20px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(240, 165, 0, 0.3);
+      font-size: 0.85rem;
+    }
+
+    .btn-logout {
+      background: var(--gold-primary);
+      color: var(--sky-blue-dark);
+      border: none;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-logout:hover {
+      background: var(--gold-hover);
+    }
+
+    /* DESKTOP NAVIGATION */
+    nav.desktop-nav {
+      background: var(--sky-blue-dark);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: none;
+    }
+
+    nav.desktop-nav ul {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      list-style: none;
+    }
+
+    nav.desktop-nav li a {
+      display: block;
+      padding: 12px 20px;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav.desktop-nav li a:hover, nav.desktop-nav li a.active {
+      background: var(--gold-primary);
+      color: var(--sky-blue-dark);
+    }
+
+    /* MOBILE NAVIGATION BOTTOM BAR */
+    .mobile-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--sky-blue-dark);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      border-top: 2px solid var(--gold-primary);
+      z-index: 99;
+    }
+
+    .mobile-nav a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.7rem;
+    }
+
+    .mobile-nav a i {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+
+    .mobile-nav a.active {
+      color: var(--gold-primary);
+    }
+
+    /* MAIN CONTAINER & PAGES */
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 15px;
+      width: 100%;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARDS & WIDGETS */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--gold-primary);
+    }
+
+    .welcome-card {
+      background: linear-gradient(135deg, var(--sky-blue-mid), var(--sky-blue-light));
+      color: var(--white);
+      border-top: 4px solid var(--gold-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-card h2 {
+      color: var(--gold-primary);
+      margin-bottom: 5px;
+    }
+
+    /* REALTIME & CALENDAR WIDGETS */
+    .dashboard-widgets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .widget-box {
+      background: var(--white);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-left: 4px solid var(--accent-blue);
+    }
+
+    .widget-box i {
+      font-size: 2rem;
+      color: var(--sky-blue-mid);
+    }
+
+    .widget-content .title {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .widget-content .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--sky-blue-dark);
+    }
+
+    /* NOTIFICATION Toast */
+    #notification-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 320px;
+    }
+
+    .toast {
+      background: var(--sky-blue-dark);
+      color: var(--white);
+      padding: 12px 18px;
+      border-radius: 8px;
+      border-left: 5px solid var(--gold-primary);
+      box-shadow: var(--shadow);
+      font-size: 0.85rem;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    /* TABLES & CONTROLS */
+    .table-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .table-controls select, .table-controls input {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: var(--white);
+      font-size: 0.88rem;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eef2f5;
+    }
+
+    th {
+      background: var(--sky-blue-dark);
+      color: var(--gold-primary);
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    th:hover {
+      background: var(--sky-blue-mid);
+    }
+
+    tr:hover {
+      background-color: var(--gold-light);
+      cursor: pointer;
+    }
+
+    /* PAGINATION */
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .pagination button {
+      padding: 5px 12px;
+      border: 1px solid var(--sky-blue-mid);
+      background: var(--white);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .pagination button.active {
+      background: var(--sky-blue-mid);
+      color: var(--gold-primary);
+      font-weight: bold;
+    }
+
+    /* MODAL / POPUP */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 32, 39, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 15px;
+    }
+
+    .modal-card {
+      background: var(--white);
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid var(--gold-primary);
+      position: relative;
+    }
+
+    .modal-card h3 {
+      color: var(--sky-blue-dark);
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--sky-blue-dark);
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--sky-blue-mid), var(--sky-blue-dark));
+      color: var(--gold-primary);
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .btn-submit:hover {
+      background: var(--sky-blue-dark);
+    }
+
+    /* BUTTON ACTION */
+    .btn-gold {
+      background: var(--gold-primary);
+      color: var(--sky-blue-dark);
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-hover);
+    }
+
+    /* RESPONSIVE DESKTOP MEDIA QUERY */
+    @media (min-width: 768px) {
+      body { padding-bottom: 0; }
+      nav.desktop-nav { display: block; }
+      .mobile-nav { display: none; }
+      .brand-text h1 { font-size: 1.4rem; }
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen font-sans">
+<body>
 
-    <!-- NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 sky-glass text-white border-b border-yellow-500/30 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo & Brand -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('beranda')">
-                    <div class="w-12 h-12 rounded-full gold-gradient p-0.5 flex items-center justify-center shadow-md">
-                        <div class="w-full h-full bg-skyDark rounded-full flex items-center justify-center">
-                            <i class="fa-solid font-bold text-goldPrimary text-xl">4</i>
-                        </div>
-                    </div>
-                    <div>
-                        <h1 class="font-extrabold text-base sm:text-lg tracking-wide text-white leading-tight">SMAN 4 MANADO</h1>
-                        <p class="text-xs text-goldPrimary font-medium flex items-center gap-1">
-                            <i class="fa-solid fa-code text-xs"></i> Pembelajaran Informatika
-                        </p>
-                    </div>
-                </div>
+  <!-- NOTIFICATION CONTAINER -->
+  <div id="notification-container"></div>
 
-                <!-- Desktop Navigation Tabs -->
-                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
-                    <button onclick="switchPage('beranda')" id="nav-beranda" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all bg-yellow-500/20 text-goldPrimary border border-yellow-500/40">
-                        <i class="fa-solid fa-house"></i> Beranda
-                    </button>
-                    <button onclick="switchPage('materi')" id="nav-materi" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all hover:bg-white/10 text-slate-200">
-                        <i class="fa-solid fa-book-open"></i> Materi
-                    </button>
-                    <button onclick="switchPage('tugas')" id="nav-tugas" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all hover:bg-white/10 text-slate-200">
-                        <i class="fa-solid fa-tasks"></i> Tugas
-                    </button>
-                    <button onclick="switchPage('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all hover:bg-white/10 text-slate-200">
-                        <i class="fa-solid fa-user-shield text-goldPrimary"></i> Guru
-                    </button>
-                </nav>
-
-                <!-- User Profile / Session Status -->
-                <div class="hidden md:flex items-center space-x-3">
-                    <div id="user-badge" class="bg-skyDark/80 border border-slate-600/50 rounded-xl px-3 py-1.5 flex items-center space-x-3">
-                        <div class="w-8 h-8 rounded-lg bg-goldPrimary/20 text-goldPrimary flex items-center justify-center font-bold text-xs" id="user-avatar-icon">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="text-left">
-                            <p class="text-xs font-bold text-white line-clamp-1" id="nav-user-name">Guest</p>
-                            <p class="text-[10px] text-slate-300" id="nav-user-role">Siswa</p>
-                        </div>
-                    </div>
-                    <button onclick="resetSession()" title="Ganti User / Out" class="p-2 text-slate-300 hover:text-red-400 hover:bg-white/5 rounded-xl transition">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
-                </div>
-
-                <!-- Mobile Hamburger Button -->
-                <div class="md:hidden flex items-center space-x-2">
-                    <button onclick="toggleMobileMenu()" class="p-2.5 rounded-xl bg-white/10 text-white focus:outline-none">
-                        <i class="fa-solid fa-bars text-xl" id="mobile-menu-icon"></i>
-                    </button>
-                </div>
-            </div>
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <div class="brand-text">
+          <h1>SMAN 4 MANADO</h1>
+          <p>Pembelajaran Interaktif Informatika</p>
         </div>
+      </div>
+      <div class="user-info-bar">
+        <span id="user-display-name"><i class="fa-solid fa-user"></i> Guest</span>
+        <button class="btn-logout" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+      </div>
+    </div>
+  </header>
 
-        <!-- Mobile Drawer Navigation -->
-        <div id="mobile-menu" class="hidden md:hidden bg-skyDark border-b border-yellow-500/30 px-4 pt-2 pb-6 space-y-2">
-            <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700 mb-3 flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-lg bg-goldPrimary/20 text-goldPrimary flex items-center justify-center font-bold text-sm" id="mob-user-avatar">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-white" id="mob-user-name">Guest</p>
-                        <p class="text-xs text-slate-300" id="mob-user-role">Siswa</p>
-                    </div>
-                </div>
-                <button onclick="resetSession()" class="px-3 py-1 bg-red-500/20 text-red-300 border border-red-500/30 rounded-lg text-xs font-semibold">
-                    Ganti
-                </button>
-            </div>
-            <button onclick="switchPage('beranda'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-white bg-skyPrimary flex items-center gap-3">
-                <i class="fa-solid fa-house text-goldPrimary"></i> Beranda
-            </button>
-            <button onclick="switchPage('materi'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-200 hover:bg-white/10 flex items-center gap-3">
-                <i class="fa-solid fa-book-open text-goldPrimary"></i> Materi Pembelajaran
-            </button>
-            <button onclick="switchPage('tugas'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-200 hover:bg-white/10 flex items-center gap-3">
-                <i class="fa-solid fa-tasks text-goldPrimary"></i> Tugas Siswa
-            </button>
-            <button onclick="switchPage('dashboard'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-200 hover:bg-white/10 flex items-center gap-3">
-                <i class="fa-solid fa-user-shield text-goldPrimary"></i> Dashboard Guru
-            </button>
+  <!-- NAVIGATION DESKTOP -->
+  <nav class="desktop-nav">
+    <ul>
+      <li><a href="#" class="nav-link active" onclick="switchPage('home')"><i class="fa-solid fa-house"></i> Beranda</a></li>
+      <li><a href="#" class="nav-link" onclick="switchPage('materi')"><i class="fa-solid fa-book-open"></i> Materi</a></li>
+      <li><a href="#" class="nav-link" onclick="switchPage('tugas')"><i class="fa-solid fa-tasks"></i> Tugas</a></li>
+      <li><a href="#" class="nav-link" onclick="switchPage('dashboard')"><i class="fa-solid fa-user-shield"></i> Dashboard Guru</a></li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <div class="container">
+
+    <!-- REALTIME & CALENDAR WIDGETS -->
+    <div class="dashboard-widgets">
+      <div class="widget-box">
+        <i class="fa-regular fa-clock"></i>
+        <div class="widget-content">
+          <div class="title">Waktu Realtime</div>
+          <div class="value" id="realtime-clock">00:00:00 WITA</div>
         </div>
-    </header>
-
-    <!-- MAIN CONTENT CONTAINERS -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-
-        <!-- PAGE 1: BERANDA -->
-        <section id="page-beranda" class="page-content space-y-6">
-            <!-- Hero Banner -->
-            <div class="relative rounded-3xl bg-gradient-to-r from-skyDark via-skyPrimary to-slate-900 text-white p-6 sm:p-10 overflow-hidden shadow-2xl border border-yellow-500/30">
-                <div class="absolute -right-10 -bottom-10 opacity-10 text-[200px] font-extrabold text-goldPrimary select-none pointer-events-none">
-                    4
-                </div>
-                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-                    <div class="lg:col-span-2 space-y-4">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-goldPrimary/20 text-goldPrimary border border-goldPrimary/30 text-xs sm:text-sm font-semibold">
-                            <i class="fa-solid fa-award"></i> Portals Informatika SMAN 4 Manado
-                        </div>
-                        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-                            Selamat Datang, <span id="hero-user-display" class="gold-text">Siswa</span>! 👋
-                        </h2>
-                        <p class="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
-                            Akses modul pembelajaran interaktif, materi digital, dan pengumpulan tugas terpadu kelas X, XI, dan XII Informatika.
-                        </p>
-                        
-                        <!-- Featured Best Class Greeting Card -->
-                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-yellow-500/40 flex items-start gap-4 shadow-lg">
-                            <div class="w-12 h-12 rounded-xl gold-gradient text-skyDark flex items-center justify-center shrink-0 shadow">
-                                <i class="fa-solid fa-crown text-2xl"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold uppercase tracking-wider text-goldPrimary">Apresiasi Kelas Terbaik</span>
-                                    <span id="best-class-badge" class="px-2 py-0.5 rounded text-[10px] bg-goldPrimary text-skyDark font-extrabold">KELAS XI-2</span>
-                                </div>
-                                <p class="text-xs sm:text-sm font-medium text-slate-100 mt-1" id="best-class-message">
-                                    "Selamat kepada kelas XI-2 atas keaktifan dan ketepatan waktu terbaik minggu ini!"
-                                </p>
-                                <p class="text-[11px] text-goldPrimary/90 font-semibold mt-2 flex items-center gap-1">
-                                    <i class="fa-solid fa-chalkboard-user"></i> Guru Pengampu: Glendy A. Taawoeda, S.Pd.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Live Clock & Schedule Widget -->
-                    <div class="bg-skyDark/90 border border-slate-700/80 rounded-2xl p-5 text-center flex flex-col justify-between shadow-inner">
-                        <div>
-                            <div class="text-xs text-goldPrimary font-semibold tracking-wider uppercase mb-1">
-                                <i class="fa-regular fa-clock"></i> Waktu Realtime
-                            </div>
-                            <div id="realtime-clock" class="text-2xl sm:text-3xl font-extrabold font-mono tracking-wider text-white my-1">
-                                00:00:00 WITA
-                            </div>
-                            <div id="realtime-date" class="text-xs text-slate-300 font-medium">
-                                Rabu, 30 September 2026
-                            </div>
-                        </div>
-
-                        <hr class="border-slate-700 my-4">
-
-                        <!-- Simple Calendar Preview -->
-                        <div>
-                            <div class="flex justify-between items-center text-xs font-bold text-slate-300 mb-2">
-                                <span><i class="fa-solid fa-calendar-day text-goldPrimary mr-1"></i> Kalender Akademik</span>
-                                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-goldPrimary">Aktif</span>
-                            </div>
-                            <div class="grid grid-cols-7 gap-1 text-[11px] font-medium text-slate-400 text-center">
-                                <div>S</div><div>S</div><div>R</div><div>K</div><div>J</div><div>S</div><div>M</div>
-                                <div class="p-1 rounded text-slate-500">27</div>
-                                <div class="p-1 rounded text-slate-500">28</div>
-                                <div class="p-1 rounded text-slate-500">29</div>
-                                <div class="p-1 rounded bg-goldPrimary text-skyDark font-bold shadow">30</div>
-                                <div class="p-1 rounded">1</div>
-                                <div class="p-1 rounded">2</div>
-                                <div class="p-1 rounded">3</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Class Grid Title & Filter -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4">
-                <div>
-                    <h3 class="text-xl font-bold text-skyDark flex items-center gap-2">
-                        <i class="fa-solid fa-border-all text-goldPrimary"></i> Tabel & Grid Kelas Yang Diampu
-                    </h3>
-                    <p class="text-xs text-slate-500">Klik pada kartu kelas untuk melihat detail rincian siswa dan statistik</p>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="filterClassGrid('ALL')" class="class-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-skyPrimary text-white shadow-sm" data-grade="ALL">Semua</button>
-                    <button onclick="filterClassGrid('X')" class="class-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300" data-grade="X">Kelas X</button>
-                    <button onclick="filterClassGrid('XI')" class="class-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300" data-grade="XI">Kelas XI</button>
-                    <button onclick="filterClassGrid('XII')" class="class-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300" data-grade="XII">Kelas XII</button>
-                </div>
-            </div>
-
-            <!-- Interactive Class Cards Grid -->
-            <div id="class-grid-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
-                <!-- Javascript will populate this with classes: X (1-4), XI (1-5), XII (1-5) -->
-            </div>
-        </section>
-
-        <!-- PAGE 2: MATERI -->
-        <section id="page-materi" class="page-content hidden space-y-6">
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-skyDark flex items-center gap-2">
-                        <i class="fa-solid fa-book-bookmark text-goldPrimary"></i> Materi Pembelajaran
-                    </h2>
-                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Unduh & pelajari modul Google Drive terverifikasi dari guru pengampu.</p>
-                </div>
-
-                <!-- Class Filter Dropdown -->
-                <div class="flex items-center gap-3">
-                    <label class="text-xs font-bold text-slate-600 whitespace-nowrap">Filter Tingkat:</label>
-                    <select id="materi-filter-grade" onchange="renderMateri()" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs rounded-xl focus:ring-skyPrimary focus:border-skyPrimary p-2.5 font-semibold">
-                        <option value="ALL">Semua Kelas (X, XI, XII)</option>
-                        <option value="X">Kelas X</option>
-                        <option value="XI">Kelas XI</option>
-                        <option value="XII">Kelas XII</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Material List Grid -->
-            <div id="materi-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Populated by JavaScript -->
-            </div>
-        </section>
-
-        <!-- PAGE 3: TUGAS -->
-        <section id="page-tugas" class="page-content hidden space-y-6">
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-skyDark flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-goldPrimary"></i> Tugas Informatika
-                    </h2>
-                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Lihat tenggat waktu dan kirim lembar jawaban atau link Google Drive tugas Anda.</p>
-                </div>
-
-                <!-- Filter -->
-                <div class="flex items-center gap-2">
-                    <select id="tugas-filter-grade" onchange="renderTugas()" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs rounded-xl p-2.5 font-semibold">
-                        <option value="ALL">Semua Kelas</option>
-                        <option value="X">Kelas X</option>
-                        <option value="XI">Kelas XI</option>
-                        <option value="XII">Kelas XII</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Tasks List Container -->
-            <div id="tugas-list" class="space-y-4">
-                <!-- Populated via Javascript -->
-            </div>
-        </section>
-
-        <!-- PAGE 4: DASHBOARD GURU -->
-        <section id="page-dashboard" class="page-content hidden space-y-6">
-            <!-- Header Status Guru -->
-            <div class="bg-gradient-to-r from-skyDark to-skyPrimary rounded-2xl p-6 text-white shadow-lg border border-yellow-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-2xl gold-gradient text-skyDark flex items-center justify-center font-bold text-2xl shadow">
-                        <i class="fa-solid fa-user-tie"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Dashboard Pengelolaan Guru</h2>
-                        <p class="text-xs text-goldPrimary font-semibold mt-0.5">Glendy A. Taawoeda, S.Pd. • NIP. 1988... (Informatika)</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-500/40 text-xs font-semibold flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Mode Autentikasi Guru
-                    </span>
-                    <button onclick="lockGuruDashboard()" class="px-3 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/30 text-xs font-semibold">
-                        <i class="fa-solid fa-lock"></i> Kunci
-                    </button>
-                </div>
-            </div>
-
-            <!-- Management Tabs -->
-            <div class="flex border-b border-slate-200 space-x-2 sm:space-x-4 overflow-x-auto pb-1">
-                <button onclick="switchGuruTab('materi')" id="guru-tab-materi" class="guru-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-skyPrimary text-white shadow">
-                    <i class="fa-solid fa-folder-plus mr-1"></i> Kelola Materi
-                </button>
-                <button onclick="switchGuruTab('tugas')" id="guru-tab-tugas" class="guru-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
-                    <i class="fa-solid fa-pen-to-square mr-1"></i> Kelola & Nilai Tugas
-                </button>
-                <button onclick="switchGuruTab('pengumuman')" id="guru-tab-pengumuman" class="guru-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
-                    <i class="fa-solid fa-star mr-1"></i> Kelas Terbaik & Pengumuman
-                </button>
-                <button onclick="switchGuruTab('integrasi')" id="guru-tab-integrasi" class="guru-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
-                    <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Panduan Vercel/Drive
-                </button>
-            </div>
-
-            <!-- SUB-TAB 1: KELOLA MATERI -->
-            <div id="guru-panel-materi" class="guru-panel space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-skyDark flex items-center gap-2">
-                        <i class="fa-solid fa-plus-circle text-goldPrimary"></i> Tambah Modul/Materi Baru (Drive Link)
-                    </h3>
-                    <form onsubmit="handleAddMateri(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Judul Materi *</label>
-                            <input type="text" id="add-materi-title" required placeholder="Contoh: Modul Algorithm & Python Programming" class="w-full px-3 py-2 border rounded-xl text-xs focus:ring-2 focus:ring-skyPrimary outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tingkat Kelas *</label>
-                            <select id="add-materi-grade" class="w-full px-3 py-2 border rounded-xl text-xs focus:ring-2 focus:ring-skyPrimary outline-none font-semibold">
-                                <option value="X">Kelas X</option>
-                                <option value="XI">Kelas XI</option>
-                                <option value="XII">Kelas XII</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Link Google Drive Modul/File *</label>
-                            <input type="url" id="add-materi-link" required placeholder="https://drive.google.com/file/d/..." class="w-full px-3 py-2 border rounded-xl text-xs focus:ring-2 focus:ring-skyPrimary outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Deskripsi Singkat</label>
-                            <input type="text" id="add-materi-desc" placeholder="Panduan praktikum algoritma pemograman..." class="w-full px-3 py-2 border rounded-xl text-xs focus:ring-2 focus:ring-skyPrimary outline-none">
-                        </div>
-                        <div class="md:col-span-2 flex justify-end">
-                            <button type="submit" class="px-5 py-2.5 bg-skyPrimary text-white font-bold rounded-xl text-xs hover:bg-skyDark transition shadow">
-                                <i class="fa-solid fa-upload mr-1"></i> Terbitkan Materi
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Existing Materials Table -->
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="p-4 bg-slate-50 border-b border-slate-200">
-                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Daftar Materi Aktif</h4>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-600">
-                            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[10px]">
-                                <tr>
-                                    <th class="p-3">Judul Materi</th>
-                                    <th class="p-3">Kelas</th>
-                                    <th class="p-3">Tanggal Upload</th>
-                                    <th class="p-3">Link Drive</th>
-                                    <th class="p-3 text-right">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="guru-materi-table-body" class="divide-y divide-slate-200">
-                                <!-- JS items -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SUB-TAB 2: KELOLA TUGAS -->
-            <div id="guru-panel-tugas" class="guru-panel hidden space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-skyDark flex items-center gap-2">
-                        <i class="fa-solid fa-file-pen text-goldPrimary"></i> Buat Penugasan Baru
-                    </h3>
-                    <form onsubmit="handleAddTugas(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Judul Tugas *</label>
-                            <input type="text" id="add-tugas-title" required placeholder="Contoh: TP 01 - Pengenalan Jaringan Komputer" class="w-full px-3 py-2 border rounded-xl text-xs outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Target Kelas *</label>
-                            <select id="add-tugas-grade" class="w-full px-3 py-2 border rounded-xl text-xs outline-none font-semibold">
-                                <option value="X">Kelas X</option>
-                                <option value="XI">Kelas XI</option>
-                                <option value="XII">Kelas XII</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tenggat Waktu (Deadline) *</label>
-                            <input type="date" id="add-tugas-deadline" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Petunjuk Instruktur</label>
-                            <input type="text" id="add-tugas-instruction" placeholder="Kumpulkan berupa link Drive file PDF atau jawaban..." class="w-full px-3 py-2 border rounded-xl text-xs outline-none">
-                        </div>
-                        <div class="md:col-span-2 flex justify-end">
-                            <button type="submit" class="px-5 py-2.5 bg-skyPrimary text-white font-bold rounded-xl text-xs hover:bg-skyDark shadow">
-                                <i class="fa-solid fa-paper-plane mr-1"></i> Publikasikan Tugas
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Submission Inspector -->
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
-                    <h4 class="text-sm font-bold text-skyDark flex items-center gap-2">
-                        <i class="fa-solid fa-inbox text-goldPrimary"></i> Hasil Pengumpulan Tugas Siswa
-                    </h4>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-600">
-                            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[10px]">
-                                <tr>
-                                    <th class="p-3">Siswa & Kelas</th>
-                                    <th class="p-3">Judul Tugas</th>
-                                    <th class="p-3">Waktu Kirim</th>
-                                    <th class="p-3">Tipe & Isian Submission</th>
-                                    <th class="p-3">Nilai</th>
-                                </tr>
-                            </thead>
-                            <tbody id="guru-submissions-table-body" class="divide-y divide-slate-200">
-                                <!-- JS Submissions -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SUB-TAB 3: KELAS TERBAIK -->
-            <div id="guru-panel-pengumuman" class="guru-panel hidden space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-skyDark flex items-center gap-2">
-                        <i class="fa-solid fa-trophy text-goldPrimary"></i> Update Ucapan & Kelas Terbaik
-                    </h3>
-                    <form onsubmit="handleUpdateBestClass(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Pilih Kelas Terbaik Pertemuan Ini</label>
-                            <select id="set-best-class-name" class="w-full sm:w-1/2 px-3 py-2 border rounded-xl text-xs font-bold">
-                                <option value="X-1">Kelas X-1</option><option value="X-2">Kelas X-2</option>
-                                <option value="XI-2" selected>Kelas XI-2</option><option value="XI-3">Kelas XI-3</option>
-                                <option value="XII-1">Kelas XII-1</option><option value="XII-5">Kelas XII-5</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Pesan Apresiasi Guru (Glendy A. Taawoeda, S.Pd.)</label>
-                            <textarea id="set-best-class-msg" rows="3" class="w-full px-3 py-2 border rounded-xl text-xs outline-none" required>Selamat kepada kelas XI-2 atas keaktifan, kedisiplinan dan ketepatan waktu terbaik minggu ini!</textarea>
-                        </div>
-                        <button type="submit" class="px-5 py-2.5 bg-goldPrimary text-skyDark font-bold rounded-xl text-xs hover:bg-yellow-500 shadow">
-                            <i class="fa-solid fa-save mr-1"></i> Simpan & Tampilkan Di Beranda
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- SUB-TAB 4: INTEGRASI DEPLOYMENT -->
-            <div id="guru-panel-integrasi" class="guru-panel hidden space-y-4">
-                <div class="bg-slate-900 text-slate-200 p-6 rounded-2xl shadow border border-slate-700 space-y-3">
-                    <h3 class="text-lg font-bold text-goldPrimary flex items-center gap-2">
-                        <i class="fa-brands fa-github"></i> Panduan Upload GitHub & Vercel Free
-                    </h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        Aplikasi ini didesain <strong>100% Client-Side Persistent</strong> yang menyimpan data pada `localStorage` browser dan mendukung pengautan tautan <strong>Google Drive</strong> tanpa biaya Firebase Storage.
-                    </p>
-                    <ol class="list-decimal list-inside text-xs space-y-2 text-slate-300">
-                        <li>Simpan kode HTML ini sebagai <strong>`index.html`</strong>.</li>
-                        <li>Buat Repository baru di GitHub (misal: `informatika-sman4-manado`).</li>
-                        <li>Upload file `index.html` tersebut ke GitHub Repository Anda.</li>
-                        <li>Buka akun di <strong class="text-white">Vercel.com</strong>, pilih <em>"Import Project from GitHub"</em>.</li>
-                        <li>Klik <strong>Deploy</strong>. Website interaktif aktif secara gratis dan responsif di iOS/Android.</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-skyDark text-white border-t border-yellow-500/30 py-6 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
-            <div class="flex items-center gap-2">
-                <div class="w-6 h-6 rounded-full gold-gradient flex items-center justify-center text-skyDark font-bold text-[10px]">4</div>
-                <span class="font-semibold text-slate-300">© 2026 Informatika SMA Negeri 4 Manado</span>
-            </div>
-            <div class="text-slate-400">
-                Pengampu: <span class="text-goldPrimary font-semibold">Glendy A. Taawoeda, S.Pd.</span>
-            </div>
+      </div>
+      <div class="widget-box">
+        <i class="fa-regular fa-calendar-days"></i>
+        <div class="widget-content">
+          <div class="title">Kalender</div>
+          <div class="value" id="realtime-date">1 Januari 2026</div>
         </div>
-    </footer>
-
-    <!-- MODAL 1: MANDATORY FIRST TIME LOGIN POPUP -->
-    <div id="modal-login" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 hidden">
-        <div class="bg-skyDark text-white rounded-3xl max-w-md w-full border border-yellow-500/40 shadow-2xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
-            <div class="text-center space-y-2">
-                <div class="w-16 h-16 mx-auto rounded-full gold-gradient p-0.5 shadow-lg flex items-center justify-center">
-                    <div class="w-full h-full bg-skyDark rounded-full flex items-center justify-center">
-                        <i class="fa-solid fa-graduation-cap text-goldPrimary text-2xl"></i>
-                    </div>
-                </div>
-                <h3 class="text-2xl font-extrabold text-white">Selamat Datang!</h3>
-                <p class="text-xs text-slate-300">Portal Pembelajaran Interaktif Informatika<br><strong>SMA Negeri 4 Manado</strong></p>
-            </div>
-
-            <!-- Role Selector Switch -->
-            <div class="flex rounded-xl bg-slate-800/80 p-1 border border-slate-700">
-                <button type="button" onclick="setLoginRole('siswa')" id="role-btn-siswa" class="flex-1 py-2 rounded-lg text-xs font-bold transition bg-goldPrimary text-skyDark shadow">
-                    <i class="fa-solid fa-user-graduate mr-1"></i> Siswa
-                </button>
-                <button type="button" onclick="setLoginRole('guru')" id="role-btn-guru" class="flex-1 py-2 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-chalkboard-user mr-1"></i> Guru
-                </button>
-            </div>
-
-            <!-- Form Siswa -->
-            <form id="form-login-siswa" onsubmit="handleLoginSiswa(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nama Lengkap Siswa *</label>
-                    <input type="text" id="login-nama" required placeholder="Masukkan Nama Lengkap..." class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:ring-2 focus:ring-goldPrimary outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Pilih Kelas *</label>
-                    <select id="login-kelas" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:ring-2 focus:ring-goldPrimary outline-none font-semibold">
-                        <optgroup label="Tingkat X">
-                            <option value="X-1">Kelas X-1</option><option value="X-2">Kelas X-2</option>
-                            <option value="X-3">Kelas X-3</option><option value="X-4">Kelas X-4</option>
-                        </optgroup>
-                        <optgroup label="Tingkat XI">
-                            <option value="XI-1">Kelas XI-1</option><option value="XI-2" selected>Kelas XI-2</option>
-                            <option value="XI-3">Kelas XI-3</option><option value="XI-4">Kelas XI-4</option>
-                            <option value="XI-5">Kelas XI-5</option>
-                        </optgroup>
-                        <optgroup label="Tingkat XII">
-                            <option value="XII-1">Kelas XII-1</option><option value="XII-2">Kelas XII-2</option>
-                            <option value="XII-3">Kelas XII-3</option><option value="XII-4">Kelas XII-4</option>
-                            <option value="XII-5">Kelas XII-5</option>
-                        </optgroup>
-                    </select>
-                </div>
-                <button type="submit" class="w-full py-3 bg-gradient-to-r from-goldPrimary to-goldLight text-skyDark font-extrabold rounded-xl text-xs hover:brightness-110 shadow-lg transition">
-                    Masuk Ke Portal Pembelajaran
-                </button>
-            </form>
-
-            <!-- Form Guru -->
-            <form id="form-login-guru" onsubmit="handleLoginGuru(event)" class="space-y-4 hidden">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password Akses Guru *</label>
-                    <input type="password" id="login-password" required placeholder="Sandi Guru (rahasia)" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:ring-2 focus:ring-goldPrimary outline-none">
-                    <p class="text-[10px] text-slate-400 mt-1"><i class="fa-solid fa-circle-info"></i> Password Default: <code class="text-goldPrimary font-mono">rahasia</code></p>
-                </div>
-                <button type="submit" class="w-full py-3 bg-skyPrimary text-white font-extrabold rounded-xl text-xs hover:bg-skyDark shadow-lg border border-yellow-500/30 transition">
-                    Verifikasi Autentikasi Guru
-                </button>
-            </form>
+      </div>
+      <div class="widget-box" style="border-left-color: var(--gold-primary);">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <div class="widget-content">
+          <div class="title">Guru Pengampu</div>
+          <div class="value">Glendy A. Taawoeda, S.Pd.</div>
         </div>
+      </div>
     </div>
 
-    <!-- MODAL 2: DETAIL RINCIAN SISWA KELAS -->
-    <div id="modal-class-detail" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden border border-slate-200 flex flex-col max-h-[85vh]">
-            <div class="bg-skyDark text-white p-5 border-b border-yellow-500/30 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl gold-gradient text-skyDark flex items-center justify-center font-bold text-lg" id="class-detail-icon">
-                        X
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold" id="class-detail-title">Detail Kelas X-1</h3>
-                        <p class="text-xs text-goldPrimary" id="class-detail-sub">Total Siswa Terdaftar: 32</p>
-                    </div>
-                </div>
-                <button onclick="closeModal('modal-class-detail')" class="text-slate-300 hover:text-white p-2 rounded-lg">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            
-            <div class="p-4 border-b border-slate-100 bg-slate-50 flex gap-2">
-                <div class="relative flex-1">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-                    <input type="text" id="student-search-input" onkeyup="filterStudentList()" placeholder="Cari nama siswa..." class="w-full pl-8 pr-3 py-2 text-xs bg-white border border-slate-200 rounded-xl outline-none">
-                </div>
-            </div>
-
-            <div class="p-5 overflow-y-auto flex-grow space-y-2" id="student-list-container">
-                <!-- Javascript populated -->
-            </div>
-
-            <div class="p-4 bg-slate-50 border-t border-slate-200 text-right">
-                <button onclick="closeModal('modal-class-detail')" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-300">
-                    Tutup
-                </button>
-            </div>
+    <!-- ================= PAGE: BERANDA ================= -->
+    <div id="page-home" class="page active">
+      <!-- Welcome Banner -->
+      <div class="card welcome-card">
+        <h2>Selamat Datang di Portal Informatika!</h2>
+        <p>Akses pembelajaran digital interaktif SMAN 4 Manado. Silahkan pilih materi dan selesaikan tugas tepat waktu.</p>
+        <div style="margin-top: 12px; padding: 10px; background: rgba(240, 165, 0, 0.2); border-left: 4px solid var(--gold-primary); border-radius: 4px;">
+          <small><i class="fa-solid fa-trophy"></i> <strong>Apresiasi Kelas Terbaik:</strong> Selamat kepada <strong>Kelas XI-1</strong> atas predikat keaktifan dan nilai rata-rata tertinggi minggu ini!</small>
         </div>
+      </div>
+
+      <!-- Table Kelas Card -->
+      <div class="card">
+        <h3><i class="fa-solid fa-table"></i> Tabel Ringkasan Kelas yang Diampu</h3>
+        <p style="font-size:0.8rem; color:#666; margin-bottom: 12px;">* Klik pada baris kelas untuk melihat rincian daftar siswa.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Tingkat</th>
+                <th>Daftar Sub-Kelas</th>
+                <th>Total Siswa</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="kelas-summary-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <!-- MODAL 3: ASSIGNMENT SUBMISSION FORM -->
-    <div id="modal-submit-tugas" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden border border-slate-200">
-            <div class="bg-skyDark text-white p-5 border-b border-yellow-500/30 flex justify-between items-center">
-                <h3 class="text-base font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-upload text-goldPrimary"></i> Kirim Lembar Jawaban Tugas
-                </h3>
-                <button onclick="closeModal('modal-submit-tugas')" class="text-slate-300 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            <form onsubmit="handleSendSubmission(event)" class="p-6 space-y-4">
-                <input type="hidden" id="submit-tugas-id">
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
-                    <p class="text-slate-500">Judul Tugas: <strong class="text-slate-800" id="submit-tugas-title-display">-</strong></p>
-                    <p class="text-slate-500">Pengirim: <strong class="text-skyPrimary" id="submit-tugas-user-display">-</strong></p>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Tipe Pengiriman *</label>
-                    <select id="submit-type" onchange="toggleSubmissionInput()" class="w-full px-3 py-2 border rounded-xl text-xs outline-none font-semibold">
-                        <option value="drive">Link File Google Drive</option>
-                        <option value="text">Jawaban Teks Langsung</option>
-                    </select>
-                </div>
-
-                <div id="input-container-drive">
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">URL Link Google Drive *</label>
-                    <input type="url" id="submit-drive-url" placeholder="https://drive.google.com/file/d/..." class="w-full px-3 py-2 border rounded-xl text-xs outline-none">
-                    <p class="text-[10px] text-slate-400 mt-1">*Pastikan akses tautan Google Drive diset menjadi 'Siapa saja yang memiliki link'.</p>
-                </div>
-
-                <div id="input-container-text" class="hidden">
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">Jawaban / Teks Laporan *</label>
-                    <textarea id="submit-text-content" rows="4" placeholder="Tuliskan lembar jawaban tugas Anda di sini..." class="w-full px-3 py-2 border rounded-xl text-xs outline-none"></textarea>
-                </div>
-
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeModal('modal-submit-tugas')" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
-                    <button type="submit" class="px-5 py-2 bg-skyPrimary text-white font-bold rounded-xl text-xs hover:bg-skyDark shadow">Kirim Jawaban</button>
-                </div>
-            </form>
+    <!-- ================= PAGE: MATERI ================= -->
+    <div id="page-materi" class="page">
+      <div class="card">
+        <h3><i class="fa-solid fa-folder-open"></i> Material Pembelajaran (Google Drive)</h3>
+        <p style="font-size: 0.85rem; color:#666; margin-bottom: 15px;">Pilih materi pembelajaran berdasarkan kelas Anda dan unduh dari Google Drive.</p>
+        
+        <div class="table-controls">
+          <div>
+            <label>Tampilkan: </label>
+            <select id="materi-page-size" onchange="renderMateriTable()">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+          <div>
+            <input type="text" id="materi-search" placeholder="Cari Materi..." onkeyup="renderMateriTable()"/>
+          </div>
         </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr onclick="sortMateriTable()">
+                <th>Judul Materi <i class="fa-solid fa-sort"></i></th>
+                <th>Target Kelas</th>
+                <th>Tanggal Upload</th>
+                <th>Link Download</th>
+              </tr>
+            </thead>
+            <tbody id="materi-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="materi-pagination"></div>
+      </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // GLOBAL DATA STRUCTURE & MOCK STATE PERSISTENCE
-        const TEACHER_PASS = "glendy2108";
+    <!-- ================= PAGE: TUGAS ================= -->
+    <div id="page-tugas" class="page">
+      <div class="card">
+        <h3><i class="fa-solid fa-pen-to-square"></i> Pengumpulan Tugas Informatika</h3>
+        <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">Kirimkan jawaban Anda langsung dalam teks atau masukkan link lampiran Google Drive.</p>
 
-        // Initial Sample Data for Materials
-        const defaultMaterials = [
-            {
-                id: 1,
-                title: "Modul 1: Berpikir Komputasional & Algoritma",
-                grade: "X",
-                date: "2026-09-15",
-                desc: "Pengenalan dekomposisi, pengenalan pola, abstraksi, dan perancangan algoritma pemfaktoran.",
-                driveUrl: "https://drive.google.com"
-            },
-            {
-                id: 2,
-                title: "Modul 2: Praktikum Pemrograman Python Basic",
-                grade: "XI",
-                date: "2026-09-20",
-                desc: "Panduan variabel, tipe data, struktur kondisi if-else, dan pengulangan for/while.",
-                driveUrl: "https://drive.google.com"
-            },
-            {
-                id: 3,
-                title: "Modul 3: Analisis Data & Visualisasi Matplotlib",
-                grade: "XII",
-                date: "2026-09-28",
-                desc: "Pengolahan dataset CSV, pembuatan grafik garis, dan grafik batang interaktif.",
-                driveUrl: "https://drive.google.com"
-            }
-        ];
+        <form id="form-submit-tugas" onsubmit="handlePengumpulanTugas(event)">
+          <div class="form-group">
+            <label>Pilih Tugas</label>
+            <select id="tugas-select" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Jawaban Teks / Catatan</label>
+            <textarea id="tugas-jawaban-text" rows="4" placeholder="Tuliskan ringkasan jawaban Anda di sini..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Link Google Drive (Lampiran Tugas)</label>
+            <input type="url" id="tugas-drive-url" placeholder="https://drive.google.com/file/d/..." />
+            <small style="color:#777;">*Pastikan akses link Google Drive diubah menjadi "Siapa saja yang memiliki link".</small>
+          </div>
+          <button type="submit" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Kirimkan Tugas</button>
+        </form>
+      </div>
+    </div>
 
-        // Initial Sample Data for Assignments
-        const defaultAssignments = [
-            {
-                id: 101,
-                title: "TP 01 - Analisis Algoritma Sorting",
-                grade: "X",
-                deadline: "2026-10-05",
-                instruction: "Tulis ringkasan perbandingan Bubble Sort vs Quick Sort dalam dokumen Drive."
-            },
-            {
-                id: 102,
-                title: "TP 02 - Proyek Web Sederhana HTML/Tailwind",
-                grade: "XI",
-                deadline: "2026-10-10",
-                instruction: "Kumpulkan link Google Drive berisi folder zip source code web Anda."
-            }
-        ];
+    <!-- ================= PAGE: DASHBOARD GURU ================= -->
+    <div id="page-dashboard" class="page">
+      <div class="card">
+        <h3><i class="fa-solid fa-sliders"></i> Panel Pengolahan Data (Khusus Guru)</h3>
+        <p style="font-size: 0.85rem; color:#666; margin-bottom:15px;">Tambah Siswa, Upload Materi Baru, dan Cek Pengumpulan Tugas Siswa.</p>
 
-        // Generate Classes Data: X (1-4), XI (1-5), XII (1-5)
-        const classList = [
-            ...Array.from({length: 4}, (_, i) => ({ grade: 'X', name: `X-${i+1}`, count: 32 + (i%3) })),
-            ...Array.from({length: 5}, (_, i) => ({ grade: 'XI', name: `XI-${i+1}`, count: 34 + (i%2) })),
-            ...Array.from({length: 5}, (_, i) => ({ grade: 'XII', name: `XII-${i+1}`, count: 33 + (i%4) }))
-        ];
+        <!-- Tab Khusus Guru -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+          <button class="btn-gold" onclick="openModalTambahSiswa()"><i class="fa-solid fa-user-plus"></i> Tambah Data Siswa</button>
+          <button class="btn-gold" onclick="openModalTambahMateri()"><i class="fa-solid fa-file-circle-plus"></i> Upload Materi Baru</button>
+        </div>
 
-        // Helper Student Name Generator
-        function generateStudentsForClass(className) {
-            const sampleNames = ["Aditya", "Bella", "Christian", "Dwi", "Eka", "Fabiola", "Gabriel", "Hana", "Indra", "Jessica", "Kevin", "Lana", "Michael", "Nadia", "Oktavian", "Priscilia", "Rivaldo", "Stefani", "Tania", "Victor"];
-            const lastNames = ["Runtu", "Suma", "Tumbel", "Wongkar", "Kandou", "Pangemanan", "Lengkey", "Lumentut", "Makarawung", "Manoppo"];
-            
-            let list = [];
-            for(let i = 1; i <= 20; i++) {
-                const fn = sampleNames[(i + className.length) % sampleNames.length];
-                const ln = lastNames[(i * 3) % lastNames.length];
-                list.push({ id: i, name: `${fn} ${ln}`, nisn: `00${7800000 + i + className.length*10}` });
-            }
-            return list;
+        <h4><i class="fa-solid fa-inbox"></i> Daftar Pengumpulan Tugas Siswa</h4>
+        <div class="table-responsive" style="margin-top: 10px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Waktu Kirim</th>
+                <th>Siswa & Kelas</th>
+                <th>Tugas</th>
+                <th>Jawaban / Link Drive</th>
+              </tr>
+            </thead>
+            <tbody id="guru-tugas-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /container -->
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <div class="mobile-nav">
+    <a href="#" class="mobile-link active" onclick="switchPage('home')"><i class="fa-solid fa-house"></i>Beranda</a>
+    <a href="#" class="mobile-link" onclick="switchPage('materi')"><i class="fa-solid fa-book-open"></i>Materi</a>
+    <a href="#" class="mobile-link" onclick="switchPage('tugas')"><i class="fa-solid fa-tasks"></i>Tugas</a>
+    <a href="#" class="mobile-link" onclick="switchPage('dashboard')"><i class="fa-solid fa-user-shield"></i>Guru</a>
+  </div>
+
+  <!-- ================= POPUP MODALS ================= -->
+
+  <!-- POPUP 1: LOGIN MANDATORI / FIRST ACCESS -->
+  <div id="modal-login" class="modal-overlay" style="display: flex;">
+    <div class="modal-card">
+      <h3 style="text-align: center;"><i class="fa-solid fa-shield-halved" style="color:var(--gold-primary)"></i> Selamat Datang</h3>
+      <p style="text-align:center; font-size: 0.85rem; color:#666; margin-bottom:20px;">Silakan isi identitas Anda untuk masuk ke sistem.</p>
+      
+      <div class="form-group">
+        <label>Masuk Sebagai:</label>
+        <select id="login-role" onchange="toggleRoleInput()">
+          <option value="siswa">Siswa-Siswi</option>
+          <option value="guru">Guru Pengampu</option>
+        </select>
+      </div>
+
+      <!-- Field Siswa -->
+      <div id="group-siswa">
+        <div class="form-group">
+          <label>Pilih Kelas</label>
+          <select id="login-kelas">
+            <!-- X -->
+            <option value="X-1">X-1</option><option value="X-2">X-2</option><option value="X-3">X-3</option><option value="X-4">X-4</option>
+            <!-- XI -->
+            <option value="XI-1">XI-1</option><option value="XI-2">XI-2</option><option value="XI-3">XI-3</option><option value="XI-4">XI-4</option><option value="XI-5">XI-5</option>
+            <!-- XII -->
+            <option value="XII-1">XII-1</option><option value="XII-2">XII-2</option><option value="XII-3">XII-3</option><option value="XII-4">XII-4</option><option value="XII-5">XII-5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nama Lengkap Siswa</label>
+          <input type="text" id="login-nama" placeholder="Masukkan nama lengkap..." />
+        </div>
+      </div>
+
+      <!-- Field Guru -->
+      <div id="group-guru" style="display: none;">
+        <div class="form-group">
+          <label>Password Otentikasi Guru</label>
+          <input type="password" id="login-password" placeholder="Masukkan password..." />
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="executeLogin()">Masuk Website</button>
+    </div>
+  </div>
+
+  <!-- POPUP 2: DETAIL RINCIAN SISWA PER KELAS -->
+  <div id="modal-detail-kelas" class="modal-overlay" style="display: none;">
+    <div class="modal-card" style="max-width: 600px;">
+      <h3 id="modal-detail-title">Detail Siswa Kelas</h3>
+      <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Siswa</th>
+              <th>Status Harian</th>
+            </tr>
+          </thead>
+          <tbody id="detail-siswa-tbody"></tbody>
+        </table>
+      </div>
+      <button class="btn-submit" style="margin-top: 15px; background: #666;" onclick="closeModal('modal-detail-kelas')">Tutup</button>
+    </div>
+  </div>
+
+  <!-- POPUP 3: TAMBAH SISWA (GURU) -->
+  <div id="modal-tambah-siswa" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <h3>Tambah Data Siswa</h3>
+      <div class="form-group">
+        <label>Kelas</label>
+        <select id="add-siswa-kelas">
+          <option value="X-1">X-1</option><option value="X-2">X-2</option><option value="X-3">X-3</option><option value="X-4">X-4</option>
+          <option value="XI-1">XI-1</option><option value="XI-2">XI-2</option><option value="XI-3">XI-3</option><option value="XI-4">XI-4</option><option value="XI-5">XI-5</option>
+          <option value="XII-1">XII-1</option><option value="XII-2">XII-2</option><option value="XII-3">XII-3</option><option value="XII-4">XII-4</option><option value="XII-5">XII-5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Nama Siswa</label>
+        <input type="text" id="add-siswa-nama" placeholder="Nama lengkap..." />
+      </div>
+      <button class="btn-submit" onclick="saveSiswaBaru()">Simpan Data</button>
+      <button class="btn-submit" style="margin-top: 10px; background: #666;" onclick="closeModal('modal-tambah-siswa')">Batal</button>
+    </div>
+  </div>
+
+  <!-- POPUP 4: TAMBAH MATERI (GURU) -->
+  <div id="modal-tambah-materi" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <h3>Upload Link Materi Google Drive</h3>
+      <div class="form-group">
+        <label>Judul Materi</label>
+        <input type="text" id="add-materi-judul" placeholder="Contoh: Bab 1 Algoritma Dasar" />
+      </div>
+      <div class="form-group">
+        <label>Target Tingkat / Kelas</label>
+        <select id="add-materi-kelas">
+          <option value="Semua Kelas">Semua Kelas</option>
+          <option value="Kelas X">Kelas X</option>
+          <option value="Kelas XI">Kelas XI</option>
+          <option value="Kelas XII">Kelas XII</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Link Google Drive Materi</label>
+        <input type="url" id="add-materi-url" placeholder="https://drive.google.com/..." />
+      </div>
+      <button class="btn-submit" onclick="saveMateriBaru()">Upload Materi</button>
+      <button class="btn-submit" style="margin-top: 10px; background: #666;" onclick="closeModal('modal-tambah-materi')">Batal</button>
+    </div>
+  </div>
+
+  <!-- JavaScript Logika Sistem -->
+  <script>
+    /* ===================================================
+       1. INITIAL DATABASE (LOCAL STORAGE HYBRID)
+       =================================================== */
+    const GURU_PASSWORD_DEFAULT = "glendy2108";
+
+    // Initial Data Siswa Mock
+    const defaultSiswa = [
+      { id: 1, nama: "Aditya Manopo", kelas: "X-1" },
+      { id: 2, nama: "Beatrix Wowor", kelas: "X-1" },
+      { id: 3, nama: "Christian Pangemanan", kelas: "XI-1" },
+      { id: 4, nama: "David Supit", kelas: "XI-1" },
+      { id: 5, nama: "Ester Rumengan", kelas: "XII-1" }
+    ];
+
+    const defaultMateri = [
+      { id: 1, judul: "Pengแนวan Algoritma & Pemrograman C++", kelas: "Kelas X", tanggal: "2026-09-10", link: "https://drive.google.com" },
+      { id: 2, judul: "Analisis Data & Basis Data Relasional", kelas: "Kelas XI", tanggal: "2026-09-15", link: "https://drive.google.com" },
+      { id: 3, judul: "Jaringan Komputer & Kebijakan Kemanan Cyber", kelas: "Kelas XII", tanggal: "2026-09-20", link: "https://drive.google.com" }
+    ];
+
+    // Load or Init Storage
+    let dbSiswa = JSON.parse(localStorage.getItem('db_siswa')) || defaultSiswa;
+    let dbMateri = JSON.parse(localStorage.getItem('db_materi')) || defaultMateri;
+    let dbTugasSubmitted = JSON.parse(localStorage.getItem('db_tugas')) || [];
+
+    function saveState() {
+      localStorage.setItem('db_siswa', JSON.stringify(dbSiswa));
+      localStorage.setItem('db_materi', JSON.stringify(dbMateri));
+      localStorage.setItem('db_tugas', JSON.stringify(dbTugasSubmitted));
+    }
+
+    /* ===================================================
+       2. REALTIME CLOCK & NOTIFICATION SYSTEM
+       =================================================== */
+    function updateClock() {
+      const now = new Date();
+      const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('realtime-clock').innerText = now.toLocaleTimeString('id-ID') + " WITA";
+      document.getElementById('realtime-date').innerText = now.toLocaleDateString('id-ID', optionsDate);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function showNotification(text) {
+      const container = document.getElementById('notification-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<i class="fa-solid fa-bell" style="color:var(--gold-primary)"></i> ${text}`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 4000);
+    }
+
+    /* ===================================================
+       3. AUTHENTICATION & SESSION MANAGEMENT
+       =================================================== */
+    let currentUser = null;
+
+    function checkSession() {
+      const session = localStorage.getItem('user_session');
+      if (session) {
+        currentUser = JSON.parse(session);
+        document.getElementById('modal-login').style.display = 'none';
+        document.getElementById('user-display-name').innerHTML = `<i class="fa-solid fa-user"></i> ${currentUser.nama} (${currentUser.role === 'guru' ? 'Guru' : currentUser.kelas})`;
+      } else {
+        document.getElementById('modal-login').style.display = 'flex';
+      }
+    }
+
+    function toggleRoleInput() {
+      const role = document.getElementById('login-role').value;
+      if (role === 'guru') {
+        document.getElementById('group-siswa').style.display = 'none';
+        document.getElementById('group-guru').style.display = 'block';
+      } else {
+        document.getElementById('group-siswa').style.display = 'block';
+        document.getElementById('group-guru').style.display = 'none';
+      }
+    }
+
+    function executeLogin() {
+      const role = document.getElementById('login-role').value;
+
+      if (role === 'guru') {
+        const pass = document.getElementById('login-password').value;
+        if (pass === GURU_PASSWORD_DEFAULT) {
+          currentUser = { nama: "Glendy A. Taawoeda, S.Pd.", role: "guru" };
+          localStorage.setItem('user_session', JSON.stringify(currentUser));
+          document.getElementById('modal-login').style.display = 'none';
+          showNotification("Login Guru Berhasil!");
+          checkSession();
+        } else {
+          alert("Password Guru Salah!");
+        }
+      } else {
+        const kelas = document.getElementById('login-kelas').value;
+        const nama = document.getElementById('login-nama').value.trim();
+
+        if (!nama) {
+          alert("Silakan masukkan nama Anda!");
+          return;
         }
 
-        // --- APPLICATION INITIALIZATION ---
-        window.onload = function() {
-            startRealtimeClock();
-            initLocalStorageData();
-            checkUserSession();
-            renderClassGrid('ALL');
-            renderMateri();
-            renderTugas();
-        }
+        currentUser = { nama: nama, kelas: kelas, role: "siswa" };
+        localStorage.setItem('user_session', JSON.stringify(currentUser));
+        document.getElementById('modal-login').style.display = 'none';
+        showNotification(`Selamat Datang, ${nama} (${kelas})`);
+        checkSession();
+      }
+    }
 
-        function initLocalStorageData() {
-            if (!localStorage.getItem('sman4_materi')) {
-                localStorage.setItem('sman4_materi', JSON.stringify(defaultMaterials));
-            }
-            if (!localStorage.getItem('sman4_tugas')) {
-                localStorage.setItem('sman4_tugas', JSON.stringify(defaultAssignments));
-            }
-            if (!localStorage.getItem('sman4_submissions')) {
-                localStorage.setItem('sman4_submissions', JSON.stringify([]));
-            }
-            if (!localStorage.getItem('sman4_best_class')) {
-                localStorage.setItem('sman4_best_class', JSON.stringify({
-                    name: "XI-2",
-                    msg: "Selamat kepada kelas XI-2 atas keaktifan, kedisiplinan dan ketepatan waktu terbaik minggu ini!"
-                }));
-            }
-            updateBestClassUI();
-        }
+    // "Tombol keluar tidak berfungsi secara konvensional, otomatis kembali ke popup pertama"
+    function handleLogout() {
+      localStorage.removeItem('user_session');
+      currentUser = null;
+      document.getElementById('user-display-name').innerHTML = `<i class="fa-solid fa-user"></i> Guest`;
+      document.getElementById('modal-login').style.display = 'flex';
+      showNotification("Sesi dikembalikan ke menu Login!");
+    }
 
-        // --- REALTIME CLOCK ---
-        function startRealtimeClock() {
-            function updateClock() {
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString('id-ID') + ' WITA';
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                const dateStr = now.toLocaleDateString('id-ID', options);
-                
-                const clockEl = document.getElementById('realtime-clock');
-                const dateEl = document.getElementById('realtime-date');
-                if (clockEl) clockEl.innerText = timeStr;
-                if (dateEl) dateEl.innerText = dateStr;
-            }
-            updateClock();
-            setInterval(updateClock, 1000);
-        }
+    /* ===================================================
+       4. NAVIGATION / MULTI-PAGE SPA ROUTING
+       =================================================== */
+    function switchPage(pageId) {
+      if (pageId === 'dashboard' && (!currentUser || currentUser.role !== 'guru')) {
+        alert("Akses Terbatas! Halaman Dashboard hanya dapat diakses oleh Guru.");
+        return;
+      }
 
-        // --- MANDATORY SESSION & LOGIN SYSTEM ---
-        function checkUserSession() {
-            const savedUser = JSON.parse(localStorage.getItem('sman4_user_session'));
-            if (!savedUser) {
-                // Show Mandatory First-time Login Modal
-                document.getElementById('modal-login').classList.remove('hidden');
-            } else {
-                updateUIWithSession(savedUser);
-            }
-        }
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(`page-${pageId}`).classList.add('active');
 
-        function setLoginRole(role) {
-            const btnSiswa = document.getElementById('role-btn-siswa');
-            const btnGuru = document.getElementById('role-btn-guru');
-            const formSiswa = document.getElementById('form-login-siswa');
-            const formGuru = document.getElementById('form-login-guru');
+      // Update Nav Class
+      document.querySelectorAll('.desktop-nav a, .mobile-nav a').forEach(a => a.classList.remove('active'));
 
-            if (role === 'siswa') {
-                btnSiswa.className = "flex-1 py-2 rounded-lg text-xs font-bold transition bg-goldPrimary text-skyDark shadow";
-                btnGuru.className = "flex-1 py-2 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white";
-                formSiswa.classList.remove('hidden');
-                formGuru.classList.add('hidden');
-            } else {
-                btnGuru.className = "flex-1 py-2 rounded-lg text-xs font-bold transition bg-goldPrimary text-skyDark shadow";
-                btnSiswa.className = "flex-1 py-2 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white";
-                formGuru.classList.remove('hidden');
-                formSiswa.classList.add('hidden');
-            }
-        }
+      if (pageId === 'materi') renderMateriTable();
+      if (pageId === 'tugas') prepareTugasSelect();
+      if (pageId === 'dashboard') renderGuruTugas();
+    }
 
-        function handleLoginSiswa(e) {
-            e.preventDefault();
-            const name = document.getElementById('login-nama').value.trim();
-            const kelas = document.getElementById('login-kelas').value;
+    /* ===================================================
+       5. HOMEPAGE & RINCIAN KELAS
+       =================================================== */
+    function renderKelasSummary() {
+      const summaryData = [
+        { tingkat: "Kelas X", sub: "X-1 sampai X-4", prefix: "X-" },
+        { tingkat: "Kelas XI", sub: "XI-1 sampai XI-5", prefix: "XI-" },
+        { tingkat: "Kelas XII", sub: "XII-1 sampai XII-5", prefix: "XII-" }
+      ];
 
-            if (!name) return;
+      const tbody = document.getElementById('kelas-summary-tbody');
+      tbody.innerHTML = '';
 
-            const session = { name: name, role: 'Siswa', kelas: kelas, isAuthenticatedGuru: false };
-            localStorage.setItem('sman4_user_session', JSON.stringify(session));
-            updateUIWithSession(session);
-            closeModal('modal-login');
-        }
+      summaryData.forEach(item => {
+        const total = dbSiswa.filter(s => s.kelas.startsWith(item.prefix)).length;
+        const tr = document.createElement('tr');
+        tr.onclick = () => openDetailKelas(item.tingkat, item.prefix);
+        tr.innerHTML = `
+          <td><strong>${item.tingkat}</strong></td>
+          <td>${item.sub}</td>
+          <td><span style="background:var(--gold-light); padding:3px 8px; border-radius:10px; font-weight:600;">${total} Siswa</span></td>
+          <td><button class="btn-gold" style="padding: 3px 8px; font-size: 0.75rem;">Lihat Detail</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
-        function handleLoginGuru(e) {
-            e.preventDefault();
-            const pass = document.getElementById('login-password').value;
-            if (pass === TEACHER_PASS) {
-                const session = { name: 'Glendy A. Taawoeda, S.Pd.', role: 'Guru Pengampu', kelas: 'Semua Kelas', isAuthenticatedGuru: true };
-                localStorage.setItem('sman4_user_session', JSON.stringify(session));
-                updateUIWithSession(session);
-                closeModal('modal-login');
-            } else {
-                alert("Password guru salah! Silakan coba lagi (Password: glendy2108)");
-            }
-        }
+    function openDetailKelas(tingkatLabel, prefix) {
+      const list = dbSiswa.filter(s => s.kelas.startsWith(prefix));
+      document.getElementById('modal-detail-title').innerText = `Rincian Siswa - ${tingkatLabel}`;
+      const tbody = document.getElementById('detail-siswa-tbody');
+      tbody.innerHTML = '';
 
-        function updateUIWithSession(session) {
-            document.getElementById('nav-user-name').innerText = session.name;
-            document.getElementById('nav-user-role').innerText = session.role + (session.kelas ? ` (${session.kelas})` : '');
-            document.getElementById('mob-user-name').innerText = session.name;
-            document.getElementById('mob-user-role').innerText = session.role;
-            document.getElementById('hero-user-display').innerText = session.name;
-            
-            if (session.isAuthenticatedGuru) {
-                document.getElementById('nav-dashboard').classList.remove('hidden');
-            }
-        }
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Belum ada siswa terdaftar di tingkat ini.</td></tr>`;
+      } else {
+        list.forEach((s, idx) => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${idx + 1}</td>
+              <td>${s.nama}</td>
+              <td><small style="color:green;"><i class="fa-solid fa-circle-check"></i> Aktif (${s.kelas})</small></td>
+            </tr>
+          `;
+        });
+      }
+      document.getElementById('modal-detail-kelas').style.display = 'flex';
+    }
 
-        function resetSession() {
-            if (confirm("Apakah Anda yakin ingin mengganti akun / reset sesi perangkat ini?")) {
-                localStorage.removeItem('sman4_user_session');
-                location.reload();
-            }
-        }
+    /* ===================================================
+       6. MATERI PAGE (SORTING & PAGINATION)
+       =================================================== */
+    let materiSortAsc = true;
 
-        // --- PAGE NAVIGATION SYSTEM ---
-        function switchPage(pageId) {
-            // Check auth for teacher dashboard
-            if (pageId === 'dashboard') {
-                const session = JSON.parse(localStorage.getItem('sman4_user_session'));
-                if (!session || !session.isAuthenticatedGuru) {
-                    const passPrompt = prompt("Akses Terkunci! Masukkan Password Guru Informatika:");
-                    if (passPrompt === TEACHER_PASS) {
-                        if (session) {
-                            session.isAuthenticatedGuru = true;
-                            session.role = "Guru Pengampu";
-                            localStorage.setItem('sman4_user_session', JSON.stringify(session));
-                            updateUIWithSession(session);
-                        }
-                    } else {
-                        alert("Password Akses Guru Salah!");
-                        return;
-                    }
-                }
-            }
+    function renderMateriTable() {
+      const search = document.getElementById('materi-search').value.toLowerCase();
+      const pageSize = parseInt(document.getElementById('materi-page-size').value);
+      
+      let filtered = dbMateri.filter(m => m.judul.toLowerCase().includes(search) || m.kelas.toLowerCase().includes(search));
 
-            // Hide all pages
-            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
-            // Reset active nav button state
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = "nav-btn px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all hover:bg-white/10 text-slate-200";
-            });
+      const tbody = document.getElementById('materi-tbody');
+      tbody.innerHTML = '';
 
-            // Show selected page
-            const targetPage = document.getElementById(`page-${pageId}`);
-            if (targetPage) targetPage.classList.remove('hidden');
+      filtered.forEach(m => {
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${m.judul}</strong></td>
+            <td><span style="background:#e3f2fd; color:#0d47a1; padding:2px 8px; border-radius:4px; font-weight:600;">${m.kelas}</span></td>
+            <td>${m.tanggal}</td>
+            <td><a href="${m.link}" target="_blank" class="btn-gold" style="font-size:0.75rem;"><i class="fa-solid fa-download"></i> Unduh Drive</a></td>
+          </tr>
+        `;
+      });
 
-            // Highlight nav
-            const activeNav = document.getElementById(`nav-${pageId}`);
-            if (activeNav) {
-                activeNav.className = "nav-btn px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all bg-yellow-500/20 text-goldPrimary border border-yellow-500/40";
-            }
+      // Simple Pagination Indicator Mock
+      document.getElementById('materi-pagination').innerHTML = `<small>Menampilkan ${filtered.length} materi</small>`;
+    }
 
-            if(pageId === 'dashboard') renderGuruPanels();
-        }
+    function sortMateriTable() {
+      materiSortAsc = !materiSortAsc;
+      dbMateri.sort((a, b) => materiSortAsc ? a.judul.localeCompare(b.judul) : b.judul.localeCompare(a.judul));
+      renderMateriTable();
+    }
 
-        function toggleMobileMenu() {
-            const mobMenu = document.getElementById('mobile-menu');
-            mobMenu.classList.toggle('hidden');
-        }
+    /* ===================================================
+       7. TUGAS PAGE
+       =================================================== */
+    function prepareTugasSelect() {
+      const select = document.getElementById('tugas-select');
+      select.innerHTML = '';
+      dbMateri.forEach(m => {
+        select.innerHTML += `<option value="${m.judul}">Tugas: ${m.judul}</option>`;
+      });
+    }
 
-        // --- BERANDA / CLASS GRID LOGIC ---
-        function renderClassGrid(filterGrade) {
-            const container = document.getElementById('class-grid-container');
-            container.innerHTML = '';
+    function handlePengumpulanTugas(e) {
+      e.preventDefault();
+      if (!currentUser) { alert("Silahkan login dahulu!"); return; }
 
-            const filtered = filterGrade === 'ALL' ? classList : classList.filter(c => c.grade === filterGrade);
+      const tugasJudul = document.getElementById('tugas-select').value;
+      const jawabanText = document.getElementById('tugas-jawaban-text').value;
+      const driveUrl = document.getElementById('tugas-drive-url').value;
 
-            filtered.forEach(cls => {
-                const card = document.createElement('div');
-                card.className = "bg-white border border-slate-200/80 rounded-2xl p-4 card-hover cursor-pointer text-center relative overflow-hidden group shadow-sm";
-                card.onclick = () => openClassDetailModal(cls.name);
+      const newSubmission = {
+        id: Date.now(),
+        siswa: currentUser.nama,
+        kelas: currentUser.kelas || 'Siswa',
+        tugas: tugasJudul,
+        jawaban: jawabanText,
+        linkDrive: driveUrl,
+        waktu: new Date().toLocaleString('id-ID')
+      };
 
-                card.innerHTML = `
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-skyPrimary to-goldPrimary"></div>
-                    <div class="w-10 h-10 mx-auto rounded-xl bg-skyDark text-goldPrimary font-extrabold flex items-center justify-center text-sm shadow mb-2 group-hover:scale-110 transition">
-                        ${cls.name}
-                    </div>
-                    <h4 class="font-extrabold text-sm text-skyDark">Kelas ${cls.name}</h4>
-                    <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-users text-[10px]"></i> ${cls.count} Siswa</p>
-                    <span class="inline-block mt-3 text-[10px] font-bold text-skyPrimary bg-sky-50 px-2.5 py-1 rounded-full group-hover:bg-skyPrimary group-hover:text-white transition">
-                        Lihat Rincian <i class="fa-solid fa-arrow-right text-[8px]"></i>
-                    </span>
-                `;
-                container.appendChild(card);
-            });
-        }
+      dbTugasSubmitted.push(newSubmission);
+      saveState();
+      
+      showNotification(`Tugas berhasil dikirim oleh ${currentUser.nama}!`);
+      document.getElementById('form-submit-tugas').reset();
+    }
 
-        function filterClassGrid(grade) {
-            document.querySelectorAll('.class-filter-btn').forEach(btn => {
-                if (btn.getAttribute('data-grade') === grade) {
-                    btn.className = "class-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-skyPrimary text-white shadow-sm";
-                } else {
-                    btn.className = "class-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300";
-                }
-            });
-            renderClassGrid(grade);
-        }
+    /* ===================================================
+       8. DASHBOARD GURU & MODALS
+       =================================================== */
+    function renderGuruTugas() {
+      const tbody = document.getElementById('guru-tugas-tbody');
+      tbody.innerHTML = '';
 
-        // Student Detail Modal
-        let currentModalStudents = [];
-        function openClassDetailModal(className) {
-            document.getElementById('class-detail-title').innerText = `Rincian Kelas ${className}`;
-            document.getElementById('class-detail-icon').innerText = className;
-            
-            currentModalStudents = generateStudentsForClass(className);
-            document.getElementById('class-detail-sub').innerText = `Total Siswa Terdaftar: ${currentModalStudents.length} Siswa`;
-            
-            renderStudentListInModal(currentModalStudents);
-            document.getElementById('modal-class-detail').classList.remove('hidden');
-        }
+      if (dbTugasSubmitted.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Belum ada pengumpulan tugas.</td></tr>`;
+        return;
+      }
 
-        function renderStudentListInModal(list) {
-            const container = document.getElementById('student-list-container');
-            container.innerHTML = '';
+      dbTugasSubmitted.forEach(t => {
+        tbody.innerHTML += `
+          <tr>
+            <td><small>${t.waktu}</small></td>
+            <td><strong>${t.siswa}</strong><br><small>${t.kelas}</small></td>
+            <td>${t.tugas}</td>
+            <td>
+              ${t.jawaban ? `<p><em>"${t.jawaban}"</em></p>` : ''}
+              ${t.linkDrive ? `<a href="${t.linkDrive}" target="_blank" style="color:var(--sky-blue-mid); font-weight:600;"><i class="fa-solid fa-link"></i> Link Google Drive</a>` : ''}
+            </td>
+          </tr>
+        `;
+      });
+    }
 
-            if(list.length === 0) {
-                container.innerHTML = `<p class="text-xs text-center text-slate-400 py-4">Tidak ada siswa ditemukan.</p>`;
-                return;
-            }
+    function openModalTambahSiswa() { document.getElementById('modal-tambah-siswa').style.display = 'flex'; }
+    function openModalTambahMateri() { document.getElementById('modal-tambah-materi').style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-            list.forEach((st, idx) => {
-                const row = document.createElement('div');
-                row.className = "p-3 bg-slate-50 hover:bg-sky-50 rounded-xl border border-slate-200/60 flex items-center justify-between transition";
-                row.innerHTML = `
-                    <div class="flex items-center space-x-3">
-                        <span class="text-xs font-bold text-slate-400 w-5">${idx + 1}.</span>
-                        <div>
-                            <p class="text-xs font-bold text-slate-800">${st.name}</p>
-                            <p class="text-[10px] text-slate-500">NISN: ${st.nisn}</p>
-                        </div>
-                    </div>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-700">Aktif</span>
-                `;
-                container.appendChild(row);
-            });
-        }
+    function saveSiswaBaru() {
+      const kelas = document.getElementById('add-siswa-kelas').value;
+      const nama = document.getElementById('add-siswa-nama').value.trim();
 
-        function filterStudentList() {
-            const query = document.getElementById('student-search-input').value.toLowerCase();
-            const filtered = currentModalStudents.filter(s => s.name.toLowerCase().includes(query) || s.nisn.includes(query));
-            renderStudentListInModal(filtered);
-        }
+      if (!nama) { alert("Nama harus diisi!"); return; }
 
-        // --- MATERI SECTION LOGIC ---
-        function renderMateri() {
-            const filterGrade = document.getElementById('materi-filter-grade')?.value || 'ALL';
-            const materials = JSON.parse(localStorage.getItem('sman4_materi')) || [];
-            const container = document.getElementById('materi-grid');
-            if(!container) return;
-            container.innerHTML = '';
+      dbSiswa.push({ id: Date.now(), nama: nama, kelas: kelas });
+      saveState();
+      renderKelasSummary();
+      closeModal('modal-tambah-siswa');
+      showNotification(`Siswa ${nama} berhasil ditambahkan!`);
+    }
 
-            const filtered = filterGrade === 'ALL' ? materials : materials.filter(m => m.grade === filterGrade);
+    function saveMateriBaru() {
+      const judul = document.getElementById('add-materi-judul').value.trim();
+      const kelas = document.getElementById('add-materi-kelas').value;
+      const url = document.getElementById('add-materi-url').value.trim();
 
-            if(filtered.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 text-xs">Belum ada materi diunggah untuk kelas ini.</div>`;
-                return;
-            }
+      if (!judul || !url) { alert("Lengkapi data materi!"); return; }
 
-            filtered.forEach(m => {
-                const card = document.createElement('div');
-                card.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-sm card-hover flex flex-col justify-between space-y-4";
-                card.innerHTML = `
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-skyPrimary/10 text-skyPrimary border border-skyPrimary/20">
-                                Tingkat Kelas ${m.grade}
-                            </span>
-                            <span class="text-[10px] text-slate-400 font-medium">
-                                <i class="fa-regular fa-calendar"></i> ${m.date}
-                            </span>
-                        </div>
-                        <h3 class="font-bold text-sm text-slate-800 leading-snug">${m.title}</h3>
-                        <p class="text-xs text-slate-500 line-clamp-3">${m.desc || 'Tidak ada deskripsi.'}</p>
-                    </div>
+      const today = new Date().toISOString().split('T')[0];
+      dbMateri.push({ id: Date.now(), judul: judul, kelas: kelas, tanggal: today, link: url });
+      saveState();
+      closeModal('modal-tambah-materi');
+      showNotification(`Materi baru berhasil diupload!`);
+    }
 
-                    <a href="${m.driveUrl}" target="_blank" class="w-full py-2.5 bg-skyDark hover:bg-skyPrimary text-goldPrimary font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-sm">
-                        <i class="fa-brands fa-google-drive text-sm"></i> Buka / Unduh via Drive
-                    </a>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // --- TUGAS SECTION LOGIC ---
-        function renderTugas() {
-            const filterGrade = document.getElementById('tugas-filter-grade')?.value || 'ALL';
-            const tasks = JSON.parse(localStorage.getItem('sman4_tugas')) || [];
-            const submissions = JSON.parse(localStorage.getItem('sman4_submissions')) || [];
-            const currentUser = JSON.parse(localStorage.getItem('sman4_user_session'));
-
-            const container = document.getElementById('tugas-list');
-            if(!container) return;
-            container.innerHTML = '';
-
-            const filtered = filterGrade === 'ALL' ? tasks : tasks.filter(t => t.grade === filterGrade);
-
-            if(filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">Belum ada tugas aktif.</div>`;
-                return;
-            }
-
-            filtered.forEach(t => {
-                // Check if current user has submitted
-                const hasSubmitted = currentUser ? submissions.find(s => s.taskId === t.id && s.userName === currentUser.name) : null;
-
-                const item = document.createElement('div');
-                item.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4";
-                item.innerHTML = `
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-goldPrimary/20 text-goldDark">Kelas ${t.grade}</span>
-                            <span class="text-xs text-red-500 font-semibold"><i class="fa-solid fa-clock"></i> Tenggat: ${t.deadline}</span>
-                        </div>
-                        <h3 class="font-bold text-base text-slate-800">${t.title}</h3>
-                        <p class="text-xs text-slate-500">${t.instruction}</p>
-                    </div>
-
-                    <div class="flex items-center gap-3 shrink-0">
-                        ${hasSubmitted 
-                            ? `<span class="px-3 py-1.5 rounded-xl text-xs font-bold bg-green-100 text-green-700 flex items-center gap-1">
-                                <i class="fa-solid fa-check-circle"></i> Sudah Terkirim
-                               </span>`
-                            : `<button onclick="openSubmitModal(${t.id}, '${t.title}')" class="px-4 py-2 bg-goldPrimary text-skyDark font-extrabold text-xs rounded-xl hover:bg-yellow-500 transition shadow">
-                                <i class="fa-solid fa-paper-plane mr-1"></i> Kirim Tugas
-                               </button>`
-                        }
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        // Submission Modal
-        function openSubmitModal(taskId, taskTitle) {
-            const currentUser = JSON.parse(localStorage.getItem('sman4_user_session'));
-            if (!currentUser) {
-                alert("Silakan login terlebih dahulu.");
-                return;
-            }
-            document.getElementById('submit-tugas-id').value = taskId;
-            document.getElementById('submit-tugas-title-display').innerText = taskTitle;
-            document.getElementById('submit-tugas-user-display').innerText = `${currentUser.name} (${currentUser.kelas || 'Guru'})`;
-            document.getElementById('modal-submit-tugas').classList.remove('hidden');
-        }
-
-        function toggleSubmissionInput() {
-            const type = document.getElementById('submit-type').value;
-            if (type === 'drive') {
-                document.getElementById('input-container-drive').classList.remove('hidden');
-                document.getElementById('input-container-text').classList.add('hidden');
-            } else {
-                document.getElementById('input-container-drive').classList.add('hidden');
-                document.getElementById('input-container-text').classList.remove('hidden');
-            }
-        }
-
-        function handleSendSubmission(e) {
-            e.preventDefault();
-            const taskId = parseInt(document.getElementById('submit-tugas-id').value);
-            const type = document.getElementById('submit-type').value;
-            const driveUrl = document.getElementById('submit-drive-url').value;
-            const textAns = document.getElementById('submit-text-content').value;
-            const currentUser = JSON.parse(localStorage.getItem('sman4_user_session'));
-
-            const submissions = JSON.parse(localStorage.getItem('sman4_submissions')) || [];
-            
-            submissions.push({
-                id: Date.now(),
-                taskId: taskId,
-                taskTitle: document.getElementById('submit-tugas-title-display').innerText,
-                userName: currentUser.name,
-                userClass: currentUser.kelas || 'Siswa',
-                type: type,
-                content: type === 'drive' ? driveUrl : textAns,
-                timestamp: new Date().toLocaleString('id-ID'),
-                gradeValue: '-'
-            });
-
-            localStorage.setItem('sman4_submissions', JSON.stringify(submissions));
-            alert("Tugas berhasil terkirim!");
-            closeModal('modal-submit-tugas');
-            renderTugas();
-        }
-
-        // --- DASHBOARD GURU LOGIC ---
-        function switchGuruTab(tab) {
-            document.querySelectorAll('.guru-tab-btn').forEach(btn => {
-                btn.className = "guru-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300";
-            });
-            document.querySelectorAll('.guru-panel').forEach(p => p.classList.add('hidden'));
-
-            document.getElementById(`guru-tab-${tab}`).className = "guru-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-skyPrimary text-white shadow";
-            document.getElementById(`guru-panel-${tab}`).classList.remove('hidden');
-        }
-
-        function renderGuruPanels() {
-            // Render Guru Materi Table
-            const materials = JSON.parse(localStorage.getItem('sman4_materi')) || [];
-            const materiTableBody = document.getElementById('guru-materi-table-body');
-            materiTableBody.innerHTML = '';
-
-            materials.forEach((m, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-bold text-slate-800">${m.title}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-bold">${m.grade}</span></td>
-                    <td class="p-3 text-slate-500">${m.date}</td>
-                    <td class="p-3"><a href="${m.driveUrl}" target="_blank" class="text-skyPrimary underline font-semibold">Tautan Drive</a></td>
-                    <td class="p-3 text-right">
-                        <button onclick="deleteMateri(${m.id})" class="px-2 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 font-bold">Hapus</button>
-                    </td>
-                `;
-                materiTableBody.appendChild(tr);
-            });
-
-            // Render Submissions Table
-            const submissions = JSON.parse(localStorage.getItem('sman4_submissions')) || [];
-            const subTableBody = document.getElementById('guru-submissions-table-body');
-            subTableBody.innerHTML = '';
-
-            if (submissions.length === 0) {
-                subTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada pengumpulan tugas dari siswa.</td></tr>`;
-            } else {
-                submissions.forEach(s => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="p-3 font-bold text-slate-800">${s.userName} <span class="text-slate-400 font-normal">(${s.userClass})</span></td>
-                        <td class="p-3">${s.taskTitle}</td>
-                        <td class="p-3 text-slate-500">${s.timestamp}</td>
-                        <td class="p-3">${s.type === 'drive' ? `<a href="${s.content}" target="_blank" class="text-skyPrimary font-bold underline"><i class="fa-brands fa-google-drive"></i> Link Drive File</a>` : `<span class="italic text-slate-700">"${s.content}"</span>`}</td>
-                        <td class="p-3"><span class="px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded font-bold">Terkirim</span></td>
-                    `;
-                    subTableBody.appendChild(tr);
-                });
-            }
-        }
-
-        function handleAddMateri(e) {
-            e.preventDefault();
-            const materials = JSON.parse(localStorage.getItem('sman4_materi')) || [];
-            materials.push({
-                id: Date.now(),
-                title: document.getElementById('add-materi-title').value,
-                grade: document.getElementById('add-materi-grade').value,
-                date: new Date().toISOString().split('T')[0],
-                desc: document.getElementById('add-materi-desc').value,
-                driveUrl: document.getElementById('add-materi-link').value
-            });
-            localStorage.setItem('sman4_materi', JSON.stringify(materials));
-            alert("Materi berhasil diterbitkan!");
-            e.target.reset();
-            renderMateri();
-            renderGuruPanels();
-        }
-
-        function deleteMateri(id) {
-            if(confirm("Hapus materi ini?")) {
-                let materials = JSON.parse(localStorage.getItem('sman4_materi')) || [];
-                materials = materials.filter(m => m.id !== id);
-                localStorage.setItem('sman4_materi', JSON.stringify(materials));
-                renderMateri();
-                renderGuruPanels();
-            }
-        }
-
-        function handleAddTugas(e) {
-            e.preventDefault();
-            const tasks = JSON.parse(localStorage.getItem('sman4_tugas')) || [];
-            tasks.push({
-                id: Date.now(),
-                title: document.getElementById('add-tugas-title').value,
-                grade: document.getElementById('add-tugas-grade').value,
-                deadline: document.getElementById('add-tugas-deadline').value,
-                instruction: document.getElementById('add-tugas-instruction').value
-            });
-            localStorage.setItem('sman4_tugas', JSON.stringify(tasks));
-            alert("Tugas berhasil dibuat!");
-            e.target.reset();
-            renderTugas();
-        }
-
-        function handleUpdateBestClass(e) {
-            e.preventDefault();
-            const name = document.getElementById('set-best-class-name').value;
-            const msg = document.getElementById('set-best-class-msg').value;
-
-            const bestData = { name, msg };
-            localStorage.setItem('sman4_best_class', JSON.stringify(bestData));
-            updateBestClassUI();
-            alert("Banner Kelas Terbaik Berhasil Diperbarui!");
-        }
-
-        function updateBestClassUI() {
-            const data = JSON.parse(localStorage.getItem('sman4_best_class'));
-            if(data) {
-                document.getElementById('best-class-badge').innerText = `KELAS ${data.name}`;
-                document.getElementById('best-class-message').innerText = `"${data.msg}"`;
-            }
-        }
-
-        function lockGuruDashboard() {
-            const session = JSON.parse(localStorage.getItem('sman4_user_session'));
-            if (session) {
-                session.isAuthenticatedGuru = false;
-                session.role = "Siswa";
-                localStorage.setItem('sman4_user_session', JSON.stringify(session));
-                updateUIWithSession(session);
-            }
-            switchPage('beranda');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-    </script>
+    /* INITIALIZE APP ON LOAD */
+    window.onload = function() {
+      checkSession();
+      renderKelasSummary();
+    };
+  </script>
 </body>
 </html>
