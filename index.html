@@ -705,7 +705,7 @@
       const pass = document.getElementById('login-pass-guru').value;
 
       // Disamakan dengan hint password 'rahasia'
-      if (pass === 'rahasia' || pass === 'glendy2108') {
+      if (pass === 'glendy2108' || pass === 'glendy2108') {
         currentUser = { role: 'guru', name: 'Glendy A. Taawoeda, S.Pd.', class: 'Guru Informatika' };
         localStorage.setItem('app_user_session', JSON.stringify(currentUser));
         document.getElementById('modal-login').classList.add('hidden');
