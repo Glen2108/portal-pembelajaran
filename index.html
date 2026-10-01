@@ -18,10 +18,19 @@
           fontFamily: { sans: ['Poppins', 'sans-serif'] },
           colors: {
             sky: {
-              50: '#f0f9ff', 100: '#e0f2fe', 500: '#0284c7', 600: '#0369a1', 800: '#075985', 900: '#0c4a6e',
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
             },
             gold: {
-              300: '#fde047', 400: '#facc15', 500: '#eab308', 600: '#ca8a04', 700: '#a16207',
+              300: '#fde047',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+              700: '#a16207',
             }
           }
         }
@@ -78,10 +87,28 @@
         </button>
       </div>
     </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gold-500/20 bg-slate-900/95 px-4 py-3 space-y-2">
+      <button onclick="switchPage('home'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-house mr-2.5 w-4"></i> Beranda
+      </button>
+      <button onclick="switchPage('materi'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-slate-300 hover:text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-book-open mr-2.5 w-4"></i> Materi
+      </button>
+      <button onclick="switchPage('tugas'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-slate-300 hover:text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-tasks mr-2.5 w-4"></i> Tugas
+      </button>
+      <button onclick="switchPage('admin'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-slate-300 hover:text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-user-shield mr-2.5 w-4"></i> Admin Guru
+      </button>
+    </div>
   </header>
 
   <!-- Container Utama -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
     <!-- HALAMAN BERANDA -->
     <section id="page-home" class="space-y-6">
       <div class="bg-sky-gradient p-6 rounded-2xl border border-gold-500/50 shadow-2xl relative overflow-hidden">
@@ -97,20 +124,103 @@
           </p>
         </div>
       </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-5 rounded-xl flex flex-col justify-between border-l-4 border-gold-500">
+          <div class="flex justify-between items-center">
+            <span class="text-xs text-gold-400 font-semibold uppercase">Waktu Realtime</span>
+            <i class="fa-regular fa-clock text-gold-400 text-lg"></i>
+          </div>
+          <div class="my-4 text-center">
+            <div id="clock-display" class="text-3xl md:text-4xl font-bold text-white tracking-widest font-mono">00:00:00</div>
+            <div id="date-display" class="text-xs text-slate-400 mt-1">Kamis, 1 Oktober 2026</div>
+          </div>
+          <p class="text-[11px] text-slate-400 text-center"><i class="fa-solid fa-globe text-sky-400"></i> Zona Waktu: WITA (Manado)</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border-l-4 border-sky-500">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs text-sky-400 font-semibold uppercase">Kalender Akademik</span>
+            <i class="fa-regular fa-calendar-alt text-sky-400 text-lg"></i>
+          </div>
+          <div id="calendar-widget" class="text-xs text-slate-300"></div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border-l-4 border-gold-500 flex flex-col">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-xs text-gold-400 font-semibold uppercase">Aktivitas Terkini</span>
+          </div>
+          <div id="activity-log" class="space-y-2 overflow-y-auto max-h-40 pr-1 text-xs text-slate-300">
+            <div class="bg-sky-900/40 p-2 rounded border border-sky-700/30">
+              <p class="font-medium text-gold-300">Sistem Aktif</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GALERI KELAS -->
+      <div class="glass-card p-6 rounded-2xl border border-gold-500/30">
+        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4 gap-2">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center">
+              <i class="fa-solid fa-images text-gold-400 mr-2"></i> Galeri & Kenangan Kelas
+            </h3>
+          </div>
+          <select id="gallery-class-filter" onchange="renderGallery()" class="bg-slate-800 text-gold-300 text-xs border border-gold-500/40 rounded-lg px-3 py-1.5 focus:outline-none">
+            <option value="ALL">Semua Kelas</option>
+            <option value="X">Kelas X</option>
+            <option value="XI">Kelas XI</option>
+            <option value="XII">Kelas XII</option>
+          </select>
+        </div>
+        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- HALAMAN MATERI -->
+    <section id="page-materi" class="space-y-6 hidden">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-book-open text-gold-400 mr-2"></i> Materi Pembelajaran</h2>
+        <select id="materi-class-filter" onchange="renderMateri()" class="bg-slate-800 text-gold-300 text-sm border border-gold-500/40 rounded-lg px-3 py-1.5 focus:outline-none">
+          <option value="ALL">Semua Kelas</option>
+          <option value="X-1">X-1</option><option value="XI-1">XI-1</option>
+        </select>
+      </div>
+      <div id="materi-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- HALAMAN TUGAS -->
+    <section id="page-tugas" class="space-y-6 hidden">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-tasks text-gold-400 mr-2"></i> Pengumpulan Tugas</h2>
+        <select id="tugas-class-filter" onchange="renderTugas()" class="bg-slate-800 text-gold-300 text-sm border border-gold-500/40 rounded-lg px-3 py-1.5 focus:outline-none">
+          <option value="ALL">Semua Kelas</option>
+          <option value="XI-1">XI-1</option>
+        </select>
+      </div>
+      <div id="tugas-list" class="space-y-4"></div>
     </section>
 
     <!-- DASHBOARD ADMIN -->
     <section id="page-admin" class="space-y-6 hidden">
       <div class="glass-card p-6 rounded-2xl border border-gold-500/40">
-        <h2 class="text-2xl font-bold text-white mb-4">Dashboard Guru</h2>
+        <div class="flex justify-between items-center border-b border-gold-500/30 pb-4 mb-6">
+          <h2 class="text-2xl font-bold text-white">Dashboard Guru</h2>
+          <div class="flex space-x-2 bg-slate-900 p-1 rounded-xl">
+            <button onclick="switchAdminTab('siswa')" id="tab-btn-siswa" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gold-500 text-slate-900">Data Siswa</button>
+            <button onclick="switchAdminTab('materi')" id="tab-btn-materi" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300">Kelola Materi</button>
+            <button onclick="switchAdminTab('tugas')" id="tab-btn-tugas" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300">Kelola Tugas</button>
+          </div>
+        </div>
+
         <div id="admin-tab-siswa" class="space-y-4">
           <div class="overflow-x-auto rounded-xl border border-slate-700">
             <table class="w-full text-xs text-left text-slate-300">
               <thead class="bg-slate-900 text-gold-400 uppercase">
                 <tr>
-                  <th class="px-4 py-3">ID</th>
-                  <th class="px-4 py-3">Nama Siswa</th>
-                  <th class="px-4 py-3">Kelas</th>
+                  <th class="px-4 py-3 cursor-pointer" onclick="sortTableSiswa('id')">ID</th>
+                  <th class="px-4 py-3 cursor-pointer" onclick="sortTableSiswa('nama')">Nama Siswa</th>
+                  <th class="px-4 py-3 cursor-pointer" onclick="sortTableSiswa('kelas')">Kelas</th>
                   <th class="px-4 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
@@ -118,8 +228,17 @@
             </table>
           </div>
         </div>
+
+        <div id="admin-tab-materi" class="space-y-4 hidden">
+          <div id="admin-materi-list" class="space-y-2"></div>
+        </div>
+
+        <div id="admin-tab-tugas" class="space-y-4 hidden">
+          <div id="admin-tugas-list" class="space-y-2"></div>
+        </div>
       </div>
     </section>
+
   </main>
 
   <!-- MODAL LOGIN -->
@@ -134,24 +253,25 @@
         <button onclick="switchLoginRole('guru')" id="tab-login-guru" class="w-1/2 py-2 text-xs font-bold border-b-2 border-transparent text-slate-400">Masuk Guru</button>
       </div>
 
-      <form id="form-login-siswa" class="space-y-4">
+      <form id="form-login-siswa" onsubmit="handleLoginSiswa(event)" class="space-y-4">
         <div>
           <label class="block text-xs text-slate-300 mb-1">Pilih Kelas Terlebih Dahulu</label>
           <select id="login-kelas-siswa" required class="w-full bg-slate-800 text-gold-300 text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none">
             <option value="">-- Pilih Kelas Anda --</option>
-            <option value="X-1">X-1</option><option value="X-2">X-2</option><option value="X-3">X-3</option><option value="X-4">X-4</option>
-            <option value="XI-1">XI-1</option><option value="XI-2">XI-2</option><option value="XI-3">XI-3</option><option value="XI-4">XI-4</option><option value="XI-5">XI-5</option>
-            <option value="XII-1">XII-1</option><option value="XII-2">XII-2</option><option value="XII-3">XII-3</option><option value="XII-4">XII-4</option><option value="XII-5">XII-5</option>
+            <option value="X-1">X-1</option>
+            <option value="XI-1">XI-1</option>
+            <option value="XII-1">XII-1</option>
           </select>
         </div>
         <div>
           <label class="block text-xs text-slate-300 mb-1">Nama Lengkap Siswa</label>
-          <input type="text" id="login-nama-siswa" placeholder="Masukkan nama Anda..." required class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none">
+          <input type="text" id="login-nama-siswa" list="siswa-list-auto" placeholder="Masukkan nama Anda..." required class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none">
+          <datalist id="siswa-list-auto"></datalist>
         </div>
         <button type="submit" class="w-full bg-gold-500 hover:bg-gold-400 text-slate-900 font-bold text-xs py-3 rounded-lg transition">Masuk</button>
       </form>
 
-      <form id="form-login-guru" class="space-y-4 hidden">
+      <form id="form-login-guru" onsubmit="handleLoginGuru(event)" class="space-y-4 hidden">
         <div>
           <label class="block text-xs text-slate-300 mb-1">Kata Sandi Guru (Admin)</label>
           <input type="password" id="login-pass-guru" placeholder="Masukkan password admin..." required class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none">
@@ -161,57 +281,25 @@
     </div>
   </div>
 
-  <!-- SCRIPT FIREBASE & UTAMA (Menggunakan JS Module) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <script>
+    const defaultSiswa = [
+      { id: '101', nama: 'Aditya Pratama', kelas: 'X-1' },
+      { id: '104', nama: 'Daniel Supit', kelas: 'XI-1' },
+      { id: '106', nama: 'Fajar Rumengan', kelas: 'XII-1' }
+    ];
 
-    // Konfigurasi Firebase Anda
-    const firebaseConfig = {
-      apiKey: "AIzaSyAtX4h3EZwtDOxZ8eSuExpXxQzrUtr0hpg",
-      authDomain: "sman4-informatika.firebaseapp.com",
-      databaseURL: "https://sman4-informatika-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "sman4-informatika",
-      storageBucket: "sman4-informatika.firebasestorage.app",
-      messagingSenderId: "776201297912",
-      appId: "1:776201297912:web:6e2d4f4abc03840356c00d",
-      measurementId: "G-569B9NS24E"
-    };
+    function getStorage(key, defaultVal) {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : defaultVal;
+    }
 
-    // Inisialisasi Firebase & Realtime Database
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const db = getDatabase(app);
+    function setStorage(key, val) {
+      localStorage.setItem(key, JSON.stringify(val));
+    }
+
+    if (!localStorage.getItem('app_siswa')) setStorage('app_siswa', defaultSiswa);
 
     let currentUser = null;
-
-    // Fungsi global agar bisa dipanggil lewat onclick HTML
-    window.switchPage = function(pageId) {
-      ['home', 'admin'].forEach(p => {
-        const el = document.getElementById('page-' + p);
-        if (el) el.classList.add('hidden');
-      });
-      const target = document.getElementById('page-' + pageId);
-      if(target) target.classList.remove('hidden');
-    }
-
-    window.switchLoginRole = function(role) {
-      if (role === 'siswa') {
-        document.getElementById('form-login-siswa').classList.remove('hidden');
-        document.getElementById('form-login-guru').classList.add('hidden');
-      } else {
-        document.getElementById('form-login-guru').classList.remove('hidden');
-        document.getElementById('form-login-siswa').classList.add('hidden');
-      }
-    }
-
-    window.logout = function() {
-      localStorage.removeItem('app_user_session');
-      currentUser = null;
-      document.getElementById('modal-login').classList.remove('hidden');
-      document.getElementById('user-badge').classList.add('hidden');
-    }
 
     function checkSession() {
       const savedUser = localStorage.getItem('app_user_session');
@@ -222,6 +310,56 @@
       }
     }
 
+    function switchLoginRole(role) {
+      if (role === 'siswa') {
+        document.getElementById('form-login-siswa').classList.remove('hidden');
+        document.getElementById('form-login-guru').classList.add('hidden');
+      } else {
+        document.getElementById('form-login-guru').classList.remove('hidden');
+        document.getElementById('form-login-siswa').classList.add('hidden');
+      }
+    }
+
+    function handleLoginSiswa(e) {
+      e.preventDefault();
+      const namaInput = document.getElementById('login-nama-siswa').value.trim();
+      const kelasInput = document.getElementById('login-kelas-siswa').value;
+
+      const daftarSiswa = getStorage('app_siswa', []);
+      const siswaValid = daftarSiswa.find(s => 
+        s.nama.toLowerCase() === namaInput.toLowerCase() && s.kelas === kelasInput
+      );
+
+      if (siswaValid) {
+        currentUser = { role: 'siswa', name: siswaValid.nama, class: siswaValid.kelas };
+        localStorage.setItem('app_user_session', JSON.stringify(currentUser));
+        document.getElementById('modal-login').classList.add('hidden');
+        updateUserUI();
+      } else {
+        alert("Siswa tidak ditemukan!");
+      }
+    }
+
+    function handleLoginGuru(e) {
+      e.preventDefault();
+      const pass = document.getElementById('login-pass-guru').value;
+      if (pass === 'glendy2108' || pass === 'rahasia') {
+        currentUser = { role: 'guru', name: 'Glendy A. Taawoeda, S.Pd.', class: 'Guru' };
+        localStorage.setItem('app_user_session', JSON.stringify(currentUser));
+        document.getElementById('modal-login').classList.add('hidden');
+        updateUserUI();
+        switchPage('admin');
+      } else {
+        alert("Kata sandi salah!");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('app_user_session');
+      currentUser = null;
+      document.getElementById('modal-login').classList.remove('hidden');
+    }
+
     function updateUserUI() {
       if (!currentUser) return;
       document.getElementById('user-badge').classList.remove('hidden');
@@ -229,56 +367,64 @@
       document.getElementById('user-display-class').innerText = `(${currentUser.class})`;
     }
 
-    // Handle Login Siswa dengan Firebase Realtime Database
-    document.getElementById('form-login-siswa').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const namaInput = document.getElementById('login-nama-siswa').value.trim();
-      const kelasInput = document.getElementById('login-kelas-siswa').value;
+    function switchPage(pageId) {
+      ['home', 'materi', 'tugas', 'admin'].forEach(p => {
+        const el = document.getElementById('page-' + p);
+        if (el) el.classList.add('hidden');
+      });
+      document.getElementById('page-' + pageId).classList.remove('hidden');
+    }
 
-      try {
-        const dbRef = ref(db);
-        const snapshot = await get(child(dbRef, `siswa`));
-        
-        if (snapshot.exists()) {
-          const dataSiswa = snapshot.val();
-          const siswaValid = Object.values(dataSiswa).find(s => 
-            s.nama.toLowerCase() === namaInput.toLowerCase() && s.kelas === kelasInput
-          );
+    function sortTableSiswa(col) {
+      const allSiswa = getStorage('app_siswa', []);
+      allSiswa.sort((a, b) => a[col].localeCompare(b[col]));
+      setStorage('app_siswa', allSiswa);
+      renderAdminSiswaTable();
+    }
 
-          if (siswaValid) {
-            currentUser = { role: 'siswa', name: siswaValid.nama, class: siswaValid.kelas };
-            localStorage.setItem('app_user_session', JSON.stringify(currentUser));
-            document.getElementById('modal-login').classList.add('hidden');
-            updateUserUI();
-          } else {
-            alert("Siswa tidak ditemukan di Firebase Database!");
-          }
-        } else {
-          alert("Data siswa belum tersedia di database.");
-        }
-      } catch (error) {
-        console.error("Error Firebase:", error);
-        alert("Gagal terhubung ke Firebase: " + error.message);
-      }
-    });
+    function renderAdminSiswaTable() {
+      const allSiswa = getStorage('app_siswa', []);
+      const tbody = document.getElementById('admin-siswa-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = allSiswa.map(s => `
+        <tr>
+          <td class="px-4 py-2">${s.id}</td>
+          <td class="px-4 py-2">${s.nama}</td>
+          <td class="px-4 py-2">${s.kelas}</td>
+          <td class="px-4 py-2 text-center"><button onclick="handleDeleteSiswa('${s.id}')" class="text-red-400">Hapus</button></td>
+        </tr>
+      `).join('');
+    }
 
-    // Handle Login Guru
-    document.getElementById('form-login-guru').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const pass = document.getElementById('login-pass-guru').value;
-      if (pass === 'glendy2108') {
-        currentUser = { role: 'guru', name: 'Glendy A. Taawoeda, S.Pd.', class: 'Guru' };
-        localStorage.setItem('app_user_session', JSON.stringify(currentUser));
-        document.getElementById('modal-login').classList.add('hidden');
-        updateUserUI();
-        window.switchPage('admin');
-      } else {
-        alert("Kata sandi salah!");
-      }
-    });
+    function handleDeleteSiswa(id) {
+      let allSiswa = getStorage('app_siswa', []);
+      allSiswa = allSiswa.filter(s => s.id !== id);
+      setStorage('app_siswa', allSiswa);
+      renderAdminSiswaTable();
+    }
+
+    function renderAksesMateriTable() {
+      // Fungsi penanganan log rekapitulasi materi
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       checkSession();
+      renderAdminSiswaTable();
+
+      // Listener untuk Auto-complete Nama Siswa berdasarkan Kelas
+      document.getElementById('login-kelas-siswa').addEventListener('change', function() {
+        const selectedKelas = this.value;
+        const daftarSiswa = getStorage('app_siswa', []);
+        const datalist = document.getElementById('siswa-list-auto');
+        datalist.innerHTML = '';
+        daftarSiswa
+          .filter(s => s.kelas === selectedKelas)
+          .forEach(s => {
+            const option = document.createElement('option');
+            option.value = s.nama;
+            datalist.appendChild(option);
+          });
+      });
     });
   </script>
 </body>
