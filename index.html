@@ -64,13 +64,21 @@
         </div>
       </div>
 
-      <!-- Navigasi Desktop -->
-      <nav class="flex items-center space-x-6 text-sm font-medium">
-        <button onclick="switchPage('home')" id="nav-home" class="nav-btn text-gold-400 hover:text-gold-300 transition"><i class="fa-solid fa-house mr-1"></i> Beranda</button>
-        <button onclick="switchPage('materi')" id="nav-materi" class="nav-btn text-slate-300 hover:text-gold-400 transition"><i class="fa-solid fa-book-open mr-1"></i> Materi</button>
-        <button onclick="switchPage('tugas')" id="nav-tugas" class="nav-btn text-slate-300 hover:text-gold-400 transition"><i class="fa-solid fa-tasks mr-1"></i> Tugas</button>
-        <button onclick="switchPage('admin')" id="nav-admin" class="nav-btn text-slate-300 hover:text-gold-400 transition"><i class="fa-solid fa-user-shield mr-1"></i> Admin Guru</button>
-      </nav>
+      <!-- Navigasi Bawah Khusus Smartphone -->
+        <div class="md:hidden fixed bottom-0 left-0 right-0 glass-card border-t border-gold-500/30 px-4 py-2 z-50 flex justify-around items-center text-xs">
+        <button onclick="switchPage('home')" class="flex flex-col items-center text-gold-400 hover:text-gold-300">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px] mt-0.5">Beranda</span>
+        </button>
+        <button onclick="switchPage('materi')" class="flex flex-col items-center text-slate-300 hover:text-gold-400">
+            <i class="fa-solid fa-book-open text-lg"></i>
+            <span class="text-[10px] mt-0.5">Materi</span>
+        </button>
+        <button onclick="switchPage('tugas')" class="flex flex-col items-center text-slate-300 hover:text-gold-400">
+            <i class="fa-solid fa-tasks text-lg"></i>
+            <span class="text-[10px] mt-0.5">Tugas</span>
+        </button>
+        </div>
 
       <!-- User Badge & Logout -->
       <div class="flex items-center space-x-3">
@@ -1072,30 +1080,46 @@
       showToast("Siswa dihapus.", "info");
     }
 
-    function handleAddMateri(e) {
-      e.preventDefault();
-      const judul = document.getElementById('materi-judul').value.trim();
-      const kelas = document.getElementById('materi-target-kelas').value;
-      const url = document.getElementById('materi-drive-url').value.trim();
-      const deskripsi = document.getElementById('materi-deskripsi').value.trim();
+    // Perbaikan Fungsi Tambah Materi
+    async function handleAddMateri(e) {
+        e.preventDefault();
+        const judul = document.getElementById('materi-judul').value.trim();
+        const kelas = document.getElementById('materi-target-kelas').value;
+        const url = document.getElementById('materi-drive-url').value.trim();
+        const deskripsi = document.getElementById('materi-deskripsi').value.trim();
 
-      const allMateri = getStorage('app_materi', []);
-      const newMateri = {
-        id: 'm_' + Date.now(),
-        judul: judul,
-        kelas: kelas,
-        url: url,
-        deskripsi: deskripsi,
-        tanggal: new Date().toISOString().split('T')[0]
-      };
+        const newMateri = {
+            judul: judul,
+            kelas: kelas,
+            url: url,
+            deskripsi: deskripsi,
+            tanggal: new Date().toISOString().split('T')[0]
+    };
 
-      allMateri.unshift(newMateri);
-      setStorage('app_materi', allMateri);
+        if (typeof db !== 'undefined' && db) {
+            try {
+            await db.collection('materi').add(newMateri);
+            showToast("Materi berhasil dipublikasikan secara online!", "success");
+        } catch (err) {
+        console.error("Gagal ke Cloud:", err);
+            }
+        }
 
-      e.target.reset();
-      renderAdminMateriList();
-      showToast("Materi baru berhasil dipublikasikan!", "success");
-      addRealtimeLog(`Materi Baru Dipublikasikan: ${judul}`);
+        e.target.reset();
+        switchAdminTab('materi');
+    }
+
+    function initRealtimeMateriListener() {
+        if (typeof db !== 'undefined' && db) {
+            db.collection('materi').onSnapshot((snapshot) => {
+        const liveMateri = [];
+            snapshot.forEach((doc) => {
+            liveMateri.push({ id: doc.id, ...doc.data() });
+            });
+            setStorage('app_materi', liveMateri);
+            renderMateri();
+            });
+        }   
     }
 
     function renderAdminMateriList() {
