@@ -74,7 +74,7 @@
         </button>
       </div>
 
-      <!-- Navigasi Desktop (Sembunyi di HP, muncul di layar sedang/besar) -->
+      <!-- Navigasi Desktop -->
       <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
         <button onclick="switchPage('home')" id="nav-home" class="nav-btn text-gold-400 hover:text-gold-300 transition"><i class="fa-solid fa-house mr-1"></i> Beranda</button>
         <button onclick="switchPage('materi')" id="nav-materi" class="nav-btn text-slate-300 hover:text-gold-400 transition"><i class="fa-solid fa-book-open mr-1"></i> Materi</button>
@@ -95,7 +95,7 @@
       </div>
     </div>
 
-    <!-- Dropdown Menu Mobile (Muncul di bawah header saat tombol diklik) -->
+    <!-- Dropdown Menu Mobile -->
     <div id="mobile-menu" class="hidden md:hidden border-t border-gold-500/20 bg-slate-900/95 px-4 py-3 space-y-2">
       <button onclick="switchPage('home'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
         <i class="fa-solid fa-house mr-2.5 w-4"></i> Beranda
@@ -115,7 +115,6 @@
   <!-- Container Utama -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
 
-    <!-- Toast Notification Popup -->
     <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
     <!-- ================= HALAMAN BERANDA ================= -->
@@ -140,7 +139,6 @@
 
       <!-- Realtime Info Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Jam Realtime Widget -->
         <div class="glass-card p-5 rounded-xl flex flex-col justify-between border-l-4 border-gold-500">
           <div class="flex justify-between items-center">
             <span class="text-xs text-gold-400 font-semibold uppercase">Waktu Realtime</span>
@@ -148,23 +146,19 @@
           </div>
           <div class="my-4 text-center">
             <div id="clock-display" class="text-3xl md:text-4xl font-bold text-white tracking-widest font-mono">00:00:00</div>
-            <div id="date-display" class="text-xs text-slate-400 mt-1">Rabu, 30 September 2026</div>
+            <div id="date-display" class="text-xs text-slate-400 mt-1">Kamis, 1 Oktober 2026</div>
           </div>
           <p class="text-[11px] text-slate-400 text-center"><i class="fa-solid fa-globe text-sky-400"></i> Zona Waktu: WITA (Manado)</p>
         </div>
 
-        <!-- Kalender Interaktif Widget -->
         <div class="glass-card p-5 rounded-xl border-l-4 border-sky-500">
           <div class="flex justify-between items-center mb-2">
             <span class="text-xs text-sky-400 font-semibold uppercase">Kalender Akademik</span>
             <i class="fa-regular fa-calendar-alt text-sky-400 text-lg"></i>
           </div>
-          <div id="calendar-widget" class="text-xs text-slate-300">
-            <!-- Kalender Mini di-render via JS -->
-          </div>
+          <div id="calendar-widget" class="text-xs text-slate-300"></div>
         </div>
 
-        <!-- Notifikasi & Aktivitas Realtime -->
         <div class="glass-card p-5 rounded-xl border-l-4 border-gold-500 flex flex-col">
           <div class="flex justify-between items-center mb-3">
             <span class="text-xs text-gold-400 font-semibold uppercase">Aktivitas Terkini</span>
@@ -179,6 +173,31 @@
               <p class="text-[10px] text-slate-400">Terhubung ke Firebase Realtime Listener.</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- GALERI KENANGAN KELAS (FITUR BARU) -->
+      <div class="glass-card p-6 rounded-2xl border border-gold-500/30">
+        <div class="flex flex-col md:flex-row justify-between md:items-center mb-4 gap-2">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center">
+              <i class="fa-solid fa-images text-gold-400 mr-2"></i> Galeri & Kenangan Kelas
+            </h3>
+            <p class="text-xs text-slate-400">Dokumentasi momen kegiatan dan kebersamaan pembelajaran Informatika.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <label class="text-xs text-slate-300">Filter Kelas:</label>
+            <select id="gallery-class-filter" onchange="renderGallery()" class="bg-slate-800 text-gold-300 text-xs border border-gold-500/40 rounded-lg px-3 py-1.5 focus:outline-none">
+              <option value="ALL">Semua Kelas</option>
+              <option value="X">Kelas X</option>
+              <option value="XI">Kelas XI</option>
+              <option value="XII">Kelas XII</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Card Galeri di-render via JS -->
         </div>
       </div>
 
@@ -207,7 +226,6 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-700/50">
-              <!-- Kelas X -->
               <tr class="hover:bg-sky-900/30 transition">
                 <td class="px-4 py-3 font-semibold text-white">Kelas X</td>
                 <td class="px-4 py-3">
@@ -223,7 +241,6 @@
                   <button onclick="openStudentModal('Tingkat X')" class="text-xs text-sky-400 hover:underline">Lihat Semua</button>
                 </td>
               </tr>
-              <!-- Kelas XI -->
               <tr class="hover:bg-sky-900/30 transition">
                 <td class="px-4 py-3 font-semibold text-white">Kelas XI</td>
                 <td class="px-4 py-3">
@@ -240,7 +257,6 @@
                   <button onclick="openStudentModal('Tingkat XI')" class="text-xs text-sky-400 hover:underline">Lihat Semua</button>
                 </td>
               </tr>
-              <!-- Kelas XII -->
               <tr class="hover:bg-sky-900/30 transition">
                 <td class="px-4 py-3 font-semibold text-white">Kelas XII</td>
                 <td class="px-4 py-3">
@@ -270,7 +286,6 @@
           <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-book-open text-gold-400 mr-2"></i> Materi Pembelajaran</h2>
           <p class="text-xs text-slate-400">Unduh dan pelajari materi modul Informatika yang diunggah oleh guru.</p>
         </div>
-        <!-- Filter Kelas -->
         <div class="flex items-center space-x-2">
           <label class="text-xs text-slate-300">Pilih Kelas:</label>
           <select id="materi-class-filter" onchange="renderMateri()" class="bg-slate-800 text-gold-300 text-sm border border-gold-500/40 rounded-lg px-3 py-1.5 focus:outline-none">
@@ -288,10 +303,7 @@
         </div>
       </div>
 
-      <!-- Grid Materi -->
-      <div id="materi-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Card Materi di-render secara dinamis -->
-      </div>
+      <div id="materi-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
 
     <!-- ================= HALAMAN TUGAS ================= -->
@@ -301,7 +313,6 @@
           <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-tasks text-gold-400 mr-2"></i> Pengumpulan Tugas</h2>
           <p class="text-xs text-slate-400">Lihat tugas aktif, unduh/buka materi tugas, dan kumpulkan jawaban teks atau tautan Google Drive.</p>
         </div>
-        <!-- Filter Kelas Tugas -->
         <div class="flex items-center space-x-2">
           <label class="text-xs text-slate-300">Filter Kelas:</label>
           <select id="tugas-class-filter" onchange="renderTugas()" class="bg-slate-800 text-gold-300 text-sm border border-gold-500/40 rounded-lg px-3 py-1.5 focus:outline-none">
@@ -319,10 +330,7 @@
         </div>
       </div>
 
-      <!-- Daftar Tugas -->
-      <div id="tugas-list" class="space-y-4">
-        <!-- Item Tugas di-render via JS -->
-      </div>
+      <div id="tugas-list" class="space-y-4"></div>
     </section>
 
     <!-- ================= DASHBOARD GURU (ADMIN) ================= -->
@@ -335,17 +343,16 @@
             </h2>
             <p class="text-xs text-slate-400">Panel Manajemen Sistem Informatika — SMA Negeri 4 Manado</p>
           </div>
-          <!-- Sub Nav Tabs -->
           <div class="flex space-x-2 bg-slate-900 p-1 rounded-xl border border-gold-500/20">
             <button onclick="switchAdminTab('siswa')" id="tab-btn-siswa" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gold-500 text-slate-900">Data Siswa</button>
             <button onclick="switchAdminTab('materi')" id="tab-btn-materi" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white">Kelola Materi</button>
             <button onclick="switchAdminTab('tugas')" id="tab-btn-tugas" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white">Kelola Tugas</button>
+            <button onclick="switchAdminTab('galeri')" id="tab-btn-galeri" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white">Kelola Galeri</button>
           </div>
         </div>
 
         <!-- TAB 1: KELOLA SISWA -->
         <div id="admin-tab-siswa" class="space-y-4">
-          <!-- Form Tambah Siswa & Kontrol -->
           <div class="flex flex-col lg:flex-row justify-between items-center gap-4 bg-sky-900/30 p-4 rounded-xl border border-sky-800">
             <form id="form-add-siswa" onsubmit="handleAddSiswa(event)" class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
               <input type="text" id="siswa-nama" placeholder="Nama Lengkap Siswa" required class="bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2 focus:outline-none focus:border-gold-400 flex-grow">
@@ -370,7 +377,6 @@
             </div>
           </div>
 
-          <!-- Tabel Data Siswa -->
           <div class="overflow-x-auto rounded-xl border border-slate-700">
             <table class="w-full text-xs text-left text-slate-300">
               <thead class="bg-slate-900 text-gold-400 border-b border-slate-700 uppercase">
@@ -381,18 +387,13 @@
                   <th class="px-4 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="admin-siswa-tbody" class="divide-y divide-slate-800">
-                <!-- Data di-render via JS -->
-              </tbody>
+              <tbody id="admin-siswa-tbody" class="divide-y divide-slate-800"></tbody>
             </table>
           </div>
 
-          <!-- Pagination -->
           <div class="flex justify-between items-center text-xs text-slate-400 pt-2">
             <span id="pagination-info">Menampilkan 0 dari 0 data</span>
-            <div class="flex space-x-2" id="pagination-controls">
-              <!-- Tombol Pagination -->
-            </div>
+            <div class="flex space-x-2" id="pagination-controls"></div>
           </div>
         </div>
 
@@ -418,9 +419,7 @@
 
           <div class="mt-4">
             <h4 class="text-sm font-bold text-white mb-3"><i class="fa-solid fa-book-open text-gold-400 mr-2"></i> Daftar Materi Dipublikasikan</h4>
-            <div id="admin-materi-list" class="space-y-2">
-              <!-- List Materi Admin di-render via JS -->
-            </div>
+            <div id="admin-materi-list" class="space-y-2"></div>
           </div>
         </div>
 
@@ -438,40 +437,86 @@
               </select>
               <input type="date" id="tugas-deadline" required class="bg-slate-800 text-xs text-gold-300 border border-slate-600 rounded px-3 py-2">
             </div>
-            <input type="url" id="tugas-url" placeholder="Tautan Google Drive / Lembar Tugas (Opsional, https://drive.google.com/...)" class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
+            <input type="url" id="tugas-url" placeholder="Tautan Google Drive / Lembar Tugas (Opsional)" class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
             <textarea id="tugas-instruksi" placeholder="Instruksi Pengerjaan Tugas..." rows="2" required class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2"></textarea>
             <button type="submit" class="bg-gold-500 hover:bg-gold-400 text-slate-900 font-bold text-xs px-4 py-2 rounded transition">
               <i class="fa-solid fa-plus-circle mr-1"></i> Buat Tugas Baru
             </button>
           </form>
 
-          <!-- List Tugas yang telah dibuat -->
           <div class="mt-4">
             <h4 class="text-sm font-bold text-white mb-3"><i class="fa-solid fa-tasks text-gold-400 mr-2"></i> Daftar Tugas Aktif</h4>
-            <div id="admin-tugas-list" class="space-y-2">
-              <!-- List Tugas Admin dengan Tombol Hapus -->
-            </div>
+            <div id="admin-tugas-list" class="space-y-2"></div>
           </div>
 
-          <!-- Tampilan Pengumpulan Tugas oleh Siswa -->
           <div class="mt-6">
             <h4 class="text-sm font-bold text-white mb-3"><i class="fa-solid fa-inbox text-gold-400 mr-2"></i> Daftar Pengumpulan Tugas Siswa</h4>
-            <div id="admin-submissions-list" class="space-y-2">
-              <!-- Submissions di-render via JS -->
-            </div>
+            <div id="admin-submissions-list" class="space-y-2"></div>
           </div>
         </div>
+
+        <!-- TAB 4: KELOLA GALERI (FITUR BARU GURU) -->
+        <div id="admin-tab-galeri" class="space-y-4 hidden">
+          <form onsubmit="handleAddGaleri(event)" class="bg-sky-900/30 p-4 rounded-xl border border-sky-800 space-y-3">
+            <h4 class="text-sm font-bold text-gold-400 mb-2">Tambah Foto Galeri Baru</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input type="text" id="galeri-judul" placeholder="Judul Foto / Kegiatan Momen" required class="bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
+              <select id="galeri-kelas" required class="bg-slate-800 text-xs text-gold-300 border border-slate-600 rounded px-3 py-2">
+                <option value="Semua Kelas">Semua Kelas</option>
+                <option value="X">Kelas X</option>
+                <option value="XI">Kelas XI</option>
+                <option value="XII">Kelas XII</option>
+              </select>
+            </div>
+            <input type="url" id="galeri-url" placeholder="URL Foto Gambar (https://...)" required class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
+            <textarea id="galeri-deskripsi" placeholder="Deskripsi singkat momen..." rows="2" class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2"></textarea>
+            <button type="submit" class="bg-gold-500 hover:bg-gold-400 text-slate-900 font-bold text-xs px-4 py-2 rounded transition">
+              <i class="fa-solid fa-image mr-1"></i> Tambah Foto ke Galeri
+            </button>
+          </form>
+
+          <div class="mt-4">
+            <h4 class="text-sm font-bold text-white mb-3"><i class="fa-solid fa-images text-gold-400 mr-2"></i> Kelola Foto Galeri Terpasang</h4>
+            <div id="admin-galeri-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+          </div>
+        </div>
+
+        <!-- TABEL REKAPITULASI AKSES MATERI SISWA -->
+        <div class="mt-8 border-t border-gold-500/30 pt-6">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-sm font-bold text-white flex items-center">
+              <i class="fa-solid fa-user-check text-gold-400 mr-2"></i> Rekap Realtime Siswa Mengambil / Membaca Materi
+            </h4>
+            <span class="bg-gold-500/20 text-gold-300 text-[10px] px-2.5 py-1 rounded-full border border-gold-500/40">
+              Rekap Keaktifan Nilai
+            </span>
+          </div>
+          <div class="overflow-x-auto rounded-xl border border-slate-700">
+            <table class="w-full text-xs text-left text-slate-300">
+              <thead class="bg-slate-900 text-gold-400 border-b border-slate-700 uppercase">
+                <tr>
+                  <th class="px-4 py-3">No</th>
+                  <th class="px-4 py-3">Nama Siswa</th>
+                  <th class="px-4 py-3">Kelas</th>
+                  <th class="px-4 py-3">Materi yang Diakses</th>
+                  <th class="px-4 py-3">Waktu Akses</th>
+                </tr>
+              </thead>
+              <tbody id="admin-akses-materi-tbody" class="divide-y divide-slate-800"></tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </section>
 
   </main>
 
-  <!-- Footer -->
   <footer class="glass-card border-t border-gold-500/20 py-4 text-center text-xs text-slate-400 mt-10">
     <p>© 2026 Informatika SMA Negeri 4 Manado. Diampu oleh <span class="text-gold-400 font-semibold">Glendy A. Taawoeda, S.Pd. NIP. 19930821202221100</span></p>
   </footer>
 
-  <!-- ================= MODAL LOGIN POPUP AUTOMATIS ================= -->
+  <!-- MODAL LOGIN -->
   <div id="modal-login" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md px-4">
     <div class="glass-card max-w-md w-full p-6 rounded-2xl border-2 border-gold-500/60 shadow-2xl relative">
       <div class="text-center mb-6">
@@ -482,7 +527,6 @@
         <p class="text-xs text-gold-400 font-medium mt-1">Portal Pembelajaran Interaktif</p>
       </div>
 
-      <!-- Tab Switcher Login -->
       <div class="flex border-b border-slate-700 mb-5">
         <button onclick="switchLoginRole('siswa')" id="tab-login-siswa" class="w-1/2 py-2 text-xs font-bold border-b-2 border-gold-500 text-gold-400">
           <i class="fa-solid fa-user-graduate mr-1"></i> Masuk Siswa
@@ -492,7 +536,6 @@
         </button>
       </div>
 
-      <!-- Form Login Siswa -->
       <form id="form-login-siswa" onsubmit="handleLoginSiswa(event)" class="space-y-4">
         <div>
           <label class="block text-xs text-slate-300 mb-1">Nama Lengkap Siswa</label>
@@ -518,7 +561,6 @@
         </button>
       </form>
 
-      <!-- Form Login Guru -->
       <form id="form-login-guru" onsubmit="handleLoginGuru(event)" class="space-y-4 hidden">
         <div>
           <label class="block text-xs text-slate-300 mb-1">Kata Sandi Guru (Admin)</label>
@@ -532,7 +574,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL DAFTAR SISWA KELAS ================= -->
+  <!-- MODAL DAFTAR SISWA KELAS -->
   <div id="modal-student-list" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md px-4 hidden">
     <div class="glass-card max-w-lg w-full p-6 rounded-2xl border border-gold-500/50 shadow-2xl relative">
       <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
@@ -543,9 +585,7 @@
       </div>
 
       <div class="max-h-72 overflow-y-auto pr-1">
-        <ul id="modal-student-ul" class="space-y-2 text-xs">
-          <!-- Item daftar siswa di-render via JS -->
-        </ul>
+        <ul id="modal-student-ul" class="space-y-2 text-xs"></ul>
       </div>
 
       <div class="mt-4 pt-3 border-t border-slate-700 text-right">
@@ -554,7 +594,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL KUMPUL TUGAS ================= -->
+  <!-- MODAL KUMPUL TUGAS -->
   <div id="modal-kumpul-tugas" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md px-4 hidden">
     <div class="glass-card max-w-lg w-full p-6 rounded-2xl border border-gold-500/50 shadow-2xl relative">
       <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
@@ -566,7 +606,7 @@
         <input type="hidden" id="kumpul-tugas-id">
         <div>
           <label class="block text-xs text-slate-300 mb-1">Jawaban Teks Direct</label>
-          <textarea id="kumpul-jawaban-teks" rows="3" placeholder="Tuliskan jawaban langsung di sini (opsional jika menggunakan tautan)..." class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none"></textarea>
+          <textarea id="kumpul-jawaban-teks" rows="3" placeholder="Tuliskan jawaban langsung di sini..." class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none"></textarea>
         </div>
         <div>
           <label class="block text-xs text-slate-300 mb-1">Tautan Dokumentasi Google Drive</label>
@@ -581,14 +621,12 @@
     </div>
   </div>
 
-  <!-- LOGIKA APLIKASI UTAMA (JS) -->
   <!-- FIREBASE SDK v9 COMPAT MODULAR -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
   <!-- LOGIKA APLIKASI UTAMA (JS) -->
   <script>
-    // ================= 1. KONFIGURASI & INIT FIREBASE =================
     const firebaseConfig = {
       apiKey: "AIzaSyAtX4h3EZwtDOxZ8eSuExpXxQzrUtr0hpg",
       authDomain: "sman4-informatika.firebaseapp.com",
@@ -613,7 +651,6 @@
       console.warn("Firebase running in LocalStorage fallback mode:", e);
     }
 
-    // Default Fallback Initializer
     const defaultSiswa = [
       { id: '101', nama: 'Aditya Pratama', kelas: 'X-1' },
       { id: '102', nama: 'Beatrix Wowor', kelas: 'X-1' },
@@ -631,8 +668,14 @@
     ];
 
     const defaultTugas = [
-      { id: 't1', judul: 'Tugas 1: Program Kasir Sederhana Python', kelas: 'XI-1', deadline: '2026-10-10', url: 'https://drive.google.com/file/d/sample1/view', instruksi: 'Buat program Python dengan struktur percabangan dan perulangan. Unggah kode ke Google Drive.' },
+      { id: 't1', judul: 'Tugas 1: Program Kasir Sederhana Python', kelas: 'XI-1', deadline: '2026-10-10', url: 'https://drive.google.com/file/d/sample1/view', instruksi: 'Buat program Python dengan struktur percabangan dan perulangan.' },
       { id: 't2', judul: 'Tugas 2: Resume Jaringan Komputer', kelas: 'Semua Kelas', deadline: '2026-10-05', url: '', instruksi: 'Tulis ringkasan mengenai protokol TCP/IP dan OSI Layer dalam 2 halaman PDF.' }
+    ];
+
+    const defaultGaleri = [
+      { id: 'g1', judul: 'Praktikum Jaringan Komputer', kelas: 'XI', url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600', deskripsi: 'Siswa kelas XI saat merakit kabel LAN UTP.' },
+      { id: 'g2', judul: 'Presentasi Proyek Coding Web', kelas: 'XII', url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600', deskripsi: 'Sesi unjuk karya aplikasi interaktif siswa XII.' },
+      { id: 'g3', judul: 'Diskusi Kelompok Algoritma', kelas: 'X', url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600', deskripsi: 'Suasana kolaborasi saat memecahkan logika komputasi.' }
     ];
 
     function getStorage(key, defaultVal) {
@@ -648,8 +691,8 @@
     if (!localStorage.getItem('app_materi')) setStorage('app_materi', defaultMateri);
     if (!localStorage.getItem('app_tugas')) setStorage('app_tugas', defaultTugas);
     if (!localStorage.getItem('app_submissions')) setStorage('app_submissions', []);
+    if (!localStorage.getItem('app_galeri')) setStorage('app_galeri', defaultGaleri);
 
-    // ================= 2. REALTIME LISTENER FIREBASE FIRESTORE =================
     function initRealtimeSiswaListener() {
       if (typeof db !== 'undefined' && db) {
         db.collection('siswa').onSnapshot((snapshot) => {
@@ -657,23 +700,13 @@
           snapshot.forEach((doc) => {
             liveSiswaList.push({ id: doc.id, ...doc.data() });
           });
-          
-          if (liveSiswaList.length > 0) {
-            setStorage('app_siswa', liveSiswaList);
-          }
-          
-          if (currentUser?.role === 'guru') {
-            renderAdminSiswaTable();
-          }
-          
+          if (liveSiswaList.length > 0) setStorage('app_siswa', liveSiswaList);
+          if (currentUser?.role === 'guru') renderAdminSiswaTable();
           addRealtimeLog("Data Siswa Ter-update dari Cloud Database.");
-        }, (error) => {
-          console.warn("Gagal terhubung ke Firebase listener:", error);
-        });
+        }, (error) => console.warn("Firebase listener:", error));
       }
     }
 
-    // ================= 3. SESI USER & OTENTIKASI =================
     let currentUser = null;
 
     function checkSession() {
@@ -708,7 +741,6 @@
 
     async function handleLoginSiswa(e) {
       e.preventDefault();
-      
       const namaInput = document.getElementById('login-nama-siswa').value.trim();
       const kelasInput = document.getElementById('login-kelas-siswa').value;
 
@@ -718,35 +750,21 @@
       }
 
       const daftarSiswa = getStorage('app_siswa', []);
-
       const siswaValid = daftarSiswa.find(s => 
         s.nama.trim().toLowerCase() === namaInput.toLowerCase() && 
         s.kelas === kelasInput
       );
 
       if (siswaValid) {
-        currentUser = { 
-          role: 'siswa', 
-          name: siswaValid.nama, 
-          class: siswaValid.kelas 
-        };
-        
+        currentUser = { role: 'siswa', name: siswaValid.nama, class: siswaValid.kelas };
         localStorage.setItem('app_user_session', JSON.stringify(currentUser));
         document.getElementById('modal-login').classList.add('hidden');
         updateUserUI();
-        
         showToast(`Selamat datang, ${siswaValid.nama} (${siswaValid.kelas})!`, "success");
         addRealtimeLog(`Siswa Masuk: ${siswaValid.nama} [${siswaValid.kelas}]`);
       } else {
-        alert(
-          `[ AKSES DITOLAK ]\n\n` +
-          `Nama "${namaInput}" pada "${kelasInput}" TIDAK TERDETEKSI dalam sistem.\n\n` +
-          `Langkah Penyelesaian:\n` +
-          `1. Periksa kembali penulisan nama Anda.\n` +
-          `2. Pastikan pilihan kelas sudah benar.\n` +
-          `3. Jika masih gagal, hubungi Guru Pengampu untuk mendaftarkan nama Anda.`
-        );
-        showToast("Data siswa tidak ditemukan dalam sistem!", "warning");
+        alert(`[ AKSES DITOLAK ]\nNama "${namaInput}" pada "${kelasInput}" tidak terdeteksi.`);
+        showToast("Data siswa tidak ditemukan!", "warning");
       }
     }
 
@@ -789,7 +807,6 @@
       }
     }
 
-    // ================= 4. NAVIGASI HALAMAN =================
     function switchPage(pageId) {
       if (pageId === 'admin' && currentUser?.role !== 'guru') {
         alert("Akses ditolak! Halaman Admin hanya khusus untuk Guru.");
@@ -814,20 +831,17 @@
         activeNav.classList.remove('text-slate-300');
       }
 
+      if (pageId === 'home') renderGallery();
       if (pageId === 'materi') renderMateri();
       if (pageId === 'tugas') renderTugas();
       if (pageId === 'admin') renderAdminSiswaTable();
     }
 
-    // Toggle Menu Navigasi Smartphone
     function toggleMobileMenu() {
       const mobileMenu = document.getElementById('mobile-menu');
-      if (mobileMenu) {
-        mobileMenu.classList.toggle('hidden');
-      }
+      if (mobileMenu) mobileMenu.classList.toggle('hidden');
     }
 
-    // ================= 5. REALTIME WIDGET =================
     function startRealtimeClock() {
       function update() {
         const now = new Date();
@@ -862,18 +876,12 @@
       document.getElementById('calendar-widget').innerHTML = html;
     }
 
-    // ================= 6. MODAL SISWA =================
     function openStudentModal(targetClass) {
       document.getElementById('modal-class-title').innerText = targetClass;
       const allSiswa = getStorage('app_siswa', []);
-      let filtered = [];
-
-      if (targetClass.startsWith('Tingkat')) {
-        const tingkat = targetClass.split(' ')[1];
-        filtered = allSiswa.filter(s => s.kelas.startsWith(tingkat));
-      } else {
-        filtered = allSiswa.filter(s => s.kelas === targetClass);
-      }
+      let filtered = targetClass.startsWith('Tingkat') ?
+        allSiswa.filter(s => s.kelas.startsWith(targetClass.split(' ')[1])) :
+        allSiswa.filter(s => s.kelas === targetClass);
 
       const ul = document.getElementById('modal-student-ul');
       if (filtered.length === 0) {
@@ -894,19 +902,100 @@
       document.getElementById('modal-student-list').classList.add('hidden');
     }
 
-    // ================= 7. MATERI & TUGAS =================
+    // LOGIKA GALERI KENANGAN KELAS (BARU)
+    function renderGallery() {
+      const filter = document.getElementById('gallery-class-filter')?.value || 'ALL';
+      const allGaleri = getStorage('app_galeri', defaultGaleri);
+      const container = document.getElementById('gallery-grid');
+      if (!container) return;
+
+      let filtered = allGaleri;
+      if (filter !== 'ALL') {
+        filtered = allGaleri.filter(g => g.kelas === 'Semua Kelas' || g.kelas === filter);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400"><p>Belum ada foto galeri untuk kategori ini.</p></div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(g => `
+        <div class="bg-slate-900/80 rounded-xl overflow-hidden border border-gold-500/20 shadow-lg hover:border-gold-400/60 transition group flex flex-col justify-between">
+          <div class="relative h-44 overflow-hidden bg-slate-950">
+            <img src="${g.url}" alt="${g.judul}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/600x400?text=Gambar+Tidak+Tersedia'">
+            <span class="absolute top-2 right-2 bg-slate-950/80 text-gold-300 border border-gold-500/40 text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-sm">${g.kelas}</span>
+          </div>
+          <div class="p-3">
+            <h4 class="text-sm font-bold text-white group-hover:text-gold-300 transition">${g.judul}</h4>
+            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${g.deskripsi || ''}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function handleAddGaleri(e) {
+      e.preventDefault();
+      const judul = document.getElementById('galeri-judul').value.trim();
+      const kelas = document.getElementById('galeri-kelas').value;
+      const url = document.getElementById('galeri-url').value.trim();
+      const deskripsi = document.getElementById('galeri-deskripsi').value.trim();
+
+      const newGaleri = { id: 'g_' + Date.now(), judul, kelas, url, deskripsi };
+      const allGaleri = getStorage('app_galeri', defaultGaleri);
+      allGaleri.unshift(newGaleri);
+      setStorage('app_galeri', allGaleri);
+
+      e.target.reset();
+      renderGallery();
+      renderAdminGaleriList();
+      showToast("Foto galeri berhasil ditambahkan!", "success");
+    }
+
+    function handleDeleteGaleri(id) {
+      if (!confirm("Hapus foto ini dari galeri?")) return;
+      let allGaleri = getStorage('app_galeri', defaultGaleri);
+      allGaleri = allGaleri.filter(g => g.id !== id);
+      setStorage('app_galeri', allGaleri);
+      renderGallery();
+      renderAdminGaleriList();
+      showToast("Foto galeri dihapus.", "info");
+    }
+
+    function renderAdminGaleriList() {
+      const allGaleri = getStorage('app_galeri', defaultGaleri);
+      const container = document.getElementById('admin-galeri-list');
+      if (!container) return;
+
+      if (allGaleri.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada foto galeri.</p>`;
+        return;
+      }
+
+      container.innerHTML = allGaleri.map(g => `
+        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs flex items-center justify-between space-x-3">
+          <div class="flex items-center space-x-3 overflow-hidden">
+            <img src="${g.url}" class="w-12 h-12 rounded object-cover flex-shrink-0" onerror="this.src='https://via.placeholder.com/100'">
+            <div class="truncate">
+              <h5 class="font-bold text-white truncate">${g.judul}</h5>
+              <p class="text-slate-400 text-[10px]">${g.kelas} | ${g.deskripsi || '-'}</p>
+            </div>
+          </div>
+          <button onclick="handleDeleteGaleri('${g.id}')" class="text-red-400 hover:text-red-300 text-xs flex-shrink-0">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
     function renderMateri() {
       const filter = document.getElementById('materi-class-filter').value;
       const allMateri = getStorage('app_materi', []);
       const grid = document.getElementById('materi-grid');
 
-      let filtered = allMateri;
-      if (filter !== 'ALL') {
-        filtered = allMateri.filter(m => m.kelas === 'Semua Kelas' || m.kelas === filter);
-      }
+      let filtered = filter !== 'ALL' ? allMateri.filter(m => m.kelas === 'Semua Kelas' || m.kelas === filter) : allMateri;
 
       if (filtered.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-folder-open text-4xl mb-2 text-gold-500/40"></i><p>Belum ada materi pembelajaran untuk kelas ini.</p></div>`;
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><p>Belum ada materi pembelajaran untuk kelas ini.</p></div>`;
         return;
       }
 
@@ -920,10 +1009,10 @@
             <h4 class="text-base font-bold text-white mb-2 leading-snug">${m.judul}</h4>
             <p class="text-xs text-slate-300 mb-4 line-clamp-3">${m.deskripsi || 'Tidak ada deskripsi.'}</p>
           </div>
-          <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition shadow">
-            <i class="fa-brands fa-google-drive"></i>
-            <span>Buka di Google Drive</span>
-          </a>
+          <a href="${m.url}" target="_blank" rel="noopener noreferrer" onclick="trackAksesMateri('${m.judul}')" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition shadow">
+              <i class="fa-brands fa-google-drive"></i>
+              <span>Buka di Google Drive</span>
+           </a>
         </div>
       `).join('');
     }
@@ -934,10 +1023,7 @@
       const list = document.getElementById('tugas-list');
       const submissions = getStorage('app_submissions', []);
 
-      let filtered = allTugas;
-      if (filter !== 'ALL') {
-        filtered = allTugas.filter(t => t.kelas === 'Semua Kelas' || t.kelas === filter);
-      }
+      let filtered = filter !== 'ALL' ? allTugas.filter(t => t.kelas === 'Semua Kelas' || t.kelas === filter) : allTugas;
 
       if (filtered.length === 0) {
         list.innerHTML = `<div class="text-center py-12 text-slate-400"><p>Tidak ada tugas aktif.</p></div>`;
@@ -985,7 +1071,7 @@
       document.getElementById('modal-kumpul-tugas').classList.add('hidden');
     }
 
-    function handleSubmitJawaban(e) {
+    async function handleSubmitJawaban(e) {
       e.preventDefault();
       const tugasId = document.getElementById('kumpul-tugas-id').value;
       const teks = document.getElementById('kumpul-jawaban-teks').value;
@@ -993,9 +1079,7 @@
 
       if (!teks && !url) return alert("Harap isi jawaban teks atau masukkan tautan Google Drive!");
 
-      const submissions = getStorage('app_submissions', []);
       const newSub = {
-        id: 'sub_' + Date.now(),
         tugasId: tugasId,
         namaSiswa: currentUser?.name || 'Anonim',
         kelasSiswa: currentUser?.class || '-',
@@ -1004,28 +1088,82 @@
         waktu: new Date().toLocaleString('id-ID')
       };
 
-      submissions.push(newSub);
-      setStorage('app_submissions', submissions);
+      if (typeof db !== 'undefined' && db) {
+        try {
+          await db.collection('submissions').add(newSub);
+          showToast("Tugas berhasil dikumpulkan!", "success");
+        } catch (err) {
+          console.error("Cloud Error:", err);
+        }
+      } else {
+        const submissions = getStorage('app_submissions', []);
+        submissions.unshift({ id: 'sub_' + Date.now(), ...newSub });
+        setStorage('app_submissions', submissions);
+        showToast("Tugas dikumpulkan secara lokal!", "success");
+      }
 
       addRealtimeLog(`Pengumpulan Tugas: ${currentUser?.name} (${currentUser?.class})`);
       closeKumpulModal();
       renderTugas();
-      showToast("Tugas berhasil dikumpulkan!", "success");
     }
 
-    // ================= 8. DASHBOARD GURU =================
+    function trackAksesMateri(materiJudul) {
+      if (!currentUser || currentUser.role !== 'siswa') return;
+      const dataAkses = {
+        namaSiswa: currentUser.name,
+        kelasSiswa: currentUser.class,
+        materiJudul: materiJudul,
+        waktu: new Date().toLocaleString('id-ID')
+      };
+
+      if (typeof db !== 'undefined' && db) {
+        db.collection('akses_materi').add(dataAkses).catch(err => console.error(err));
+      } else {
+        const local = getStorage('app_akses_materi', []);
+        local.unshift(dataAkses);
+        setStorage('app_akses_materi', local);
+        renderAksesMateriTable();
+      }
+    }
+
+    function renderAksesMateriTable() {
+      const dataAkses = getStorage('app_akses_materi', []);
+      const tbody = document.getElementById('admin-akses-materi-tbody');
+      if (!tbody) return;
+
+      if (dataAkses.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-slate-400">Belum ada aktivitas siswa mengambil materi.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = dataAkses.map((item, index) => `
+        <tr class="hover:bg-slate-800/60 transition">
+          <td class="px-4 py-2.5 text-gold-400 font-mono">${index + 1}</td>
+          <td class="px-4 py-2.5 font-medium text-white">${item.namaSiswa}</td>
+          <td class="px-4 py-2.5"><span class="bg-sky-900 border border-sky-600 px-2 py-0.5 rounded text-[10px]">${item.kelasSiswa}</span></td>
+          <td class="px-4 py-2.5 text-slate-300">${item.materiJudul}</td>
+          <td class="px-4 py-2.5 text-slate-400 text-[11px]">${item.waktu}</td>
+        </tr>
+      `).join('');
+    }
+
     function switchAdminTab(tab) {
-      ['siswa', 'materi', 'tugas'].forEach(t => {
-        document.getElementById('admin-tab-' + t).classList.add('hidden');
-        document.getElementById('tab-btn-' + t).className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white";
+      ['siswa', 'materi', 'tugas', 'galeri'].forEach(t => {
+        const el = document.getElementById('admin-tab-' + t);
+        const btn = document.getElementById('tab-btn-' + t);
+        if (el) el.classList.add('hidden');
+        if (btn) btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white";
       });
 
-      document.getElementById('admin-tab-' + tab).classList.remove('hidden');
-      document.getElementById('tab-btn-' + tab).className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-gold-500 text-slate-900";
+      const activeTab = document.getElementById('admin-tab-' + tab);
+      const activeBtn = document.getElementById('tab-btn-' + tab);
+      if (activeTab) activeTab.classList.remove('hidden');
+      if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-gold-500 text-slate-900";
 
       if (tab === 'siswa') renderAdminSiswaTable();
       if (tab === 'materi') renderAdminMateriList();
       if (tab === 'tugas') renderAdminTugasList();
+      if (tab === 'galeri') renderAdminGaleriList();
     }
 
     let siswaSortColumn = 'id';
@@ -1033,12 +1171,8 @@
     let siswaCurrentPage = 1;
 
     function sortTableSiswa(col) {
-      if (siswaSortColumn === col) {
-        siswaSortAsc = !siswaSortAsc;
-      } else {
-        siswaSortColumn = col;
-        siswaSortAsc = true;
-      }
+      siswaSortAsc = (siswaSortColumn === col) ? !siswaSortAsc : true;
+      siswaSortColumn = col;
       renderAdminSiswaTable();
     }
 
@@ -1052,8 +1186,7 @@
       filtered.sort((a, b) => {
         let valA = a[siswaSortColumn] || '';
         let valB = b[siswaSortColumn] || '';
-        if (siswaSortAsc) return valA.localeCompare(valB, undefined, { numeric: true });
-        return valB.localeCompare(valA, undefined, { numeric: true });
+        return siswaSortAsc ? valA.localeCompare(valB, undefined, { numeric: true }) : valB.localeCompare(valA, undefined, { numeric: true });
       });
 
       const totalItems = filtered.length;
@@ -1072,7 +1205,7 @@
             <td class="px-4 py-2.5 font-mono text-gold-300">${s.id}</td>
             <td class="px-4 py-2.5 text-white font-medium">${s.nama}</td>
             <td class="px-4 py-2.5"><span class="bg-sky-900/80 border border-sky-600 px-2 py-0.5 rounded text-[10px]">${s.kelas}</span></td>
-            <td class="px-4 py-2.5 text-center space-x-2">
+            <td class="px-4 py-2.5 text-center">
               <button onclick="handleDeleteSiswa('${s.id}')" class="text-red-400 hover:text-red-300 text-xs"><i class="fa-solid fa-trash"></i> Hapus</button>
             </td>
           </tr>
@@ -1100,36 +1233,27 @@
       const kelas = document.getElementById('siswa-kelas').value;
 
       if (!nama || !kelas) return;
-
-      const newSiswa = { nama: nama, kelas: kelas, createdAt: new Date().toISOString() };
+      const newSiswa = { nama, kelas, createdAt: new Date().toISOString() };
 
       if (typeof db !== 'undefined' && db) {
         try {
           await db.collection('siswa').add(newSiswa);
-          showToast("Siswa berhasil ditambahkan ke Cloud Database!", "success");
-        } catch (err) {
-          console.error("Gagal menyimpan ke Cloud:", err);
-        }
+          showToast("Siswa berhasil ditambahkan!", "success");
+        } catch (err) { console.error(err); }
       } else {
         const allSiswa = getStorage('app_siswa', []);
         allSiswa.push({ id: String(Date.now()).slice(-4), ...newSiswa });
         setStorage('app_siswa', allSiswa);
         renderAdminSiswaTable();
       }
-
       document.getElementById('siswa-nama').value = '';
     }
 
     async function handleDeleteSiswa(id) {
       if (!confirm("Apakah Anda yakin ingin menghapus siswa ini?")) return;
-      
       if (typeof db !== 'undefined' && db && id.length > 5) {
-        try {
-          await db.collection('siswa').doc(id).delete();
-          showToast("Siswa berhasil dihapus dari Cloud!", "info");
-        } catch(e) { console.error(e); }
+        try { await db.collection('siswa').doc(id).delete(); } catch(e) { console.error(e); }
       }
-
       let allSiswa = getStorage('app_siswa', []);
       allSiswa = allSiswa.filter(s => s.id !== id);
       setStorage('app_siswa', allSiswa);
@@ -1137,29 +1261,21 @@
       showToast("Siswa dihapus.", "info");
     }
 
-    // Kelola Materi
     async function handleAddMateri(e) {
       e.preventDefault();
-      const judul = document.getElementById('materi-judul').value.trim();
-      const kelas = document.getElementById('materi-target-kelas').value;
-      const url = document.getElementById('materi-drive-url').value.trim();
-      const deskripsi = document.getElementById('materi-deskripsi').value.trim();
-
       const newMateri = {
-        judul: judul,
-        kelas: kelas,
-        url: url,
-        deskripsi: deskripsi,
+        judul: document.getElementById('materi-judul').value.trim(),
+        kelas: document.getElementById('materi-target-kelas').value,
+        url: document.getElementById('materi-drive-url').value.trim(),
+        deskripsi: document.getElementById('materi-deskripsi').value.trim(),
         tanggal: new Date().toISOString().split('T')[0]
       };
 
       if (typeof db !== 'undefined' && db) {
         try {
           await db.collection('materi').add(newMateri);
-          showToast("Materi berhasil dipublikasikan secara online!", "success");
-        } catch (err) {
-          console.error("Gagal ke Cloud:", err);
-        }
+          showToast("Materi berhasil dipublikasikan!", "success");
+        } catch (err) { console.error(err); }
       } else {
         const allMateri = getStorage('app_materi', []);
         newMateri.id = 'm_' + Date.now();
@@ -1167,23 +1283,16 @@
         setStorage('app_materi', allMateri);
         renderMateri();
         renderAdminMateriList();
-        showToast("Materi disimpan secara lokal!", "success");
       }
-
       e.target.reset();
       switchAdminTab('materi');
     }
 
     async function handleDeleteMateri(id) {
-      if (!confirm("Apakah Anda yakin ingin menghapus materi ini?")) return;
-      
+      if (!confirm("Hapus materi ini?")) return;
       if (typeof db !== 'undefined' && db && id.length > 5) {
-        try {
-          await db.collection('materi').doc(id).delete();
-          showToast("Materi berhasil dihapus dari Cloud!", "info");
-        } catch(e) { console.error(e); }
+        try { await db.collection('materi').doc(id).delete(); } catch(e) { console.error(e); }
       }
-
       let allMateri = getStorage('app_materi', []);
       allMateri = allMateri.filter(m => m.id !== id);
       setStorage('app_materi', allMateri);
@@ -1209,83 +1318,46 @@
             <p class="text-slate-400 text-[10px]">Kelas: ${m.kelas} | Tanggal: ${m.tanggal || '-'}</p>
           </div>
           <div class="flex items-center space-x-3">
-            <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:underline">
-              <i class="fa-brands fa-google-drive"></i> Buka File
-            </a>
-            <button onclick="handleDeleteMateri('${m.id}')" class="text-red-400 hover:text-red-300 transition">
-              <i class="fa-solid fa-trash mr-1"></i> Hapus
-            </button>
+            <a href="${m.url}" target="_blank" class="text-sky-400 hover:underline"><i class="fa-brands fa-google-drive"></i> Buka File</a>
+            <button onclick="handleDeleteMateri('${m.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash mr-1"></i> Hapus</button>
           </div>
         </div>
       `).join('');
     }
 
-    function initRealtimeMateriListener() {
-      if (typeof db !== 'undefined' && db) {
-        db.collection('materi').onSnapshot((snapshot) => {
-          const liveMateri = [];
-          snapshot.forEach((doc) => {
-            liveMateri.push({ id: doc.id, ...doc.data() });
-          });
-          if (liveMateri.length > 0) {
-            setStorage('app_materi', liveMateri);
-          }
-          renderMateri();
-          renderAdminMateriList();
-        });
-      }
-    }
-
-    // Kelola Tugas
     async function handleAddTugas(e) {
       e.preventDefault();
-      const judul = document.getElementById('tugas-judul').value.trim();
-      const kelas = document.getElementById('tugas-target-kelas').value;
-      const deadline = document.getElementById('tugas-deadline').value;
       const urlInput = document.getElementById('tugas-url');
-      const url = urlInput ? urlInput.value.trim() : '';
-      const instruksi = document.getElementById('tugas-instruksi').value.trim();
-
       const newTugas = { 
-        judul, 
-        kelas, 
-        deadline, 
-        url,
-        instruksi, 
+        judul: document.getElementById('tugas-judul').value.trim(), 
+        kelas: document.getElementById('tugas-target-kelas').value, 
+        deadline: document.getElementById('tugas-deadline').value, 
+        url: urlInput ? urlInput.value.trim() : '',
+        instruksi: document.getElementById('tugas-instruksi').value.trim(), 
         createdAt: new Date().toISOString() 
       };
 
       if (typeof db !== 'undefined' && db) {
         try {
           await db.collection('tugas').add(newTugas);
-          showToast("Tugas berhasil dipublikasikan ke siswa!", "success");
-        } catch (err) {
-          console.error("Gagal ke Cloud:", err);
-        }
+          showToast("Tugas berhasil dipublikasikan!", "success");
+        } catch (err) { console.error(err); }
       } else {
         const allTugas = getStorage('app_tugas', []);
         newTugas.id = 't_' + Date.now();
         allTugas.unshift(newTugas);
         setStorage('app_tugas', allTugas);
         renderTugas();
-        showToast("Tugas disimpan secara lokal!", "success");
       }
-
       e.target.reset();
       renderAdminTugasList();
-      addRealtimeLog(`Tugas Baru Dibuat: ${judul}`);
     }
 
     async function handleDeleteTugas(id) {
-      if (!confirm("Apakah Anda yakin ingin menghapus tugas ini?")) return;
-
+      if (!confirm("Hapus tugas ini?")) return;
       if (typeof db !== 'undefined' && db && id.length > 5) {
-        try {
-          await db.collection('tugas').doc(id).delete();
-          showToast("Tugas berhasil dihapus dari Cloud!", "info");
-        } catch(e) { console.error(e); }
+        try { await db.collection('tugas').doc(id).delete(); } catch(e) { console.error(e); }
       }
-
       let allTugas = getStorage('app_tugas', []);
       allTugas = allTugas.filter(t => t.id !== id);
       setStorage('app_tugas', allTugas);
@@ -1294,80 +1366,53 @@
       showToast("Tugas berhasil dihapus.", "info");
     }
 
-    function initRealtimeTugasListener() {
-      if (typeof db !== 'undefined' && db) {
-        db.collection('tugas').onSnapshot((snapshot) => {
-          const liveTugas = [];
-          snapshot.forEach((doc) => {
-            liveTugas.push({ id: doc.id, ...doc.data() });
-          });
-          if (liveTugas.length > 0) {
-            setStorage('app_tugas', liveTugas);
-          }
-          renderTugas();
-          renderAdminTugasList();
-        });
-      }
-    }
-
     function renderAdminTugasList() {
       const allTugas = getStorage('app_tugas', []);
       const tugasContainer = document.getElementById('admin-tugas-list');
       
       if (tugasContainer) {
-        if (allTugas.length === 0) {
-          tugasContainer.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada tugas dibuat.</p>`;
-        } else {
-          tugasContainer.innerHTML = allTugas.map(t => `
+        tugasContainer.innerHTML = (allTugas.length === 0) ? `<p class="text-xs text-slate-400 italic">Belum ada tugas dibuat.</p>` :
+          allTugas.map(t => `
             <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs flex justify-between items-center">
               <div>
                 <h5 class="font-bold text-white">${t.judul}</h5>
                 <p class="text-slate-400 text-[10px]">Kelas: ${t.kelas} | Batas: ${t.deadline}</p>
-                ${t.url ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" class="text-sky-400 text-[11px] hover:underline block mt-0.5"><i class="fa-brands fa-google-drive mr-1"></i>${t.url}</a>` : ''}
               </div>
               <button onclick="handleDeleteTugas('${t.id}')" class="text-red-400 hover:text-red-300 text-xs transition ml-2">
                 <i class="fa-solid fa-trash mr-1"></i> Hapus
               </button>
             </div>
           `).join('');
-        }
       }
 
       const submissions = getStorage('app_submissions', []);
       const subContainer = document.getElementById('admin-submissions-list');
 
       if (subContainer) {
-        if (submissions.length === 0) {
-          subContainer.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada pengumpulan tugas dari siswa.</p>`;
-          return;
-        }
-
-        subContainer.innerHTML = submissions.map(s => `
-          <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs space-y-1">
-            <div class="flex justify-between font-semibold text-white">
-              <span><i class="fa-solid fa-user-graduate text-gold-400 mr-1"></i> ${s.namaSiswa} (${s.kelasSiswa})</span>
-              <span class="text-[10px] text-slate-400">${s.waktu}</span>
+        subContainer.innerHTML = (submissions.length === 0) ? `<p class="text-xs text-slate-400 italic">Belum ada pengumpulan tugas dari siswa.</p>` :
+          submissions.map(s => `
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs space-y-1">
+              <div class="flex justify-between font-semibold text-white">
+                <span><i class="fa-solid fa-user-graduate text-gold-400 mr-1"></i> ${s.namaSiswa} (${s.kelasSiswa})</span>
+                <span class="text-[10px] text-slate-400">${s.waktu}</span>
+              </div>
+              ${s.jawabanTeks ? `<p class="text-slate-300 bg-slate-950 p-2 rounded">Jawaban: ${s.jawabanTeks}</p>` : ''}
+              ${s.driveUrl ? `<a href="${s.driveUrl}" target="_blank" class="text-sky-400 hover:underline block"><i class="fa-brands fa-google-drive mr-1"></i> Tautan Google Drive Tugas</a>` : ''}
             </div>
-            ${s.jawabanTeks ? `<p class="text-slate-300 bg-slate-950 p-2 rounded">Jawaban: ${s.jawabanTeks}</p>` : ''}
-            ${s.driveUrl ? `<a href="${s.driveUrl}" target="_blank" class="text-sky-400 hover:underline block"><i class="fa-brands fa-google-drive mr-1"></i> Tautan Google Drive Tugas</a>` : ''}
-          </div>
-        `).join('');
+          `).join('');
       }
     }
 
-    // Inisialisasi Startup
     window.addEventListener('DOMContentLoaded', () => {
       initRealtimeSiswaListener();
-      initRealtimeMateriListener();
-      initRealtimeTugasListener();
       checkSession();
       startRealtimeClock();
       renderCalendar();
+      renderGallery();
       renderMateri();
       renderTugas();
     });
 
-    // ================= 9. NOTIFIKASI & LOG =================
     function showToast(msg, type = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -1378,7 +1423,6 @@
 
       container.appendChild(toast);
       setTimeout(() => toast.classList.remove('translate-x-full'), 10);
-
       setTimeout(() => {
         toast.classList.add('translate-x-full');
         setTimeout(() => toast.remove(), 300);
@@ -1393,7 +1437,6 @@
       item.innerHTML = `<p class="font-medium text-gold-300">${text}</p><p class="text-[10px] text-slate-400">${new Date().toLocaleTimeString('id-ID')}</p>`;
       logBox.prepend(item);
     }
-
-    </script>
+  </script>
 </body>
 </html>
