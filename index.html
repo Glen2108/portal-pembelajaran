@@ -54,18 +54,28 @@
   <!-- Header & Navigasi -->
   <header class="sticky top-0 z-40 glass-card border-b border-gold-500/30">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('home')">
-        <div class="w-10 h-10 rounded-full bg-gold-500 flex items-center justify-center text-slate-900 font-bold text-xl shadow-lg">
-          <i class="fa-solid fa-laptop-code"></i>
+      
+      <!-- Logo + Judul + Tombol Menu Smartphone -->
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onclick="switchPage('home')">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gold-500 flex items-center justify-center text-slate-900 font-bold text-lg sm:text-xl shadow-lg">
+            <i class="fa-solid fa-laptop-code"></i>
+          </div>
+          <div>
+            <h1 class="text-base sm:text-lg font-bold text-white leading-tight">INFORMATIKA</h1>
+            <p class="text-[10px] sm:text-xs text-gold-400 font-medium">SMA Negeri 4 Manado</p>
+          </div>
         </div>
-        <div>
-          <h1 class="text-lg font-bold text-white leading-tight">INFORMATIKA</h1>
-          <p class="text-xs text-gold-400 font-medium">SMA Negeri 4 Manado</p>
-        </div>
+
+        <!-- Tombol Navigasi Timbul (Khusus Smartphone) -->
+        <button onclick="toggleMobileMenu()" class="md:hidden ml-2 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-slate-950 font-bold py-1.5 px-3 rounded-lg shadow-md shadow-gold-500/20 border-b-2 border-r-2 border-gold-300 active:translate-y-0.5 active:border-none transition flex items-center space-x-1">
+          <i class="fa-solid fa-bars text-xs"></i>
+          <span class="text-xs font-semibold">Menu</span>
+        </button>
       </div>
 
-      <!-- Navigasi Desktop -->
-      <nav class="flex items-center space-x-6 text-sm font-medium">
+      <!-- Navigasi Desktop (Sembunyi di HP, muncul di layar sedang/besar) -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
         <button onclick="switchPage('home')" id="nav-home" class="nav-btn text-gold-400 hover:text-gold-300 transition"><i class="fa-solid fa-house mr-1"></i> Beranda</button>
         <button onclick="switchPage('materi')" id="nav-materi" class="nav-btn text-slate-300 hover:text-gold-400 transition"><i class="fa-solid fa-book-open mr-1"></i> Materi</button>
         <button onclick="switchPage('tugas')" id="nav-tugas" class="nav-btn text-slate-300 hover:text-gold-400 transition"><i class="fa-solid fa-tasks mr-1"></i> Tugas</button>
@@ -73,16 +83,32 @@
       </nav>
 
       <!-- User Badge & Logout -->
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-2 sm:space-x-3">
         <div id="user-badge" class="hidden md:flex items-center bg-sky-900/80 px-3 py-1.5 rounded-full border border-gold-500/40 text-xs">
           <span id="user-icon" class="text-gold-400 mr-2"><i class="fa-solid fa-user-graduate"></i></span>
           <span id="user-display-name" class="font-semibold text-white"></span>
           <span id="user-display-class" class="ml-1 text-gold-300 font-normal"></span>
         </div>
-        <button onclick="logout()" class="bg-red-600/80 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded-lg border border-red-400 transition flex items-center">
-          <i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar
+        <button onclick="logout()" class="bg-red-600/80 hover:bg-red-600 text-white text-xs px-2.5 sm:px-3 py-1.5 rounded-lg border border-red-400 transition flex items-center">
+          <i class="fa-solid fa-right-from-bracket mr-1"></i> <span class="hidden sm:inline">Keluar</span>
         </button>
       </div>
+    </div>
+
+    <!-- Dropdown Menu Mobile (Muncul di bawah header saat tombol diklik) -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gold-500/20 bg-slate-900/95 px-4 py-3 space-y-2">
+      <button onclick="switchPage('home'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-house mr-2.5 w-4"></i> Beranda
+      </button>
+      <button onclick="switchPage('materi'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-slate-300 hover:text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-book-open mr-2.5 w-4"></i> Materi
+      </button>
+      <button onclick="switchPage('tugas'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-slate-300 hover:text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-tasks mr-2.5 w-4"></i> Tugas
+      </button>
+      <button onclick="switchPage('admin'); toggleMobileMenu();" class="w-full text-left py-2 px-3 rounded-lg text-slate-300 hover:text-gold-400 hover:bg-sky-900/50 transition text-xs font-semibold flex items-center">
+        <i class="fa-solid fa-user-shield mr-2.5 w-4"></i> Admin Guru
+      </button>
     </div>
   </header>
 
@@ -418,7 +444,7 @@
 
   <!-- Footer -->
   <footer class="glass-card border-t border-gold-500/20 py-4 text-center text-xs text-slate-400 mt-10">
-    <p>© 2026 Informatika SMA Negeri 4 Manado. Diampu oleh <span class="text-gold-400 font-semibold">Glendy A. Taawoeda, S.Pd. NIP. 199308212022211005</span></p>
+    <p>© 2026 Informatika SMA Negeri 4 Manado. Diampu oleh <span class="text-gold-400 font-semibold">Glendy A. Taawoeda, S.Pd. NIP. 19930821202221100</span></p>
   </footer>
 
   <!-- ================= MODAL LOGIN POPUP AUTOMATIS ================= -->
@@ -768,6 +794,14 @@
       if (pageId === 'materi') renderMateri();
       if (pageId === 'tugas') renderTugas();
       if (pageId === 'admin') renderAdminSiswaTable();
+    }
+
+    // Toggle Menu Navigasi Smartphone
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu) {
+        mobileMenu.classList.toggle('hidden');
+      }
     }
 
     // ================= 5. REALTIME WIDGET =================
