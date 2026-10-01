@@ -299,14 +299,22 @@
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-tasks text-gold-400 mr-2"></i> Pengumpulan Tugas</h2>
-          <p class="text-xs text-slate-400">Lihat tugas aktif dan kumpulkan jawaban teks atau tautan Google Drive.</p>
+          <p class="text-xs text-slate-400">Lihat tugas aktif, unduh/buka materi tugas, dan kumpulkan jawaban teks atau tautan Google Drive.</p>
         </div>
         <!-- Filter Kelas Tugas -->
         <div class="flex items-center space-x-2">
           <label class="text-xs text-slate-300">Filter Kelas:</label>
           <select id="tugas-class-filter" onchange="renderTugas()" class="bg-slate-800 text-gold-300 text-sm border border-gold-500/40 rounded-lg px-3 py-1.5 focus:outline-none">
             <option value="ALL">Semua Kelas</option>
-            <option value="X-1">X-1</option><option value="XI-1">XI-1</option><option value="XII-1">XII-1</option>
+            <optgroup label="Kelas X">
+              <option value="X-1">X-1</option><option value="X-2">X-2</option><option value="X-3">X-3</option><option value="X-4">X-4</option>
+            </optgroup>
+            <optgroup label="Kelas XI">
+              <option value="XI-1">XI-1</option><option value="XI-2">XI-2</option><option value="XI-3">XI-3</option><option value="XI-4">XI-4</option><option value="XI-5">XI-5</option>
+            </optgroup>
+            <optgroup label="Kelas XII">
+              <option value="XII-1">XII-1</option><option value="XII-2">XII-2</option><option value="XII-3">XII-3</option><option value="XII-4">XII-4</option><option value="XII-5">XII-5</option>
+            </optgroup>
           </select>
         </div>
       </div>
@@ -394,13 +402,12 @@
             <h4 class="text-sm font-bold text-gold-400 mb-2">Unggah / Tambah Materi Baru</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <input type="text" id="materi-judul" placeholder="Judul Materi (contoh: Algoritma & Pemrograman Python)" required class="bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
-              <!-- Form Target Kelas Materi & Tugas -->
-            <select id="materi-target-kelas" required class="bg-slate-800 text-xs text-gold-300 border border-slate-600 rounded px-3 py-2">
-              <option value="Semua Kelas">Semua Kelas</option>
-              <option value="X-1">X-1</option><option value="X-2">X-2</option><option value="X-3">X-3</option><option value="X-4">X-4</option>
-              <option value="XI-1">XI-1</option><option value="XI-2">XI-2</option><option value="XI-3">XI-3</option><option value="XI-4">XI-4</option><option value="XI-5">XI-5</option>
-              <option value="XII-1">XII-1</option><option value="XII-2">XII-2</option><option value="XII-3">XII-3</option><option value="XII-4">XII-4</option><option value="XII-5">XII-5</option>
-            </select>
+              <select id="materi-target-kelas" required class="bg-slate-800 text-xs text-gold-300 border border-slate-600 rounded px-3 py-2">
+                <option value="Semua Kelas">Semua Kelas</option>
+                <option value="X-1">X-1</option><option value="X-2">X-2</option><option value="X-3">X-3</option><option value="X-4">X-4</option>
+                <option value="XI-1">XI-1</option><option value="XI-2">XI-2</option><option value="XI-3">XI-3</option><option value="XI-4">XI-4</option><option value="XI-5">XI-5</option>
+                <option value="XII-1">XII-1</option><option value="XII-2">XII-2</option><option value="XII-3">XII-3</option><option value="XII-4">XII-4</option><option value="XII-5">XII-5</option>
+              </select>
             </div>
             <input type="url" id="materi-drive-url" placeholder="Tautan Google Drive Dokumentasi/Materi (https://drive.google.com/...)" required class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
             <textarea id="materi-deskripsi" placeholder="Deskripsi Singkat Materi..." rows="2" class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2"></textarea>
@@ -409,8 +416,11 @@
             </button>
           </form>
 
-          <div id="admin-materi-list" class="space-y-3 pt-2">
-            <!-- List Materi Admin -->
+          <div class="mt-4">
+            <h4 class="text-sm font-bold text-white mb-3"><i class="fa-solid fa-book-open text-gold-400 mr-2"></i> Daftar Materi Dipublikasikan</h4>
+            <div id="admin-materi-list" class="space-y-2">
+              <!-- List Materi Admin di-render via JS -->
+            </div>
           </div>
         </div>
 
@@ -422,15 +432,26 @@
               <input type="text" id="tugas-judul" placeholder="Judul Tugas" required class="bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
               <select id="tugas-target-kelas" required class="bg-slate-800 text-xs text-gold-300 border border-slate-600 rounded px-3 py-2">
                 <option value="Semua Kelas">Semua Kelas</option>
-                <option value="X-1">X-1</option><option value="XI-1">XI-1</option><option value="XII-1">XII-1</option>
+                <option value="X-1">X-1</option><option value="X-2">X-2</option><option value="X-3">X-3</option><option value="X-4">X-4</option>
+                <option value="XI-1">XI-1</option><option value="XI-2">XI-2</option><option value="XI-3">XI-3</option><option value="XI-4">XI-4</option><option value="XI-5">XI-5</option>
+                <option value="XII-1">XII-1</option><option value="XII-2">XII-2</option><option value="XII-3">XII-3</option><option value="XII-4">XII-4</option><option value="XII-5">XII-5</option>
               </select>
               <input type="date" id="tugas-deadline" required class="bg-slate-800 text-xs text-gold-300 border border-slate-600 rounded px-3 py-2">
             </div>
+            <input type="url" id="tugas-url" placeholder="Tautan Google Drive / Lembar Tugas (Opsional, https://drive.google.com/...)" class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2">
             <textarea id="tugas-instruksi" placeholder="Instruksi Pengerjaan Tugas..." rows="2" required class="w-full bg-slate-800 text-xs text-white border border-slate-600 rounded px-3 py-2"></textarea>
             <button type="submit" class="bg-gold-500 hover:bg-gold-400 text-slate-900 font-bold text-xs px-4 py-2 rounded transition">
               <i class="fa-solid fa-plus-circle mr-1"></i> Buat Tugas Baru
             </button>
           </form>
+
+          <!-- List Tugas yang telah dibuat -->
+          <div class="mt-4">
+            <h4 class="text-sm font-bold text-white mb-3"><i class="fa-solid fa-tasks text-gold-400 mr-2"></i> Daftar Tugas Aktif</h4>
+            <div id="admin-tugas-list" class="space-y-2">
+              <!-- List Tugas Admin dengan Tombol Hapus -->
+            </div>
+          </div>
 
           <!-- Tampilan Pengumpulan Tugas oleh Siswa -->
           <div class="mt-6">
@@ -610,8 +631,8 @@
     ];
 
     const defaultTugas = [
-      { id: 't1', judul: 'Tugas 1: Program Kasir Sederhana Python', kelas: 'XI-1', deadline: '2026-10-10', instruksi: 'Buat program Python dengan struktur percabangan dan perulangan. Unggah kode ke Google Drive.' },
-      { id: 't2', judul: 'Tugas 2: Resume Jaringan Komputer', kelas: 'Semua Kelas', deadline: '2026-10-05', instruksi: 'Tulis ringkasan mengenai protokol TCP/IP dan OSI Layer dalam 2 halaman PDF.' }
+      { id: 't1', judul: 'Tugas 1: Program Kasir Sederhana Python', kelas: 'XI-1', deadline: '2026-10-10', url: 'https://drive.google.com/file/d/sample1/view', instruksi: 'Buat program Python dengan struktur percabangan dan perulangan. Unggah kode ke Google Drive.' },
+      { id: 't2', judul: 'Tugas 2: Resume Jaringan Komputer', kelas: 'Semua Kelas', deadline: '2026-10-05', url: '', instruksi: 'Tulis ringkasan mengenai protokol TCP/IP dan OSI Layer dalam 2 halaman PDF.' }
     ];
 
     function getStorage(key, defaultVal) {
@@ -733,8 +754,7 @@
       e.preventDefault();
       const pass = document.getElementById('login-pass-guru').value;
 
-      // Disamakan dengan hint password 'rahasia'
-      if (pass === 'glendy2108' || pass === 'glendy2108') {
+      if (pass === 'glendy2108') {
         currentUser = { role: 'guru', name: 'Glendy A. Taawoeda, S.Pd.', class: 'Guru Informatika' };
         localStorage.setItem('app_user_session', JSON.stringify(currentUser));
         document.getElementById('modal-login').classList.add('hidden');
@@ -928,13 +948,21 @@
         const isSubmitted = submissions.some(s => s.tugasId === t.id && s.namaSiswa === currentUser?.name);
         return `
           <div class="glass-card p-5 rounded-xl border border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div class="space-y-1">
+            <div class="space-y-1.5">
               <div class="flex items-center space-x-2">
                 <span class="bg-sky-900 text-sky-200 border border-sky-600 text-[10px] px-2 py-0.5 rounded font-semibold">${t.kelas}</span>
                 <span class="text-xs text-red-400 font-medium"><i class="fa-solid fa-clock mr-1"></i>Batas: ${t.deadline}</span>
               </div>
               <h4 class="text-base font-bold text-white">${t.judul}</h4>
               <p class="text-xs text-slate-300 max-w-2xl">${t.instruksi}</p>
+              ${t.url ? `
+                <div class="pt-1">
+                  <a href="${t.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-xs text-sky-400 hover:text-sky-300 transition font-medium bg-sky-900/40 border border-sky-700/50 px-2.5 py-1 rounded-lg">
+                    <i class="fa-brands fa-google-drive"></i>
+                    <span>Lihat / Unduh File Tugas</span>
+                  </a>
+                </div>
+              ` : ''}
             </div>
             <div>
               ${isSubmitted ? 
@@ -1109,167 +1137,235 @@
       showToast("Siswa dihapus.", "info");
     }
 
-   // 1. Perbaikan Fungsi Tambah & Listener Materi
-async function handleAddMateri(e) {
-  e.preventDefault();
-  const judul = document.getElementById('materi-judul').value.trim();
-  const kelas = document.getElementById('materi-target-kelas').value;
-  const url = document.getElementById('materi-drive-url').value.trim();
-  const deskripsi = document.getElementById('materi-deskripsi').value.trim();
+    // Kelola Materi
+    async function handleAddMateri(e) {
+      e.preventDefault();
+      const judul = document.getElementById('materi-judul').value.trim();
+      const kelas = document.getElementById('materi-target-kelas').value;
+      const url = document.getElementById('materi-drive-url').value.trim();
+      const deskripsi = document.getElementById('materi-deskripsi').value.trim();
 
-  const newMateri = {
-    judul: judul,
-    kelas: kelas,
-    url: url,
-    deskripsi: deskripsi,
-    tanggal: new Date().toISOString().split('T')[0]
-  };
+      const newMateri = {
+        judul: judul,
+        kelas: kelas,
+        url: url,
+        deskripsi: deskripsi,
+        tanggal: new Date().toISOString().split('T')[0]
+      };
 
-  if (typeof db !== 'undefined' && db) {
-    try {
-      await db.collection('materi').add(newMateri);
-      showToast("Materi berhasil dipublikasikan secara online!", "success");
-    } catch (err) {
-      console.error("Gagal ke Cloud:", err);
-    }
-  } else {
-    // Fallback LocalStorage jika Firebase Offline
-    const allMateri = getStorage('app_materi', []);
-    newMateri.id = 'm_' + Date.now();
-    allMateri.unshift(newMateri);
-    setStorage('app_materi', allMateri);
-    renderMateri();
-    renderAdminMateriList();
-    showToast("Materi disimpan secara lokal!", "success");
-  }
-
-  e.target.reset();
-  switchAdminTab('materi');
-}
-
-function renderAdminMateriList() {
-  const allMateri = getStorage('app_materi', []);
-  const container = document.getElementById('admin-materi-list');
-  if (!container) return;
-
-  if (allMateri.length === 0) {
-    container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada materi dipublikasikan.</p>`;
-    return;
-  }
-
-  container.innerHTML = allMateri.map(m => `
-    <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs flex justify-between items-center">
-      <div>
-        <h5 class="font-bold text-white">${m.judul}</h5>
-        <p class="text-slate-400 text-[10px]">Kelas: ${m.kelas} | Tanggal: ${m.tanggal || '-'}</p>
-      </div>
-      <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:underline">
-        <i class="fa-brands fa-google-drive"></i> Buka File
-      </a>
-    </div>
-  `).join('');
-}
-
-function initRealtimeMateriListener() {
-  if (typeof db !== 'undefined' && db) {
-    db.collection('materi').onSnapshot((snapshot) => {
-      const liveMateri = [];
-      snapshot.forEach((doc) => {
-        liveMateri.push({ id: doc.id, ...doc.data() });
-      });
-      if (liveMateri.length > 0) {
-        setStorage('app_materi', liveMateri);
+      if (typeof db !== 'undefined' && db) {
+        try {
+          await db.collection('materi').add(newMateri);
+          showToast("Materi berhasil dipublikasikan secara online!", "success");
+        } catch (err) {
+          console.error("Gagal ke Cloud:", err);
+        }
+      } else {
+        const allMateri = getStorage('app_materi', []);
+        newMateri.id = 'm_' + Date.now();
+        allMateri.unshift(newMateri);
+        setStorage('app_materi', allMateri);
+        renderMateri();
+        renderAdminMateriList();
+        showToast("Materi disimpan secara lokal!", "success");
       }
+
+      e.target.reset();
+      switchAdminTab('materi');
+    }
+
+    async function handleDeleteMateri(id) {
+      if (!confirm("Apakah Anda yakin ingin menghapus materi ini?")) return;
+      
+      if (typeof db !== 'undefined' && db && id.length > 5) {
+        try {
+          await db.collection('materi').doc(id).delete();
+          showToast("Materi berhasil dihapus dari Cloud!", "info");
+        } catch(e) { console.error(e); }
+      }
+
+      let allMateri = getStorage('app_materi', []);
+      allMateri = allMateri.filter(m => m.id !== id);
+      setStorage('app_materi', allMateri);
       renderMateri();
       renderAdminMateriList();
-    });
-  }
-}
-
-// 2. Perbaikan Fungsi Tambah & Listener Tugas (Terhubung ke Firebase)
-async function handleAddTugas(e) {
-  e.preventDefault();
-  const judul = document.getElementById('tugas-judul').value.trim();
-  const kelas = document.getElementById('tugas-target-kelas').value;
-  const deadline = document.getElementById('tugas-deadline').value;
-  const instruksi = document.getElementById('tugas-instruksi').value.trim();
-
-  const newTugas = { 
-    judul, 
-    kelas, 
-    deadline, 
-    instruksi, 
-    createdAt: new Date().toISOString() 
-  };
-
-  if (typeof db !== 'undefined' && db) {
-    try {
-      await db.collection('tugas').add(newTugas);
-      showToast("Tugas berhasil dipublikasikan ke siswa!", "success");
-    } catch (err) {
-      console.error("Gagal ke Cloud:", err);
+      showToast("Materi berhasil dihapus.", "info");
     }
-  } else {
-    const allTugas = getStorage('app_tugas', []);
-    newTugas.id = 't_' + Date.now();
-    allTugas.unshift(newTugas);
-    setStorage('app_tugas', allTugas);
-    renderTugas();
-    showToast("Tugas disimpan secara lokal!", "success");
-  }
 
-  e.target.reset();
-  renderAdminTugasList();
-  addRealtimeLog(`Tugas Baru Dibuat: ${judul}`);
-}
+    function renderAdminMateriList() {
+      const allMateri = getStorage('app_materi', []);
+      const container = document.getElementById('admin-materi-list');
+      if (!container) return;
 
-function initRealtimeTugasListener() {
-  if (typeof db !== 'undefined' && db) {
-    db.collection('tugas').onSnapshot((snapshot) => {
-      const liveTugas = [];
-      snapshot.forEach((doc) => {
-        liveTugas.push({ id: doc.id, ...doc.data() });
-      });
-      if (liveTugas.length > 0) {
-        setStorage('app_tugas', liveTugas);
-      }
-      renderTugas();
-    });
-  }
-}
-
-// 3. Perbaikan Inisialisasi Startup
-window.addEventListener('DOMContentLoaded', () => {
-  initRealtimeSiswaListener();
-  initRealtimeMateriListener(); // Ditambahkan
-  initRealtimeTugasListener();  // Ditambahkan
-  checkSession();
-  startRealtimeClock();
-  renderCalendar();
-  renderMateri();
-  renderTugas();
-});
-
-    function renderAdminTugasList() {
-      const submissions = getStorage('app_submissions', []);
-      const container = document.getElementById('admin-submissions-list');
-
-      if (submissions.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada pengumpulan tugas dari siswa.</p>`;
+      if (allMateri.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada materi dipublikasikan.</p>`;
         return;
       }
 
-      container.innerHTML = submissions.map(s => `
-        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs space-y-1">
-          <div class="flex justify-between font-semibold text-white">
-            <span><i class="fa-solid fa-user-graduate text-gold-400 mr-1"></i> ${s.namaSiswa} (${s.kelasSiswa})</span>
-            <span class="text-[10px] text-slate-400">${s.waktu}</span>
+      container.innerHTML = allMateri.map(m => `
+        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs flex justify-between items-center">
+          <div>
+            <h5 class="font-bold text-white">${m.judul}</h5>
+            <p class="text-slate-400 text-[10px]">Kelas: ${m.kelas} | Tanggal: ${m.tanggal || '-'}</p>
           </div>
-          ${s.jawabanTeks ? `<p class="text-slate-300 bg-slate-950 p-2 rounded">Jawaban: ${s.jawabanTeks}</p>` : ''}
-          ${s.driveUrl ? `<a href="${s.driveUrl}" target="_blank" class="text-sky-400 hover:underline block"><i class="fa-brands fa-google-drive mr-1"></i> Tautan Google Drive Tugas</a>` : ''}
+          <div class="flex items-center space-x-3">
+            <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:underline">
+              <i class="fa-brands fa-google-drive"></i> Buka File
+            </a>
+            <button onclick="handleDeleteMateri('${m.id}')" class="text-red-400 hover:text-red-300 transition">
+              <i class="fa-solid fa-trash mr-1"></i> Hapus
+            </button>
+          </div>
         </div>
       `).join('');
     }
+
+    function initRealtimeMateriListener() {
+      if (typeof db !== 'undefined' && db) {
+        db.collection('materi').onSnapshot((snapshot) => {
+          const liveMateri = [];
+          snapshot.forEach((doc) => {
+            liveMateri.push({ id: doc.id, ...doc.data() });
+          });
+          if (liveMateri.length > 0) {
+            setStorage('app_materi', liveMateri);
+          }
+          renderMateri();
+          renderAdminMateriList();
+        });
+      }
+    }
+
+    // Kelola Tugas
+    async function handleAddTugas(e) {
+      e.preventDefault();
+      const judul = document.getElementById('tugas-judul').value.trim();
+      const kelas = document.getElementById('tugas-target-kelas').value;
+      const deadline = document.getElementById('tugas-deadline').value;
+      const urlInput = document.getElementById('tugas-url');
+      const url = urlInput ? urlInput.value.trim() : '';
+      const instruksi = document.getElementById('tugas-instruksi').value.trim();
+
+      const newTugas = { 
+        judul, 
+        kelas, 
+        deadline, 
+        url,
+        instruksi, 
+        createdAt: new Date().toISOString() 
+      };
+
+      if (typeof db !== 'undefined' && db) {
+        try {
+          await db.collection('tugas').add(newTugas);
+          showToast("Tugas berhasil dipublikasikan ke siswa!", "success");
+        } catch (err) {
+          console.error("Gagal ke Cloud:", err);
+        }
+      } else {
+        const allTugas = getStorage('app_tugas', []);
+        newTugas.id = 't_' + Date.now();
+        allTugas.unshift(newTugas);
+        setStorage('app_tugas', allTugas);
+        renderTugas();
+        showToast("Tugas disimpan secara lokal!", "success");
+      }
+
+      e.target.reset();
+      renderAdminTugasList();
+      addRealtimeLog(`Tugas Baru Dibuat: ${judul}`);
+    }
+
+    async function handleDeleteTugas(id) {
+      if (!confirm("Apakah Anda yakin ingin menghapus tugas ini?")) return;
+
+      if (typeof db !== 'undefined' && db && id.length > 5) {
+        try {
+          await db.collection('tugas').doc(id).delete();
+          showToast("Tugas berhasil dihapus dari Cloud!", "info");
+        } catch(e) { console.error(e); }
+      }
+
+      let allTugas = getStorage('app_tugas', []);
+      allTugas = allTugas.filter(t => t.id !== id);
+      setStorage('app_tugas', allTugas);
+      renderTugas();
+      renderAdminTugasList();
+      showToast("Tugas berhasil dihapus.", "info");
+    }
+
+    function initRealtimeTugasListener() {
+      if (typeof db !== 'undefined' && db) {
+        db.collection('tugas').onSnapshot((snapshot) => {
+          const liveTugas = [];
+          snapshot.forEach((doc) => {
+            liveTugas.push({ id: doc.id, ...doc.data() });
+          });
+          if (liveTugas.length > 0) {
+            setStorage('app_tugas', liveTugas);
+          }
+          renderTugas();
+          renderAdminTugasList();
+        });
+      }
+    }
+
+    function renderAdminTugasList() {
+      const allTugas = getStorage('app_tugas', []);
+      const tugasContainer = document.getElementById('admin-tugas-list');
+      
+      if (tugasContainer) {
+        if (allTugas.length === 0) {
+          tugasContainer.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada tugas dibuat.</p>`;
+        } else {
+          tugasContainer.innerHTML = allTugas.map(t => `
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs flex justify-between items-center">
+              <div>
+                <h5 class="font-bold text-white">${t.judul}</h5>
+                <p class="text-slate-400 text-[10px]">Kelas: ${t.kelas} | Batas: ${t.deadline}</p>
+                ${t.url ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" class="text-sky-400 text-[11px] hover:underline block mt-0.5"><i class="fa-brands fa-google-drive mr-1"></i>${t.url}</a>` : ''}
+              </div>
+              <button onclick="handleDeleteTugas('${t.id}')" class="text-red-400 hover:text-red-300 text-xs transition ml-2">
+                <i class="fa-solid fa-trash mr-1"></i> Hapus
+              </button>
+            </div>
+          `).join('');
+        }
+      }
+
+      const submissions = getStorage('app_submissions', []);
+      const subContainer = document.getElementById('admin-submissions-list');
+
+      if (subContainer) {
+        if (submissions.length === 0) {
+          subContainer.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada pengumpulan tugas dari siswa.</p>`;
+          return;
+        }
+
+        subContainer.innerHTML = submissions.map(s => `
+          <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs space-y-1">
+            <div class="flex justify-between font-semibold text-white">
+              <span><i class="fa-solid fa-user-graduate text-gold-400 mr-1"></i> ${s.namaSiswa} (${s.kelasSiswa})</span>
+              <span class="text-[10px] text-slate-400">${s.waktu}</span>
+            </div>
+            ${s.jawabanTeks ? `<p class="text-slate-300 bg-slate-950 p-2 rounded">Jawaban: ${s.jawabanTeks}</p>` : ''}
+            ${s.driveUrl ? `<a href="${s.driveUrl}" target="_blank" class="text-sky-400 hover:underline block"><i class="fa-brands fa-google-drive mr-1"></i> Tautan Google Drive Tugas</a>` : ''}
+          </div>
+        `).join('');
+      }
+    }
+
+    // Inisialisasi Startup
+    window.addEventListener('DOMContentLoaded', () => {
+      initRealtimeSiswaListener();
+      initRealtimeMateriListener();
+      initRealtimeTugasListener();
+      checkSession();
+      startRealtimeClock();
+      renderCalendar();
+      renderMateri();
+      renderTugas();
+    });
 
     // ================= 9. NOTIFIKASI & LOG =================
     function showToast(msg, type = 'info') {
