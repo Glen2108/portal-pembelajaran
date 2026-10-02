@@ -13,6 +13,7 @@
   
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: { sans: ['Poppins', 'sans-serif'] },
@@ -38,15 +39,84 @@
     }
   </script>
   <style>
-    body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    /* Styling tema Gelap (Default) */
+    body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #f8fafc; transition: background-color 0.3s, color 0.3s; }
     .bg-sky-gradient { background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 50%, #0369a1 100%); }
     .gold-border { border-color: #eab308; }
     .gold-glow { box-shadow: 0 0 15px rgba(234, 179, 8, 0.3); }
-    .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(234, 179, 8, 0.2); }
-    /* Custom Scrollbar */
+    .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(234, 179, 8, 0.2); transition: background 0.3s, border-color 0.3s; }
+
+    /* Custom Scrollbar Dark */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #ca8a04; border-radius: 4px; }
+
+    /* Styling khusus Tema Terang / Putih */
+    body.theme-light {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    body.theme-light .glass-card {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-color: rgba(202, 138, 4, 0.3) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    body.theme-light h1, 
+    body.theme-light h2, 
+    body.theme-light h3, 
+    body.theme-light h4, 
+    body.theme-light h5,
+    body.theme-light .text-white {
+      color: #0f172a !important;
+    }
+    body.theme-light .text-slate-300, 
+    body.theme-light .text-slate-400 {
+      color: #475569 !important;
+    }
+    body.theme-light .text-gold-400 {
+      color: #b45309 !important;
+    }
+    body.theme-light .text-gold-300 {
+      color: #d97706 !important;
+    }
+    body.theme-light ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    body.theme-light table thead {
+      background-color: #e2e8f0 !important;
+      color: #854d0e !important;
+    }
+    body.theme-light table tbody tr {
+      border-color: #e2e8f0 !important;
+    }
+    body.theme-light table tbody tr:hover {
+      background-color: #f1f5f9 !important;
+    }
+    body.theme-light input, 
+    body.theme-light select, 
+    body.theme-light textarea {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+    }
+    body.theme-light .bg-slate-900,
+    body.theme-light .bg-slate-900\/80,
+    body.theme-light .bg-slate-900\/60,
+    body.theme-light .bg-slate-900\/95,
+    body.theme-light .bg-slate-950,
+    body.theme-light .bg-sky-900\/30,
+    body.theme-light .bg-sky-900\/40 {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+    }
+    body.theme-light #clock-display {
+      color: #0284c7 !important;
+    }
+    body.theme-light .bg-sky-gradient h2,
+    body.theme-light .bg-sky-gradient p,
+    body.theme-light .bg-sky-gradient span {
+      color: #ffffff !important;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -82,8 +152,14 @@
         <button onclick="switchPage('admin')" id="nav-admin" class="nav-btn text-slate-300 hover:text-gold-400 transition"><i class="fa-solid fa-user-shield mr-1"></i> Admin Guru</button>
       </nav>
 
-      <!-- User Badge & Logout -->
+      <!-- User Badge, Toggle Warna & Logout -->
       <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Tombol Switch Tema Putih/Hitam -->
+        <button onclick="toggleTheme()" id="theme-toggle-btn" title="Ganti Warna Tampilan" class="bg-slate-800 hover:bg-slate-700 text-gold-400 border border-gold-500/40 text-xs px-2.5 py-1.5 rounded-lg transition flex items-center space-x-1">
+          <i id="theme-toggle-icon" class="fa-solid fa-sun text-yellow-400"></i>
+          <span id="theme-toggle-text" class="hidden sm:inline text-xs font-semibold">Putih</span>
+        </button>
+
         <div id="user-badge" class="hidden md:flex items-center bg-sky-900/80 px-3 py-1.5 rounded-full border border-gold-500/40 text-xs">
           <span id="user-icon" class="text-gold-400 mr-2"><i class="fa-solid fa-user-graduate"></i></span>
           <span id="user-display-name" class="font-semibold text-white"></span>
@@ -566,7 +642,7 @@
         <div>
           <label class="block text-xs text-slate-300 mb-1">Kata Sandi Guru (Admin)</label>
           <input type="password" id="login-pass-guru" placeholder="Masukkan password admin..." required class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none">
-          <p class="text-[10px] text-slate-400 mt-1">Hint: Password admin guru adalah <code class="text-gold-300">glendy2108</code></p>
+          <p class="text-[10px] text-slate-400 mt-1">Hint: Password admin guru adalah <code class="text-gold-300">rahasia</code></p>
         </div>
         <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs py-3 rounded-lg transition shadow-lg">
           Masuk Dashboard Guru <i class="fa-solid fa-shield-halved ml-1"></i>
@@ -694,6 +770,35 @@
     if (!localStorage.getItem('app_submissions')) setStorage('app_submissions', []);
     if (!localStorage.getItem('app_galeri')) setStorage('app_galeri', defaultGaleri);
     if (!localStorage.getItem('app_akses_materi')) setStorage('app_akses_materi', []);
+
+    // FUNGSI LOGIKA SWITCH TEMA PUTIH / HITAM
+    function applyTheme(theme) {
+      const icon = document.getElementById('theme-toggle-icon');
+      const text = document.getElementById('theme-toggle-text');
+
+      if (theme === 'light') {
+        document.body.classList.add('theme-light');
+        if (icon) icon.className = 'fa-solid fa-moon text-indigo-400';
+        if (text) text.innerText = 'Hitam';
+      } else {
+        document.body.classList.remove('theme-light');
+        if (icon) icon.className = 'fa-solid fa-sun text-yellow-400';
+        if (text) text.innerText = 'Putih';
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = localStorage.getItem('app_theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('app_theme', newTheme);
+      applyTheme(newTheme);
+      showToast(`Tampilan diubah ke Tema ${newTheme === 'light' ? 'Putih (Terang)' : 'Hitam (Gelap)'}`, 'info');
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('app_theme') || 'dark';
+      applyTheme(savedTheme);
+    }
 
     function initRealtimeListeners() {
       if (typeof db !== 'undefined' && db) {
@@ -1455,6 +1560,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
       initRealtimeListeners();
       setupLoginClassAutoFilter();
       checkSession();
