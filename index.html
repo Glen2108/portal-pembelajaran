@@ -176,7 +176,7 @@
         </div>
       </div>
 
-      <!-- GALERI KENANGAN KELAS (FITUR BARU) -->
+      <!-- GALERI KENANGAN KELAS -->
       <div class="glass-card p-6 rounded-2xl border border-gold-500/30">
         <div class="flex flex-col md:flex-row justify-between md:items-center mb-4 gap-2">
           <div>
@@ -455,7 +455,7 @@
           </div>
         </div>
 
-        <!-- TAB 4: KELOLA GALERI (FITUR BARU GURU) -->
+        <!-- TAB 4: KELOLA GALERI -->
         <div id="admin-tab-galeri" class="space-y-4 hidden">
           <form onsubmit="handleAddGaleri(event)" class="bg-sky-900/30 p-4 rounded-xl border border-sky-800 space-y-3">
             <h4 class="text-sm font-bold text-gold-400 mb-2">Tambah Foto Galeri Baru</h4>
@@ -539,8 +539,8 @@
       <form id="form-login-siswa" onsubmit="handleLoginSiswa(event)" class="space-y-4">
         <div>
           <label class="block text-xs text-slate-300 mb-1">Nama Lengkap Siswa</label>
-          <input type="text" id="login-nama-siswa" list="siswa-list-auto" placeholder="Masukkan nama Anda..." required class="">
-            <datalist id="siswa-list-auto"></datalist>
+          <input type="text" id="login-nama-siswa" list="siswa-list-auto" placeholder="Masukkan nama Anda..." required class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none">
+          <datalist id="siswa-list-auto"></datalist>
         </div>
         <div>
           <label class="block text-xs text-slate-300 mb-1">Pilih Kelas</label>
@@ -566,7 +566,7 @@
         <div>
           <label class="block text-xs text-slate-300 mb-1">Kata Sandi Guru (Admin)</label>
           <input type="password" id="login-pass-guru" placeholder="Masukkan password admin..." required class="w-full bg-slate-800 text-white text-xs border border-slate-600 rounded-lg p-2.5 focus:border-gold-400 focus:outline-none">
-          <p class="text-[10px] text-slate-400 mt-1">Hint: Password admin guru adalah <code class="text-gold-300">rahasia</code></p>
+          <p class="text-[10px] text-slate-400 mt-1">Hint: Password admin guru adalah <code class="text-gold-300">glendy2108</code></p>
         </div>
         <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs py-3 rounded-lg transition shadow-lg">
           Masuk Dashboard Guru <i class="fa-solid fa-shield-halved ml-1"></i>
@@ -693,9 +693,11 @@
     if (!localStorage.getItem('app_tugas')) setStorage('app_tugas', defaultTugas);
     if (!localStorage.getItem('app_submissions')) setStorage('app_submissions', []);
     if (!localStorage.getItem('app_galeri')) setStorage('app_galeri', defaultGaleri);
+    if (!localStorage.getItem('app_akses_materi')) setStorage('app_akses_materi', []);
 
-    function initRealtimeSiswaListener() {
+    function initRealtimeListeners() {
       if (typeof db !== 'undefined' && db) {
+        // Realtime Listener Data Siswa
         db.collection('siswa').onSnapshot((snapshot) => {
           const liveSiswaList = [];
           snapshot.forEach((doc) => {
@@ -704,7 +706,27 @@
           if (liveSiswaList.length > 0) setStorage('app_siswa', liveSiswaList);
           if (currentUser?.role === 'guru') renderAdminSiswaTable();
           addRealtimeLog("Data Siswa Ter-update dari Cloud Database.");
-        }, (error) => console.warn("Firebase listener:", error));
+        }, (error) => console.warn("Firebase Siswa Listener:", error));
+
+        // Realtime Listener Akses Materi
+        db.collection('akses_materi').onSnapshot((snapshot) => {
+          const liveAksesList = [];
+          snapshot.forEach((doc) => {
+            liveAksesList.push({ id: doc.id, ...doc.data() });
+          });
+          setStorage('app_akses_materi', liveAksesList);
+          if (currentUser?.role === 'guru') renderAksesMateriTable();
+        }, (error) => console.warn("Firebase Akses Listener:", error));
+
+        // Realtime Listener Pengumpulkan Tugas
+        db.collection('submissions').onSnapshot((snapshot) => {
+          const liveSubmissions = [];
+          snapshot.forEach((doc) => {
+            liveSubmissions.push({ id: doc.id, ...doc.data() });
+          });
+          setStorage('app_submissions', liveSubmissions);
+          if (currentUser?.role === 'guru') renderAdminTugasList();
+        }, (error) => console.warn("Firebase Submissions Listener:", error));
       }
     }
 
@@ -740,23 +762,30 @@
       }
     }
 
+    function setupLoginClassAutoFilter() {
+      const selectKelas = document.getElementById('login-kelas-siswa');
+      if (selectKelas) {
+        selectKelas.addEventListener('change', function() {
+          const selectedKelas = this.value;
+          const daftarSiswa = getStorage('app_siswa', []);
+          const datalist = document.getElementById('siswa-list-auto');
+
+          datalist.innerHTML = '';
+          daftarSiswa
+            .filter(s => s.kelas === selectedKelas)
+            .forEach(s => {
+              const option = document.createElement('option');
+              option.value = s.nama;
+              datalist.appendChild(option);
+            });
+        });
+      }
+    }
+
     async function handleLoginSiswa(e) {
       e.preventDefault();
       const namaInput = document.getElementById('login-nama-siswa').value.trim();
-      const kelasInput = document.getElementById('login-kelas-siswa').addEventListener('change', function() {
-        const selectedKelas = this.value;
-        const daftarSiswa = getStorage('app_siswa', []);
-        const datalist = document.getElementById('siswa-list-auto');
-
-        datalist.innerHTML = '';
-        daftarSiswa
-            .filter(s => s.kelas === selectedKelas)
-            .forEach(s => {
-                const option = document.createElement('option');
-                option.value = s.nama;
-                datalist.appendChild(option);
-            });
-        });
+      const kelasInput = document.getElementById('login-kelas-siswa').value;
 
       if (!namaInput || !kelasInput) {
         showToast("Harap isi nama dan pilih kelas Anda!", "warning");
@@ -848,7 +877,10 @@
       if (pageId === 'home') renderGallery();
       if (pageId === 'materi') renderMateri();
       if (pageId === 'tugas') renderTugas();
-      if (pageId === 'admin') renderAdminSiswaTable();
+      if (pageId === 'admin') {
+        renderAdminSiswaTable();
+        renderAksesMateriTable();
+      }
     }
 
     function toggleMobileMenu() {
@@ -916,7 +948,6 @@
       document.getElementById('modal-student-list').classList.add('hidden');
     }
 
-    // LOGIKA GALERI KENANGAN KELAS (BARU)
     function renderGallery() {
       const filter = document.getElementById('gallery-class-filter')?.value || 'ALL';
       const allGaleri = getStorage('app_galeri', defaultGaleri);
@@ -1211,6 +1242,8 @@
       const paginatedData = filtered.slice(startIndex, startIndex + pageSize);
 
       const tbody = document.getElementById('admin-siswa-tbody');
+      if (!tbody) return;
+
       if (paginatedData.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-slate-400">Data siswa tidak ditemukan.</td></tr>`;
       } else {
@@ -1226,14 +1259,18 @@
         `).join('');
       }
 
-      document.getElementById('pagination-info').innerText = `Menampilkan ${Math.min(startIndex + 1, totalItems)} - ${Math.min(startIndex + pageSize, totalItems)} dari ${totalItems} siswa`;
+      const paginationInfo = document.getElementById('pagination-info');
+      if (paginationInfo) {
+        paginationInfo.innerText = `Menampilkan ${Math.min(startIndex + 1, totalItems)} - ${Math.min(startIndex + pageSize, totalItems)} dari ${totalItems} siswa`;
+      }
       
       let pageBtns = '';
       for (let i = 1; i <= totalPages; i++) {
         const activeClass = i === siswaCurrentPage ? "bg-gold-500 text-slate-900 font-bold" : "bg-slate-800 text-slate-300 hover:bg-slate-700";
         pageBtns += `<button onclick="goToSiswaPage(${i})" class="px-2.5 py-1 rounded text-xs transition ${activeClass}">${i}</button>`;
       }
-      document.getElementById('pagination-controls').innerHTML = pageBtns;
+      const paginationControls = document.getElementById('pagination-controls');
+      if (paginationControls) paginationControls.innerHTML = pageBtns;
     }
 
     function goToSiswaPage(p) {
@@ -1418,7 +1455,8 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      initRealtimeSiswaListener();
+      initRealtimeListeners();
+      setupLoginClassAutoFilter();
       checkSession();
       startRealtimeClock();
       renderCalendar();
